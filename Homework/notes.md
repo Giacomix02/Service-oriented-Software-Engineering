@@ -1,0 +1,1 @@
+[Link to Gemini Questions about topics and workflow](https://gemini.google.com/share/faca7b6a84c1)
