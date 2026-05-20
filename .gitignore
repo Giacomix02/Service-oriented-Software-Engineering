@@ -2,3 +2,4 @@
 .venv
 tourpedia.rdf
 attrattori.rdf
+__pycache__

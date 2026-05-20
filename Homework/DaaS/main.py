@@ -1,0 +1,327 @@
+from flask import Flask, request, jsonify
+from math import sqrt
+from query import query
+
+app = Flask(__name__)
+
+@app.route("/")
+def hello_world():
+    return "<p>Hello, World! I'm working</p>"
+
+
+# Helpers
+def success_response(data):
+    return jsonify({"status": "ok", "data": data}), 200
+
+def error_response(message, code=400):
+    return jsonify({"status": "error", "message": message, "code": code}), code
+
+
+# --- Endpoints from apiDaaSDoc.md ---
+
+# getAll - GET /pois
+@app.get("/pois")
+def get_all():
+    # Return full POI objects
+    prepared = """
+        """
+
+    try:
+        # TODO: use bindings to avoid injection
+        results = query(prepared, bindings={})
+
+        resultsJSON = []
+        # TODO: transform results into a json
+
+        return success_response(resultsJSON)
+
+    except Exception as e:
+        # Catch any errors from rdflib or the conversion process
+        # Using 500 since this would be an internal server error / query failure
+        return error_response(f"Failed to execute query or process results: {str(e)}", 500)
+
+
+
+# getAllBasicInfos - GET /pois/basic
+@app.get("/pois/basic")
+def get_all_basic():
+    # Only vital infos (id, name, municipality)
+    prepared = """
+        """
+
+    try:
+        # TODO: use bindings to avoid injection
+        results = query(prepared, bindings={})
+
+        resultsJSON = []
+        # TODO: transform results into a json
+
+        return success_response(resultsJSON)
+
+    except Exception as e:
+        # Catch any errors from rdflib or the conversion process
+        # Using 500 since this would be an internal server error / query failure
+        return error_response(f"Failed to execute query or process results: {str(e)}", 500)
+
+
+
+# getById - GET /pois/<id>
+@app.get("/pois/<int:poi_id>")
+def get_by_id(poi_id):
+    prepared = """
+        SELECT ?id ?title ?description ?comment ?short_description ?municipality ?lat ?long ?image
+        WHERE {
+          ?s umb:id ?id ;
+             umb:titolo_testo ?title ;
+             umb:testo ?description ;
+             geo:lat ?lat ;
+             geo:long ?long .
+        
+          OPTIONAL { ?s umb:comment ?comment . }
+          OPTIONAL { ?s umb:descrizione_sintetica ?short_description . }
+          OPTIONAL { ?s umb:immagine_copertina ?image . }
+          OPTIONAL { ?s dbpedia-owl:municipality ?municipality . }
+          
+          FILTER(LANG(?title) = "en" && LANG(?description) = "en")
+          FILTER(STR(?id) = STR(?idGet))
+        }"""
+
+    try:
+        # TODO: use bindings to avoid injection
+        results = query(prepared, bindings={"idGet":poi_id})
+
+        resultsJSON = []
+        for row in results:
+            resultsJSON.append({
+                "id": str(row.id) if row.id else None,
+                "title": str(row.title) if row.title else None,
+                "description": str(row.description) if row.description else None,
+                "comment": str(row.comment) if row.comment else None,
+                "short_description": str(row.short_description) if row.short_description else None,
+                "municipality": str(row.municipality) if row.municipality else None,
+                "lat": str(row.lat) if row.lat else None,
+                "long": str(row.long) if row.long else None,
+                "image": str(row.image) if row.image else None
+            })
+
+        return success_response(resultsJSON)
+
+    except Exception as e:
+        # Catch any errors from rdflib or the conversion process
+        # Using 500 since this would be an internal server error / query failure
+        return error_response(f"Failed to execute query or process results: {str(e)}", 500)
+
+# getByMunicipality - GET /pois/municipality/<municipality>
+@app.get("/pois/municipality/<string:municipality>")
+def get_by_municipality(municipality):
+    prepared = """
+        SELECT ?id ?title ?description
+        WHERE {
+          ?s dbpedia-owl:municipality ?m ;
+             umb:id ?id ;
+             umb:titolo_testo ?title ;
+             umb:descrizione_sintetica ?description .
+
+          FILTER(LANG(?title) = "en")
+          
+          FILTER(STR(?m) = STR(?municipalityName))
+        }
+        """
+
+    try:
+        results = query(prepared, bindings={"municipalityName":municipality})
+
+        resultsJSON = []
+        for row in results:
+            resultsJSON.append({
+                # Convert rdflib types (Literal, URIRef) to standard Python strings
+                "id": str(row.id) if row.id else None,
+                "title": str(row.title) if row.title else None,
+                "description": str(row.description) if row.description else None
+            })
+
+        return success_response(resultsJSON)
+
+    except Exception as e:
+        # Catch any errors from rdflib or the conversion process
+        # Using 500 since this would be an internal server error / query failure
+        return error_response(f"Failed to execute query or process results: {str(e)}", 500)
+
+
+
+
+# getByPosition - POST /pois/position
+@app.post("/pois/position")
+def get_by_position():
+    data = request.get_json(silent=True)
+    if not data:
+        return error_response("JSON body required")
+    try:
+        lat = float(data.get("lat"))
+        lon = float(data.get("lon"))
+    except (TypeError, ValueError):
+        return error_response("lat and lon must be provided as numbers")
+
+    prepared = """
+        """
+
+    try:
+        # TODO: use bindings to avoid injection
+        results = query(prepared, bindings={})
+
+        resultsJSON = []
+        # TODO: transform results into a json
+
+        return success_response(resultsJSON)
+
+    except Exception as e:
+        # Catch any errors from rdflib or the conversion process
+        # Using 500 since this would be an internal server error / query failure
+        return error_response(f"Failed to execute query or process results: {str(e)}", 500)
+
+# getNearest - POST /pois/nearest
+@app.post("/pois/nearest")
+def get_nearest():
+    data = request.get_json(silent=True)
+    if not data:
+        return error_response("JSON body required")
+    try:
+        lat = float(data.get("lat"))
+        lon = float(data.get("lon"))
+        delta = float(data.get("delta"))
+    except (TypeError, ValueError):
+        return error_response("lat, lon and delta must be numbers")
+
+    def distance(a, b):
+        return sqrt((a[0] - b[0]) ** 2 + (a[1] - b[1]) ** 2)
+
+    # here idk how to do the query, the simple way that i think is to get all POIs and after calculate the distance
+    # and example here:
+    # center = (lat, lon)
+    # matches = [p for p in SAMPLE_POIS if distance((p.get("lat"), p.get("lon")), center) <= delta]
+
+    prepared = """
+        """
+
+    try:
+        # TODO: use bindings to avoid injection
+        results = query(prepared, bindings={})
+
+        resultsJSON = []
+        # TODO: transform results into a json
+
+        return success_response(resultsJSON)
+
+    except Exception as e:
+        # Catch any errors from rdflib or the conversion process
+        # Using 500 since this would be an internal server error / query failure
+        return error_response(f"Failed to execute query or process results: {str(e)}", 500)
+
+
+
+
+# getBySubject - GET /pois/subject/<subject>
+@app.get("/pois/subject/<string:subject>")
+def get_by_subject(subject):
+    prepared = """
+        """
+
+    try:
+        # TODO: use bindings to avoid injection
+        results = query(prepared, bindings={})
+
+        resultsJSON = []
+        # TODO: transform results into a json
+
+        return success_response(resultsJSON)
+
+    except Exception as e:
+        # Catch any errors from rdflib or the conversion process
+        # Using 500 since this would be an internal server error / query failure
+        return error_response(f"Failed to execute query or process results: {str(e)}", 500)
+
+
+# getAllSubjects - GET /subjects
+@app.get("/subjects")
+def get_all_subjects():
+
+    prepared =  """
+        """
+
+    try:
+        # TODO: use bindings to avoid injection
+        results = query(prepared, bindings={})
+
+
+
+        resultsJSON = []
+        # TODO: transform results into a json
+
+
+        return success_response(resultsJSON)
+
+    except Exception as e:
+        # Catch any errors from rdflib or the conversion process
+        # Using 500 since this would be an internal server error / query failure
+        return error_response(f"Failed to execute query or process results: {str(e)}", 500)
+
+
+
+
+# getByAdvancedSearch - POST /pois/search
+@app.post("/pois/search")
+def get_by_advanced_search():
+    data = request.get_json(silent=True) or {}
+    if not data:
+        return error_response("JSON body required")
+
+    subject = data.get("subject")
+    municipality = data.get("municipality")
+    keyword = data.get("keyword")
+    lat = data.get("lat")
+    lon = data.get("long") or data.get("lon")
+    delta = data.get("delta")
+
+
+    # this example is created by AI if we have a json file, take in consideration only to know more or less how the query should work
+    # results = SAMPLE_POIS
+    #
+    # if subject:
+    #     results = [p for p in results if subject.lower() in (s.lower() for s in p.get("subjects", []))]
+    # if municipality:
+    #     results = [p for p in results if p.get("municipality", "").lower() == municipality.lower()]
+    # if keyword:
+    #     k = keyword.lower()
+    #     results = [p for p in results if k in p.get("name", "").lower() or k in p.get("description", "").lower()]
+    # if lat is not None and lon is not None and delta is not None:
+    #     try:
+    #         lat = float(lat)
+    #         lon = float(lon)
+    #         delta = float(delta)
+    #         def dist(a,b):
+    #             return sqrt((a[0]-b[0])**2 + (a[1]-b[1])**2)
+    #         center = (lat, lon)
+    #         results = [p for p in results if dist((p.get("lat"), p.get("lon")), center) <= delta]
+    #     except (TypeError, ValueError):
+    #         return error_response("lat, long and delta must be numbers if provided")
+
+    prepared = """
+        """
+
+    try:
+        # TODO: use bindings to avoid injection
+        results = query(prepared, bindings={})
+
+        resultsJSON = []
+        # TODO: transform results into a json
+
+        return success_response(resultsJSON)
+
+    except Exception as e:
+        # Catch any errors from rdflib or the conversion process
+        # Using 500 since this would be an internal server error / query failure
+        return error_response(f"Failed to execute query or process results: {str(e)}", 500)
+
+
+if __name__ == "__main__":
+    app.run(debug=True)
