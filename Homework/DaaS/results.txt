@@ -1,0 +1,22 @@
+                         id                         |                           titolo                           |                         provenienza                         
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+"2957907"^^<http://www.w3.org/2001/XMLSchema#string>|"Gola del Bottaccione"@it                                   |"umbriatourism.it"^^<http://www.w3.org/2001/XMLSchema#string>
+"2959161"^^<http://www.w3.org/2001/XMLSchema#string>|"Parco di Villalba"@it                                      |"umbriatourism.it"^^<http://www.w3.org/2001/XMLSchema#string>
+"2959209"^^<http://www.w3.org/2001/XMLSchema#string>|"Monti Martani"@it                                          |"umbriatourism.it"^^<http://www.w3.org/2001/XMLSchema#string>
+"2959925"^^<http://www.w3.org/2001/XMLSchema#string>|"I Prati di Stroncone"@it                                   |"umbriatourism.it"^^<http://www.w3.org/2001/XMLSchema#string>
+"2960170"^^<http://www.w3.org/2001/XMLSchema#string>|"Parco di Archeologia Arborea di San Lorenzo di Lerchi"@it  |"umbriatourism.it"^^<http://www.w3.org/2001/XMLSchema#string>
+"2960961"^^<http://www.w3.org/2001/XMLSchema#string>|"L'acqua termale di Parrano"@it                             |"umbriatourism.it"^^<http://www.w3.org/2001/XMLSchema#string>
+"2962422"^^<http://www.w3.org/2001/XMLSchema#string>|"Isola Maggiore"@it                                         |"umbriatourism.it"^^<http://www.w3.org/2001/XMLSchema#string>
+"2962486"^^<http://www.w3.org/2001/XMLSchema#string>|"Lago di Piediluco"@it                                      |"umbriatourism.it"^^<http://www.w3.org/2001/XMLSchema#string>
+"2963422"^^<http://www.w3.org/2001/XMLSchema#string>|"Le Gole del Nera"@it                                       |"umbriatourism.it"^^<http://www.w3.org/2001/XMLSchema#string>
+"2963738"^^<http://www.w3.org/2001/XMLSchema#string>|"Tane del Diavolo - Parrano"@it                             |"umbriatourism.it"^^<http://www.w3.org/2001/XMLSchema#string>
+"2965255"^^<http://www.w3.org/2001/XMLSchema#string>|"Preci e l'antica scuola di chirurgia"@it                   |"umbriatourism.it"^^<http://www.w3.org/2001/XMLSchema#string>
+"2965448"^^<http://www.w3.org/2001/XMLSchema#string>|"Lago di Corbara"@it                                        |"umbriatourism.it"^^<http://www.w3.org/2001/XMLSchema#string>
+"2965870"^^<http://www.w3.org/2001/XMLSchema#string>|"Riserva Mondiale della Biosfera Unesco del Monte Peglia"@it|"umbriatourism.it"^^<http://www.w3.org/2001/XMLSchema#string>
+"2966039"^^<http://www.w3.org/2001/XMLSchema#string>|"Fonti di Valcasana"@it                                     |"umbriatourism.it"^^<http://www.w3.org/2001/XMLSchema#string>
+"2966118"^^<http://www.w3.org/2001/XMLSchema#string>|"Rasiglia e le sue sorgenti"@it                             |"umbriatourism.it"^^<http://www.w3.org/2001/XMLSchema#string>
+"2966215"^^<http://www.w3.org/2001/XMLSchema#string>|"Rocca albornoziana Spoleto"@it                             |"umbriatourism.it"^^<http://www.w3.org/2001/XMLSchema#string>
+"2966231"^^<http://www.w3.org/2001/XMLSchema#string>|"Duomo di Santa Maria Assunta in Cielo"@it                  |"umbriatourism.it"^^<http://www.w3.org/2001/XMLSchema#string>
+"4129120"^^<http://www.w3.org/2001/XMLSchema#string>|"Collegiata di Santa Maria - Cascia"@it                     |"umbriatourism.it"^^<http://www.w3.org/2001/XMLSchema#string>
+"4129137"^^<http://www.w3.org/2001/XMLSchema#string>|"Chiesa Collegiata San Nicolò"@it                           |"umbriatourism.it"^^<http://www.w3.org/2001/XMLSchema#string>
+"4129157"^^<http://www.w3.org/2001/XMLSchema#string>|"Vini Doc Colli Perugini"@it                                |"umbriatourism.it"^^<http://www.w3.org/2001/XMLSchema#string>
