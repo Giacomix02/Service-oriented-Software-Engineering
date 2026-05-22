@@ -3,3 +3,5 @@
 tourpedia.rdf
 attrattori.rdf
 __pycache__
+*.env
+.env
