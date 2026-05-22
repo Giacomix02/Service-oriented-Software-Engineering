@@ -4,9 +4,9 @@
 *Param Format:* **URL Param**
 
 *Params*:
-- **id**:int
+- **id**: int
 
-*Description:* extract the single POI with the specific id
+*Description:* extract the single POI with the specific id.
 
 *Output:*
 - array of
@@ -27,9 +27,13 @@
 
 *Param Format:* **No Param**
 
-*Description:* extract all POIs showing only vital infos
+*Description:* extract all POIs showing only vital infos.
 
 *Output:*
+- array of
+  - id
+  - title
+  - municipality
 
 ---
 
@@ -38,9 +42,19 @@
 
 *Param Format:* **No Param**
 
-*Description:* extract all POIs showing all infos
+*Description:* extract all POIs showing all infos.
 
 *Output:*
+- array of
+  - id
+  - title
+  - description
+  - comment
+  - short_description
+  - municipality
+  - lat
+  - long
+  - image
 
 ---
 
@@ -50,9 +64,9 @@
 *Param Format:* **URL Param**
 
 *Params*:
-- **municipality**:string
+- **municipality**: string
 
-*Description:* extract all POIs with given municipality
+*Description:* extract all POIs with given a municipality.
 
 *Output:*
 - array of
@@ -68,12 +82,19 @@
 *Param Format:* **JSON**
 
 *Params*:
-- **lat**:float
-- **lon**:float
+- **lat**: float
+- **lon**: float
 
-*Description:* find if there is a POI in this EXACT location
+*Description:* find if there is a POI in this EXACT location.
 
 *Output:*
+- array of
+  - id
+  - title
+  - description
+  - lat
+  - long
+  - municipality
 
 ---
 
@@ -83,11 +104,11 @@
 *Param Format:* **JSON**
 
 *Params*:
-- **lat**:float
-- **lon**:float
+- **lat**: float
+- **lon**: float
 - **delta**: float
 
-*Description:* find if there is a POI nearby, using the delta
+*Description:* find if there is a POI nearby, using the delta.
 
 *Output:*
 
@@ -99,12 +120,16 @@
 *Param Format:* **URL Param**
 
 *Params*:
-- **subject**:string
+- **subject**: string
 
-*Description:* extract all POIs that contain corresponding subject
+*Description:* extract all POIs that contain corresponding subject.
 
 *Output:*
-
+- array of
+  - id
+  - title
+  - description
+  - subject
 
 ---
 
@@ -113,9 +138,11 @@
 
 *Param Format:* **No Param**
 
-*Description:* extract all subjects from all POIs, can be used for GUI
+*Description:* extract all subjects from all POIs, can be used for GUI.
 
 *Output:*
+- array of
+  - subject
 
 ---
 
@@ -125,14 +152,14 @@
 *Param Format:* **JSON**
 
 *Params*:
-- **subject**:string
-- **municipality**:string
+- **subject**: string
+- **municipality**: string
 - **keyword**: string
 - **lat**: float
 - **long**: float
 - **delta**: float
 
 *Description:* aggregation of all others endpoint with the add of feature of searching by keyword. The keyword is searched in all text field in all POIs.
-All params are optional but at least we have to insert one; lant, long and delta are an atomic params 
+All params are optional but at least we have to insert one; lat, long and delta are atomic params.
 
 *Output:*
