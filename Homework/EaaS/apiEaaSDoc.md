@@ -1,12 +1,15 @@
 ## ENDPOINT
 ### evaluate
+
+>/evaluate
+
 *Method:* **POST**
 
 *Param Format:* **JSON**
 
 *Params*:
-- **user_id**: int
-- **poi_id**: int
+- **userId**: int
+- **poiId**: int
 - **language**: string (preferred language of the user: it, en)
 - **allergy**: boolean
 - **context**: str (optional: origin of the recommendation, nearest)

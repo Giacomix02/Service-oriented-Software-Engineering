@@ -1,8 +1,12 @@
 # Run Flask API
->flask --app main run
+>flask --app apiDaaS run
 
 # API Documentation
+
 ### getById
+
+>/pois/<int:poi_id>
+
 *Method:* **GET**
 
 *Param Format:* **URL Param**
@@ -27,6 +31,9 @@
 ---
 
 ### getAllBasicInfos
+
+>/pois/basic
+
 *Method:* **GET**
 
 *Param Format:* **No Param**
@@ -42,6 +49,9 @@
 ---
 
 ### getAll
+
+>/pois
+
 *Method:* **GET**
 
 *Param Format:* **No Param**
@@ -63,6 +73,9 @@
 ---
 
 ### getByMunicipality
+
+>/pois/municipality/<string:municipality>
+
 *Method:* **GET**
 
 *Param Format:* **URL Param**
@@ -80,7 +93,25 @@
 
 ---
 
+
+### getMunicipalities
+
+>/municipalities
+
+*Method:* **GET**
+
+*Param Format:* **No Param**
+
+*Description:* extract all municipalities from all POIs, can be used for GUI.
+
+*Output:*
+- array of
+  - municipality
+
 ### getByPosition
+
+>/pois/position
+
 *Method:* **POST**
 
 *Param Format:* **JSON**
@@ -103,6 +134,9 @@
 ---
 
 ### getNearest
+
+>/pois/nearest
+
 *Method:* **POST**
 
 *Param Format:* **JSON**
@@ -119,6 +153,9 @@
 ---
 
 ### getBySubject
+
+>/pois/subject/<string:subject>
+
 *Method:* **GET**
 
 *Param Format:* **URL Param**
@@ -138,6 +175,9 @@
 ---
 
 ### getAllSubjects
+
+>/subjects
+
 *Method:* **GET**
 
 *Param Format:* **No Param**
@@ -151,6 +191,9 @@
 ---
 
 ### getByAdvancedSearch
+
+>/pois/search
+
 *Method:* **POST**
 
 *Param Format:* **JSON**

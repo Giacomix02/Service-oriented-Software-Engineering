@@ -191,6 +191,32 @@ def get_by_municipality(municipality):
         return error_response(f"Failed to execute query or process results: {str(e)}", 500)
 
 
+# getAllMunicipalities - GET /municipalities
+@app.get("/municipalities")
+def get_municipalities():
+    prepared = """
+        SELECT DISTINCT ?municipality
+        WHERE {
+          ?s dbpedia-owl:municipality ?municipality .
+        }"""
+
+    try:
+        results = query(prepared, bindings={})
+
+        municipalities = set()
+        for row in results:
+            if row.municipality:
+                municipalities.add(str(row.municipality))
+
+        resultsJSON = [{"municipality": m} for m in sorted(municipalities)]
+
+        return success_response(resultsJSON)
+
+    except Exception as e:
+        return error_response(f"Failed to execute query or process results: {str(e)}", 500)
+
+
+
 # getByPosition - POST /pois/position
 @app.post("/pois/position")
 def get_by_position():
