@@ -41,20 +41,40 @@
 
 ### Language policy
 - *Decision*: **REVISE**
-- *Trigger*:
+- *Trigger*: Content is only in Italian, but user prefers English.
 - *Required action*: Translate the content to the desired language (EN) if the user has a language preference and the content is only in Italian.
-- *Risk weight*: ???
+- *Risk weight*: 3
 ---
 
 ### Overtourism/ pollution policy
 - *Decision*: **REJECT** (for the especific recommendation) or **ESCALATE** (if the whole municple is collapsed)
-- *Trigger*:
+- *Trigger*: High concentration of people causing pollution/overtourism. This can be detected by checking the current month and the historical data of the number of visitors in that month, or by checking real-time data if available.
 - *Required action*: Reject the recommendation of an attraction or municiple if there are too many people in it, causing pollution and overtourism.
-- *Risk weight*: ???
+- *Risk weight*: 4
 ---
 
 ### Pollen/ allergies policy
 - *Decision*: **REJECT**
-- *Trigger*:
+- *Trigger*: User has a pollen allergy and the POI has a high pollen concentration. This can be detected by checking the current month and the historical data of pollen concentration in that month, or by checking real-time data if available.
 - *Required action*: If the user checks the "Pollen allergy" box, and there are places (e.g: Natural parks) that can have great concentration of pollen, the recommendation is rejected.
-- *Risk weight*: ???
+- *Risk weight*: 8
+
+## Risk levels and weights:
+- **LOW**: 0-3
+- **MEDIUM**: 4-6
+- **HIGH**: 7-10
+
+## Pipeline:
+- recive request from the user that contains:
+  - Poi selected
+  - accesibility issues
+  - language preference
+  - allergy information
+- Send request to LLM to do the evaluation
+- LLM calls internal functions to:
+  - load policies
+  - fetch data from DaaS
+  - assess risk
+  - make decision
+  - build justification
+  - save audit

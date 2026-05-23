@@ -1,0 +1,26 @@
+[
+  {
+  "policy_id": "",
+  "version": "",
+  "owner": "",
+  "description": "",
+  "hard_blocking_findings": [],
+  "escalation_findings": [],
+  "required_evidence_types": [],
+  "decision_rule": ""
+},
+  {
+  "policy_id": "auditability_required",
+  "version": "2026-04-lab-v5",
+  "owner": "Governance and Compliance Office",
+  "description": "Security-relevant actions must remain auditable after the change.",
+  "hard_blocking_findings": [
+    "AUD_AUDIT_LOGGING_DISABLED"
+  ],
+  "escalation_findings": [],
+  "required_evidence_types": [
+    "audit_trace_note"
+  ],
+  "decision_rule": "Reject removal or disabling of audit logging in security-relevant flows."
+}
+]

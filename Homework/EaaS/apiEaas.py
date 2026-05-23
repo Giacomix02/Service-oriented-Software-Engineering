@@ -1,4 +1,4 @@
 from flask import Flask, request, jsonify
-from llmInterface import consultLlm
+from llmCall import consultLlm
 
 # after import function from llmInterface

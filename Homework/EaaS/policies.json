@@ -1,0 +1,30 @@
+[
+  {
+    "policy_id": "accessibility_policy",
+    "decision": "REVISE",
+    "trigger": "the POI has no accessibility information in the subject or description.",
+    "required_action": "the POI has no accessibility information in the subject or description.",
+    "risk_weight": "6"
+  },
+  {
+    "policy_id": "language_policy",
+    "decision": "REVISE",
+    "trigger": "Content is only in Italian, but user prefers English",
+    "required_action": "Translate the content to the desired language (EN) if the user has a language preference and the content is only in Italian.",
+    "risk_weight": "3"
+  },
+  {
+    "policy_id": "overtourism_pollution_policy",
+    "decision": "REJECT",
+    "trigger": "High concentration of people causing pollution/overtourism. This can be detected by checking the current month and the historical data of the number of visitors in that month, or by checking real-time data if available",
+    "required_action": "Reject the recommendation of an attraction or municiple if there are too many people in it, causing pollution and overtourism.",
+    "risk_weight": "4"
+  },
+  {
+    "policy_id": "pollen_allergies_policy",
+    "decision": "REJECT",
+    "trigger": "User has a pollen allergy and the POI has a high pollen concentration. This can be detected by checking the current month and the historical data of pollen concentration in that month, or by checking real-time data if available.",
+    "required_action": "If the user checks the \"Pollen allergy\" box, and there are places (e.g: Natural parks) that can have great concentration of pollen, the recommendation is rejected.",
+    "risk_weight": "8"
+  }
+]
