@@ -1,8 +1,11 @@
 from flask import Flask, request, jsonify
 from math import sqrt
 from query import query
+from rdflib import Literal, Namespace
+from rdflib.namespace import XSD
 
 app = Flask(__name__)
+
 
 @app.route("/")
 def hello_world():
@@ -12,6 +15,7 @@ def hello_world():
 # Helpers
 def success_response(data):
     return jsonify({"status": "ok", "data": data}), 200
+
 
 def error_response(message, code=400):
     return jsonify({"status": "error", "message": message, "code": code}), code
@@ -42,7 +46,7 @@ def get_all():
 
     try:
         # TODO: use bindings to avoid injection
-        results = query(prepared, bindings={}) # No need for bindings?
+        results = query(prepared, bindings={})  # No need for bindings?
 
         resultsJSON = []
         # DONE: transform results into a json
@@ -65,6 +69,7 @@ def get_all():
         # Catch any errors from rdflib or the conversion process
         # Using 500 since this would be an internal server error / query failure
         return error_response(f"Failed to execute query or process results: {str(e)}", 500)
+
 
 # getAllBasicInfos - GET /pois/basic
 @app.get("/pois/basic")
@@ -101,6 +106,7 @@ def get_all_basic():
         # Using 500 since this would be an internal server error / query failure
         return error_response(f"Failed to execute query or process results: {str(e)}", 500)
 
+
 # getById - GET /pois/<id>
 @app.get("/pois/<int:poi_id>")
 def get_by_id(poi_id):
@@ -124,7 +130,7 @@ def get_by_id(poi_id):
 
     try:
         # TODO: use bindings to avoid injection
-        results = query(prepared, bindings={"idGet":poi_id})
+        results = query(prepared, bindings={"idGet": poi_id})
 
         resultsJSON = []
         for row in results:
@@ -147,6 +153,7 @@ def get_by_id(poi_id):
         # Using 500 since this would be an internal server error / query failure
         return error_response(f"Failed to execute query or process results: {str(e)}", 500)
 
+
 # getByMunicipality - GET /pois/municipality/<municipality>
 @app.get("/pois/municipality/<string:municipality>")
 def get_by_municipality(municipality):
@@ -165,7 +172,7 @@ def get_by_municipality(municipality):
         """
 
     try:
-        results = query(prepared, bindings={"municipalityName":municipality})
+        results = query(prepared, bindings={"municipalityName": municipality})
 
         resultsJSON = []
         for row in results:
@@ -182,6 +189,7 @@ def get_by_municipality(municipality):
         # Catch any errors from rdflib or the conversion process
         # Using 500 since this would be an internal server error / query failure
         return error_response(f"Failed to execute query or process results: {str(e)}", 500)
+
 
 # getByPosition - POST /pois/position
 @app.post("/pois/position")
@@ -235,6 +243,7 @@ def get_by_position():
         # Using 500 since this would be an internal server error / query failure
         return error_response(f"Failed to execute query or process results: {str(e)}", 500)
 
+
 # getNearest - POST /pois/nearest
 @app.post("/pois/nearest")
 def get_nearest():
@@ -248,20 +257,42 @@ def get_nearest():
     except (TypeError, ValueError):
         return error_response("lat, lon and delta must be numbers")
 
-    def distance(a, b):
-        return sqrt((a[0] - b[0]) ** 2 + (a[1] - b[1]) ** 2)
-
-        # here idk how to do the query, the simple way that i think is to get all POIs and after calculate the distance
-        # and example here:
-        # center = (lat, lon)
-        # matches = [p for p in SAMPLE_POIS if distance((p.get("lat"), p.get("lon")), center) <= delta]
+    if 0 > delta > 1:
+        return error_response("delta must be a positive number, and less than 1 (since it's a degree difference)")
+    else:
+        delta = delta / 1000
 
     prepared = """
-        """
+        
+        
+        SELECT ?id ?title ?description ?municipality ?lat ?long
+        WHERE {
+          ?s umb:id ?id ;
+             umb:titolo_testo ?title ;
+             umb:testo ?description ;
+             geo:lat ?lat ;
+             geo:long ?long .
+        
+          OPTIONAL { ?s dbpedia-owl:municipality ?municipality . }
+          
+          FILTER(LANG(?title) = "en" && LANG(?description) = "en")
+          FILTER(
+            xsd:float(?lat) >= ?minLat && 
+            xsd:float(?lat) <= ?maxLat && 
+            xsd:float(?long) >= ?minLong && 
+            xsd:float(?long) <= ?maxLong
+          )
+          
+        }"""
 
     try:
         # TODO: use bindings to avoid injection
-        results = query(prepared, bindings={})
+        results = query(prepared, bindings={
+            "minLat": Literal(lat - delta, datatype=XSD.float),
+            "maxLat": Literal(lat + delta, datatype=XSD.float),
+            "minLong": Literal(long - delta, datatype=XSD.float),
+            "maxLong": Literal(long + delta, datatype=XSD.float),
+        })
 
         resultsJSON = []
         # TODO: transform results into a json
@@ -272,7 +303,6 @@ def get_nearest():
         # Catch any errors from rdflib or the conversion process
         # Using 500 since this would be an internal server error / query failure
         return error_response(f"Failed to execute query or process results: {str(e)}", 500)
-
 
 
 # getBySubject - GET /pois/subject/<subject>
@@ -293,7 +323,7 @@ def get_by_subject(subject):
 
     try:
         # TODO: use bindings to avoid injection
-        results = query(prepared, bindings={"subjGet":subject})
+        results = query(prepared, bindings={"subjGet": subject})
 
         resultsJSON = []
         for row in results:
@@ -344,6 +374,7 @@ def get_all_subjects():
     except Exception as e:
         return error_response(f"Failed to execute query or process results: {str(e)}", 500)
 
+
 # getByAdvancedSearch - POST /pois/search
 @app.post("/pois/search")
 def get_by_advanced_search():
@@ -357,7 +388,6 @@ def get_by_advanced_search():
     lat = data.get("lat")
     lon = data.get("long") or data.get("lon")
     delta = data.get("delta")
-
 
     # this example is created by AI if we have a json file, take in consideration only to know more or less how the query should work
     # results = SAMPLE_POIS
