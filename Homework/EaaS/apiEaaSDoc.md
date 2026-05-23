@@ -32,11 +32,11 @@
 - *saveAudit(evaluation)*: creates a record of the audit and adds it to the audit trail, and returns the audit_id.
 
 ## POLICIES
-### accesibility_policy
+### accessibility_policy
 - *Decision*: **REVISE**
-- *Trigger*: the POI has no accesibility information in the subject or description.
-- *Required action*: If the user puts that he has accesibility issues, add a warning "Warning: Accesibility information missing." to that specific attraction before sending it to the user.
-- *Risk weight*: ???
+- *Trigger*: the POI has no accessibility information in the subject or description.
+- *Required action*: If the user puts that he has accessibility issues, add a warning "Warning: Accessibility information missing." to that specific attraction before sending it to the user.
+- *Risk weight*: 6
 ---
 
 ### Language policy
