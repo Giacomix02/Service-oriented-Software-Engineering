@@ -243,7 +243,7 @@ def get_nearest():
         return error_response("JSON body required")
     try:
         lat = float(data.get("lat"))
-        lon = float(data.get("lon"))
+        long = float(data.get("long"))
         delta = float(data.get("delta"))
     except (TypeError, ValueError):
         return error_response("lat, lon and delta must be numbers")
@@ -251,10 +251,10 @@ def get_nearest():
     def distance(a, b):
         return sqrt((a[0] - b[0]) ** 2 + (a[1] - b[1]) ** 2)
 
-    # here idk how to do the query, the simple way that i think is to get all POIs and after calculate the distance
-    # and example here:
-    # center = (lat, lon)
-    # matches = [p for p in SAMPLE_POIS if distance((p.get("lat"), p.get("lon")), center) <= delta]
+        # here idk how to do the query, the simple way that i think is to get all POIs and after calculate the distance
+        # and example here:
+        # center = (lat, lon)
+        # matches = [p for p in SAMPLE_POIS if distance((p.get("lat"), p.get("lon")), center) <= delta]
 
     prepared = """
         """
@@ -273,6 +273,8 @@ def get_nearest():
         # Using 500 since this would be an internal server error / query failure
         return error_response(f"Failed to execute query or process results: {str(e)}", 500)
 
+
+
 # getBySubject - GET /pois/subject/<subject>
 @app.get("/pois/subject/<string:subject>")
 def get_by_subject(subject):
@@ -285,7 +287,8 @@ def get_by_subject(subject):
              umb:testo ?description ;
           
           FILTER(LANG(?title) = "en" && LANG(?description) = "en")
-          FILTER(LCASE(STR(?subj)) = LCASE(STR(?subjGet)))
+          # Usa CONTAINS per cercare la sottostringa all'interno del subject
+          FILTER(CONTAINS(LCASE(STR(?subj)), LCASE(STR(?subjGet))))
         }"""
 
     try:
@@ -309,31 +312,36 @@ def get_by_subject(subject):
         # Using 500 since this would be an internal server error / query failure
         return error_response(f"Failed to execute query or process results: {str(e)}", 500)
 
+
 # getAllSubjects - GET /subjects
 @app.get("/subjects")
 def get_all_subjects():
-
-    prepared =  """
+    prepared = """
         SELECT DISTINCT ?subj
         WHERE {
-          ?s dcterms:subject ?subj ;
+          ?s dcterms:subject ?subj .
         }"""
 
     try:
-        # TODO: use bindings to avoid injection
         results = query(prepared, bindings={})
 
-        resultsJSON = []
+        unique_subjects = set()
+
         for row in results:
-            resultsJSON.append({
-                "subject": str(row.subj) if row.subj else None
-            })
+            if row.subj:
+                subj_string = str(row.subj)
+
+                for s in subj_string.split(','):
+                    clean_subj = s.strip()
+
+                    if clean_subj:
+                        unique_subjects.add(clean_subj)
+
+        resultsJSON = [{"subject": subj} for subj in sorted(unique_subjects)]
 
         return success_response(resultsJSON)
 
     except Exception as e:
-        # Catch any errors from rdflib or the conversion process
-        # Using 500 since this would be an internal server error / query failure
         return error_response(f"Failed to execute query or process results: {str(e)}", 500)
 
 # getByAdvancedSearch - POST /pois/search
