@@ -295,7 +295,15 @@ def get_nearest():
         })
 
         resultsJSON = []
-        # TODO: transform results into a json
+        for row in results:
+            resultsJSON.append({
+                "id": str(row.id) if row.id else None,
+                "title": str(row.title) if row.title else None,
+                "description": str(row.description) if row.description else None,
+                "municipality": str(row.municipality) if row.municipality else None,
+                "lat": str(row.lat) if row.lat else None,
+                "long": str(row.long) if row.long else None,
+            })
 
         return success_response(resultsJSON)
 
