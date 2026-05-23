@@ -1,3 +1,7 @@
+# Run Flask API
+>flask --app main run
+
+# API Documentation
 ### getById
 *Method:* **GET**
 
