@@ -155,7 +155,7 @@ The LLM is instructed to infer missing information where possible (e.g. pollen l
 
 ## DaaS API Reference
 
-Full documentation: [`apiDaaSDoc.md`](apiDaaSDoc.md)
+Full documentation: [`apiDaaSDoc.md`](./DaaS/apiDaaSDoc.md)
 
 | Endpoint | Method | Description |
 |---|---|---|
@@ -173,7 +173,7 @@ Full documentation: [`apiDaaSDoc.md`](apiDaaSDoc.md)
 
 ## EaaS API Reference
 
-Full documentation: [`apiEaaSDoc.md`](apiEaaSDoc.md)
+Full documentation: [`apiEaaSDoc.md`](./EaaS/apiEaaSDoc.md)
 
 | Endpoint | Method | Description |
 |---|---|---|
