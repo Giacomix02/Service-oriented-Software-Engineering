@@ -1,3 +1,4 @@
+import json
 import os
 from dotenv import load_dotenv
 from google import genai
@@ -5,6 +6,7 @@ from pydantic import BaseModel, Field
 from typing import Literal
 from auditLogger import logEvent
 
+debug = True
 
 class Env:
     _instance = None

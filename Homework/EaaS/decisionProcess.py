@@ -9,7 +9,7 @@ policies = None  # TODO
 def match_string_decision_to_priority(string: str):
     if string == "REVISE":
         return 1
-    if string == "REJECT": 
+    if string == "REJECT":
         return 2
     if string == "ESCALATE":
         return 3
@@ -85,10 +85,10 @@ def decide(selected_poi: dict,
 
     policies_considered = [pol if policy["policy_id"] == pol["policy_id"] and policy["status"] == "triggered" else None
                            for policy in reply_applied_policies
-                           for k in range(len(policies))
-                           ]
-    highest_priority_policy_considered = {"decision": 0}
-    for policy in policies_considered:
-        highest_priority_policy_considered = policy if match_string_decision_to_priority(policy["decision"]) > match_string_decision_to_priority(highest_priority_policy_considered["decision"]) else highest_priority_policy_considered
+                           for pol in policies]
+    risk_score, triggered_policies = assess_risk(policies_considered, overtourism, accessibility_issue,
+                                                 translate_language, allergy)
 
+    final_decision, risk_level = make_decision(triggered_policies, risk_score)
 
+    return packageDecision(llmReply["audit_id"], final_decision, risk_level, justification, required_actions)
