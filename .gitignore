@@ -5,3 +5,4 @@ attrattori.rdf
 __pycache__
 *.env
 .env
+audit_log.txt

@@ -1,5 +1,5 @@
 from flask import Flask, request, jsonify
-from auditLogger import logEvent, getLog
+from auditLogger import logEvent, getLog, newAudit
 from decisionProcess import decide
 import datetime
 import requests
@@ -22,6 +22,7 @@ def error_response(message, code=400):
 def evaluate():
     data = request.get_json(silent=True)
 
+    newAudit()
     logEvent("Received evaluation request in /api/evaluate with data from user")
 
     if not data:
