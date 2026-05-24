@@ -6,7 +6,7 @@ from pydantic import BaseModel, Field
 from typing import Literal
 from auditLogger import logEvent
 
-debug = True
+debug = False
 
 class Env:
     _instance = None
@@ -27,7 +27,7 @@ class AppliedPolicy(BaseModel):
 
 
 class EaaSDecision(BaseModel):
-    audit_id: str = Field(description="Unique identifier for the audit record. Use the name and information about the Point Of Interest")
+    audit_id: str = Field(description="Unique identifier for the audit record. Use the name and information about the Point Of Interest, write it in english, make it short")
     # decision: Literal["PROCEED", "REVISE", "ESCALATE", "REJECT"] = Field(
     #     description="The final verdict computed by the policy engine."
     # )
@@ -41,9 +41,9 @@ class EaaSDecision(BaseModel):
     applied_policies: list[AppliedPolicy] = Field(
         description="A record of which external policies were evaluated and their status."
     )
-    hard_policy_blocks: list[str] = Field(
-        description="List of policy IDs that triggered a hard stop or rejection."
-    )
+    # hard_policy_blocks: list[str] = Field(
+    #     description="List of policy IDs that triggered a hard stop or rejection."
+    # )
     required_actions: list[str] = Field(
         description="Explicit instructions on what the system or human must do next based on triggered policies."
     )
@@ -53,7 +53,7 @@ promptReasoningOvertourism="If in the POI description you can't find infos about
 promptReasonPollens="If in the POI description you can't find infos about pollens: this can be detected by checking the current month and the historical data of the pollens in that month, or by checking real-time data if available"
 promptReasonAccessibility="If in the POI description you can't find infos about accessibility: this can be detected by checking the presence of accessibility features in the POI description, or by checking real-time data or statica data if available. If you can't reason about the place and other infos and see if you can assume accessibility"
 
-def consultLlm(policies: str,poi:str, visitDate:str) -> dict:
+def consultLlm(policies: str,poi:str, visitDate:str, context:str) -> dict:
     env = Env()
     geminiToken = env.token
 
@@ -61,6 +61,11 @@ def consultLlm(policies: str,poi:str, visitDate:str) -> dict:
         logEvent("API token not found. Please check your .env file.")
         raise ValueError("API token not found. Please check your .env file.")
 
+
+    if context is not None and context != "":
+        userInfos = "The user has provided the following context: " + context + ". "
+    else:
+        userInfos = ""
 
     # 3. Pass the key explicitly to the Client
     client = genai.Client(api_key=geminiToken)
@@ -72,8 +77,8 @@ def consultLlm(policies: str,poi:str, visitDate:str) -> dict:
             return json.load(fp=f)
     else:
         response = client.models.generate_content(
-            model='gemma-4-31b-it',
-            contents=f"""You have to revise a choice of a Point Of Interest based of specific policies. The user want to visit the place at the date:{visitDate}. {promptReasonPollens}.{promptReasonAccessibility}.{promptReasonAccessibility}. Policies to check: {policies}. Infos about the place: {poi}. """,
+            model='gemma-4-31b-it-ss',
+            contents=f"""You have to revise a choice of a Point Of Interest based of specific policies. The user want to visit the place at the date:{visitDate}. {promptReasonPollens}.{promptReasonAccessibility}.{promptReasonAccessibility}.{userInfos}Policies to check: {policies}. Infos about the place: {poi}. """,
             config={
                 'response_mime_type': 'application/json',
                 'response_schema': EaaSDecision,

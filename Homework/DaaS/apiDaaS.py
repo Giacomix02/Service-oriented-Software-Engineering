@@ -409,58 +409,58 @@ def get_all_subjects():
         return error_response(f"Failed to execute query or process results: {str(e)}", 500)
 
 
-# getByAdvancedSearch - POST /pois/search
-@app.post("/pois/search")
-def get_by_advanced_search():
-    data = request.get_json(silent=True) or {}
-    if not data:
-        return error_response("JSON body required")
-
-    subject = data.get("subject")
-    municipality = data.get("municipality")
-    keyword = data.get("keyword")
-    lat = data.get("lat")
-    lon = data.get("long") or data.get("lon")
-    delta = data.get("delta")
-
-    # this example is created by AI if we have a json file, take in consideration only to know more or less how the query should work
-    # results = SAMPLE_POIS
-    #
-    # if subject:
-    #     results = [p for p in results if subject.lower() in (s.lower() for s in p.get("subjects", []))]
-    # if municipality:
-    #     results = [p for p in results if p.get("municipality", "").lower() == municipality.lower()]
-    # if keyword:
-    #     k = keyword.lower()
-    #     results = [p for p in results if k in p.get("name", "").lower() or k in p.get("description", "").lower()]
-    # if lat is not None and lon is not None and delta is not None:
-    #     try:
-    #         lat = float(lat)
-    #         lon = float(lon)
-    #         delta = float(delta)
-    #         def dist(a,b):
-    #             return sqrt((a[0]-b[0])**2 + (a[1]-b[1])**2)
-    #         center = (lat, lon)
-    #         results = [p for p in results if dist((p.get("lat"), p.get("lon")), center) <= delta]
-    #     except (TypeError, ValueError):
-    #         return error_response("lat, long and delta must be numbers if provided")
-
-    prepared = """
-        """
-
-    try:
-        # TODO: use bindings to avoid injection
-        results = query(prepared, bindings={})
-
-        resultsJSON = []
-        # TODO: transform results into a json
-
-        return success_response(resultsJSON)
-
-    except Exception as e:
-        # Catch any errors from rdflib or the conversion process
-        # Using 500 since this would be an internal server error / query failure
-        return error_response(f"Failed to execute query or process results: {str(e)}", 500)
+# # getByAdvancedSearch - POST /pois/search
+# @app.post("/pois/search")
+# def get_by_advanced_search():
+#     data = request.get_json(silent=True) or {}
+#     if not data:
+#         return error_response("JSON body required")
+#
+#     subject = data.get("subject")
+#     municipality = data.get("municipality")
+#     keyword = data.get("keyword")
+#     lat = data.get("lat")
+#     lon = data.get("long") or data.get("lon")
+#     delta = data.get("delta")
+#
+#     # this example is created by AI if we have a json file, take in consideration only to know more or less how the query should work
+#     # results = SAMPLE_POIS
+#     #
+#     # if subject:
+#     #     results = [p for p in results if subject.lower() in (s.lower() for s in p.get("subjects", []))]
+#     # if municipality:
+#     #     results = [p for p in results if p.get("municipality", "").lower() == municipality.lower()]
+#     # if keyword:
+#     #     k = keyword.lower()
+#     #     results = [p for p in results if k in p.get("name", "").lower() or k in p.get("description", "").lower()]
+#     # if lat is not None and lon is not None and delta is not None:
+#     #     try:
+#     #         lat = float(lat)
+#     #         lon = float(lon)
+#     #         delta = float(delta)
+#     #         def dist(a,b):
+#     #             return sqrt((a[0]-b[0])**2 + (a[1]-b[1])**2)
+#     #         center = (lat, lon)
+#     #         results = [p for p in results if dist((p.get("lat"), p.get("lon")), center) <= delta]
+#     #     except (TypeError, ValueError):
+#     #         return error_response("lat, long and delta must be numbers if provided")
+#
+#     prepared = """
+#         """
+#
+#     try:
+#         # TODO: use bindings to avoid injection
+#         results = query(prepared, bindings={})
+#
+#         resultsJSON = []
+#         # TODO: transform results into a json
+#
+#         return success_response(resultsJSON)
+#
+#     except Exception as e:
+#         # Catch any errors from rdflib or the conversion process
+#         # Using 500 since this would be an internal server error / query failure
+#         return error_response(f"Failed to execute query or process results: {str(e)}", 500)
 
 
 if __name__ == "__main__":

@@ -36,7 +36,7 @@ def evaluate():
         allergies = bool(data.get("allergies"))
         pollution = bool(data.get("pollution"))
         context = str(data.get("context"))
-        visitDate = str(data.get("date"))
+        visitDate = str(data.get("visitDate"))
     except (ValueError, TypeError) as e:
         return error_response(f"Invalid input: {str(e)}")
 
@@ -50,13 +50,13 @@ def evaluate():
         poiData = daasResponse.json()
     except requests.RequestException as e:
         logEvent(f"Error calling DaaS for poiId {poiId}: {str(e)}")
-        return error_response(f"Error calling DaaS: {str(e)}", code=500)
+        return error_response(f"Error calling DaaS: {str(e)}", 500)
 
     logEvent("Received response from DaaS for poiId: " + str(poiId))
 
-    finalResponse = decide(selected_poi=poiData, accessibility_issue=accessibility, translate_language=language, overtourism=pollution, allergy=allergies, visitDate=visitDate)
-
-    logEvent("Evaluation completed successfully for poiId: " + str(poiId))
+    finalResponse = decide(selected_poi=poiData, accessibility_issue=accessibility, translate_language=language, overtourism=pollution, allergy=allergies, visitDate=visitDate, context=context)
+    if finalResponse["error"] is not None:
+        return error_response(finalResponse["error"], 500)
 
 
     audit = getLog()

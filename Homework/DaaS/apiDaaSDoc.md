@@ -190,7 +190,7 @@
 
 ---
 
-### getByAdvancedSearch
+### getByAdvancedSearch (NOT IMPLEMENTED)
 
 >/pois/search
 

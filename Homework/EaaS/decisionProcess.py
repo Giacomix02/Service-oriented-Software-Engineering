@@ -84,7 +84,7 @@ def filterPolicies(policies:list, accessibility_issue: bool, translate_language:
 
 def decide(selected_poi: dict,
            accessibility_issue: bool, translate_language: bool, overtourism: bool, allergy: bool,
-           visitDate: str) -> dict:
+           visitDate: str, context: str = None) -> dict:
     try:
         logEvent("Loading policies from policies.json")
         with open("policies.json") as f:
@@ -94,8 +94,16 @@ def decide(selected_poi: dict,
         raise e
     logEvent("Loaded policies from policies.json successfully")
 
+    policiesFiltered = filterPolicies(policies, accessibility_issue, translate_language, overtourism, allergy)
+
     logEvent("Consulting LLM to evaluate policies for the selected Point Of Interest")
-    llmReply:dict = consultLlm(policies=str(policies), poi=str(selected_poi), visitDate=visitDate)
+    try:
+        llmReply: dict = consultLlm(policies=str(policiesFiltered), poi=str(selected_poi), visitDate=visitDate, context=context)
+    except (google.genai.errors.ClientError, google.genai.errors.ServerError)  as e:
+        logEvent("Google Gemini servers unreachable: " + e.response.text)
+        return {"error": e.response.text}
+    
+
     justification = llmReply["justification"]
     required_actions = llmReply["required_actions"]
     logEvent("Received response from LLM for policy evaluation successfully")
