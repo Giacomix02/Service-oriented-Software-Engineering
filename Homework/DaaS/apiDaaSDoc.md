@@ -1,5 +1,5 @@
 # Run Flask API
->flask --app apiDaaS run
+> python apiDaaS.py
 
 # API Documentation
 

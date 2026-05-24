@@ -1,4 +1,8 @@
+## RUN FLASK APP
+> python apiEaaS.py
+
 ## ENDPOINT
+
 ### evaluate
 
 >/evaluate
@@ -8,22 +12,19 @@
 *Param Format:* **JSON**
 
 *Params*:
-- **userId**: int
 - **poiId**: int
-- **language**: string (preferred language of the user: it, en)
+- **accessibility_issues**: boolean
+- **language**: boolean (if the user want it in english or not)
 - **allergy**: boolean
+- **pollution**: boolean
 - **context**: str (optional: origin of the recommendation, nearest)
 
 *Description:* receives a recommendation request, fetches the data from the DaaS, applies all active policies, computes the risk level and returns the decision with justification.
 
 *Output:*
 - JSON of
-  - audit_id
+  - audit
   - decision
-  - risk_level
-  - justification
-  - applied_policies
-  - required_actions
   - timestamp
 
 ## INTERNAL FUNCTIONS
@@ -45,7 +46,7 @@
 ### Language policy
 - *Decision*: **REVISE**
 - *Trigger*: Content is only in Italian, but user prefers English.
-- *Required action*: Translate the content to the desired language (EN) if the user has a language preference and the content is only in Italian.
+- *Required action*: Translate the content to the desired language (EN) if the content is only in Italian.
 - *Risk weight*: 3
 ---
 
@@ -53,7 +54,7 @@
 - *Decision*: **REJECT** (for the especific recommendation) or **ESCALATE** (if the whole municple is collapsed)
 - *Trigger*: High concentration of people causing pollution/overtourism. This can be detected by checking the current month and the historical data of the number of visitors in that month, or by checking real-time data if available.
 - *Required action*: Reject the recommendation of an attraction or municiple if there are too many people in it, causing pollution and overtourism.
-- *Risk weight*: 4
+- *Risk weight*: 5
 ---
 
 ### Pollen/ allergies policy
@@ -73,11 +74,12 @@
   - accesibility issues
   - language preference
   - allergy information
+- compute the necessary policies to apply based on the user
 - Send request to LLM to do the evaluation
-- LLM calls internal functions to:
-  - load policies
-  - fetch data from DaaS
-  - assess risk
-  - make decision
-  - build justification
-  - save audit
+  - LLM calls internal functions to:
+    - assess risk
+    - make decision
+    - build justification
+- fetch llm reply
+- save the audit
+- return the decision and justification to the user

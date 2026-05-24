@@ -3,6 +3,7 @@ from dotenv import load_dotenv
 from google import genai
 from pydantic import BaseModel, Field
 from typing import Literal
+from auditLogger import logEvent
 
 
 class Env:
@@ -18,8 +19,10 @@ class Env:
 
 
 class AppliedPolicy(BaseModel):
-    policy_id: str = Field(description="The unique identifier of the evaluated policy (e.g., 'pollen_allergies_policy_v1').")
+    policy_id: str = Field(description="The unique identifier of the evaluated policy")
+    reason: str = Field(description="A brief explanation of why the policy was triggered or passed based on the input data.")
     status: Literal["triggered", "passed"] = Field(description="The evaluation result of the policy.")
+
 
 class EaaSDecision(BaseModel):
     audit_id: str = Field(description="Unique identifier for the audit record. Use the name and information about the Point Of Interest")
@@ -44,25 +47,39 @@ class EaaSDecision(BaseModel):
     )
 
 
-def consultLlm(prompt: str, date:str):
+promptReasoningOvertourism="If in the POI description you can't find infos about overturism and polluttion: this can be detected by checking the current month and the historical data of the number of visitors in that month, or by checking real-time data if available"
+promptReasonPollens="If in the POI description you can't find infos about pollens: this can be detected by checking the current month and the historical data of the pollens in that month, or by checking real-time data if available"
+promptReasonAccessibility="If in the POI description you can't find infos about accessibility: this can be detected by checking the presence of accessibility features in the POI description, or by checking real-time data or statica data if available. If you can't reason about the place and other infos and see if you can assume accessibility"
+
+def consultLlm(policies: str,poi:str, visitDate:str) -> dict:
     env = Env()
     geminiToken = env.token
 
     if not geminiToken:
+        logEvent("API token not found. Please check your .env file.")
         raise ValueError("API token not found. Please check your .env file.")
 
-    client = genai.Client()
+
     # 3. Pass the key explicitly to the Client
     client = genai.Client(api_key=geminiToken)
 
-    response = client.models.generate_content(
-        model='gemma-4-31b-it',
-        contents=f"""You have to revise a choice of a Point Of Interest based of specific policies. The user want to visit the place at the date:{date}. Main informations: {prompt}""",
-        config={
-            'response_mime_type': 'application/json',
-            'response_schema': EaaSDecision,
-        },
-    )
+    logEvent("Consulting LLM with prompt")
 
-    return response.text
+    if debug:
+        with open('./geminiresponse.json') as f:
+            return json.load(fp=f)
+    else:
+        response = client.models.generate_content(
+            model='gemma-4-31b-it',
+            contents=f"""You have to revise a choice of a Point Of Interest based of specific policies. The user want to visit the place at the date:{visitDate}. {promptReasonPollens}.{promptReasonAccessibility}.{promptReasonAccessibility}. Policies to check: {policies}. Infos about the place: {poi}. """,
+            config={
+                'response_mime_type': 'application/json',
+                'response_schema': EaaSDecision,
+            },
+        )
+
+    logEvent("LLM response received")
+    with open('./geminiresponse.json', 'w') as f:
+        json.dump(json.loads(response.text), f)
+    return json.loads(response.text)
 
