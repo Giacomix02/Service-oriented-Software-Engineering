@@ -1,9 +1,11 @@
 import json
+
+import google.genai.errors
+
 from llmCall import consultLlm, AppliedPolicy
 from auditLogger import logEvent
 
 policies = None  # TODO
-
 
 
 def match_string_decision_to_priority(string: str):
@@ -16,17 +18,17 @@ def match_string_decision_to_priority(string: str):
     return 0
 
 
-def assess_risk(policies, overtourism: bool, accessibility_issue: bool, translate_language: bool, allergy: bool) -> (
+def assess_risk(policies) -> (
         int, list):
     risk_score = 0
     logEvent("calculating risk score based on triggered policies and their weights")
     triggered_policies = []
     for policy in policies:
 
-        if (allergy and policy["policy_id"] == "pollen_allergies_policy" or
-                translate_language and policy["policy_id"] == "language_policy" or
-                accessibility_issue and policy["policy_id"] == "accessibility_policy" or
-                overtourism and policy["policy_id"] == "overtourism_policy"):
+        if (policy["policy_id"] == "pollen_allergies_policy" or
+                policy["policy_id"] == "language_policy" or
+                policy["policy_id"] == "accessibility_policy" or
+                policy["policy_id"] == "overtourism_policy"):
             risk_score += int(policy["risk_weight"])
             triggered_policies.append(policy)
             logEvent("policy triggered:" + str(policy["policy_id"]) + " with risk weight " + str(policy["risk_weight"]))
@@ -59,8 +61,25 @@ def make_decision(policies: dict, risk_score: int) -> (str, str):
 
 
 def packageDecision(audit_id, final_decision, risk_level, justification, required_actions) -> dict:
-    return {"audit_id": audit_id, "final_decision": final_decision, "risk_level": risk_level, "justification": justification,
-                       "required_action": required_actions}
+    return {"audit_id": audit_id, "final_decision": final_decision, "risk_level": risk_level,
+            "justification": justification,
+            "required_action": required_actions}
+
+
+def filterPolicies(policies:list, accessibility_issue: bool, translate_language: bool, overtourism: bool, allergy: bool) -> list:
+    filtered_policies = []
+    logEvent("Filtering policies based on user input and Point Of Interest characteristics")
+    for policy in policies:
+        if policy["policy_id"] == "pollen_allergies_policy" and allergy:
+            filtered_policies.append(policy)
+        if policy["policy_id"] == "language_policy" and translate_language:
+            filtered_policies.append(policy)
+        if policy["policy_id"] == "accessibility_policy" and accessibility_issue:
+            filtered_policies.append(policy)
+        if policy["policy_id"] == "overtourism_policy" and overtourism:
+            filtered_policies.append(policy)
+    logEvent("Filtered policies based on user input and Point Of Interest characteristics successfully, " + str(len(filtered_policies)) + " policies selected for evaluation")
+    return filtered_policies
 
 
 def decide(selected_poi: dict,
@@ -83,11 +102,20 @@ def decide(selected_poi: dict,
 
     reply_applied_policies: list[AppliedPolicy] = llmReply["applied_policies"]
 
-    policies_considered = [pol if policy["policy_id"] == pol["policy_id"] and policy["status"] == "triggered" else None
-                           for policy in reply_applied_policies
-                           for pol in policies]
-    risk_score, triggered_policies = assess_risk(policies_considered, overtourism, accessibility_issue,
-                                                 translate_language, allergy)
+    # policies_considered = [pol if policy["policy_id"] == pol["policy_id"] and policy["status"] == "triggered"
+    #                        for policy in reply_applied_policies
+    #                        for pol in policies]
+    policies_considered = []
+    for policy in reply_applied_policies:
+        if policy["status"] == "triggered":
+            sel_pol = None
+            for pol in policies:
+                if pol["policy_id"] == policy["policy_id"]:
+                    sel_pol = pol
+            if sel_pol is not None:
+                policies_considered.append(sel_pol)
+
+    risk_score, triggered_policies = assess_risk(policies_considered)
 
     final_decision, risk_level = make_decision(triggered_policies, risk_score)
 
