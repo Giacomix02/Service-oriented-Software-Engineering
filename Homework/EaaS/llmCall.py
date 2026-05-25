@@ -6,7 +6,7 @@ from pydantic import BaseModel, Field
 from typing import Literal
 from auditLogger import logEvent
 
-debug = False
+debug = True
 
 class Env:
     _instance = None

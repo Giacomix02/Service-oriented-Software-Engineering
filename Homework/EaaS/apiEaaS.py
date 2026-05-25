@@ -1,4 +1,5 @@
 from flask import Flask, request, jsonify
+from flask_cors import CORS
 from auditLogger import logEvent, getLog, newAudit
 from decisionProcess import decide
 import datetime
@@ -8,6 +9,7 @@ import requests
 ipDaaS = "http://127.0.0.1:5000"
 
 app = Flask(__name__)
+CORS(app)
 
 # Helpers
 def success_response(data):

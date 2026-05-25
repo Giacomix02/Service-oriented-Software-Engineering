@@ -1,11 +1,12 @@
 from flask import Flask, request, jsonify
+from flask_cors import CORS
 from math import sqrt
 from query import query
 from rdflib import Literal, Namespace
 from rdflib.namespace import XSD
 
 app = Flask(__name__)
-
+CORS(app)
 
 @app.route("/")
 def hello_world():
