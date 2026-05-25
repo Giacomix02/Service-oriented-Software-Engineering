@@ -6,7 +6,7 @@ from pydantic import BaseModel, Field
 from typing import Literal
 from auditLogger import logEvent
 
-debug = True
+debug = False
 
 class Env:
     _instance = None
@@ -77,7 +77,7 @@ def consultLlm(policies: str,poi:str, visitDate:str, context:str) -> dict:
             return json.load(fp=f)
     else:
         response = client.models.generate_content(
-            model='gemma-4-31b-it-ss',
+            model='gemma-4-31b-it',
             contents=f"""You have to revise a choice of a Point Of Interest based of specific policies. The user want to visit the place at the date:{visitDate}. {promptReasonPollens}.{promptReasonAccessibility}.{promptReasonAccessibility}.{userInfos}Policies to check: {policies}. Infos about the place: {poi}. """,
             config={
                 'response_mime_type': 'application/json',

@@ -57,8 +57,9 @@ def evaluate():
     logEvent("Received response from DaaS for poiId: " + str(poiId))
 
     finalResponse = decide(selected_poi=poiData, accessibility_issue=accessibility, translate_language=language, overtourism=pollution, allergy=allergies, visitDate=visitDate, context=context)
-    if finalResponse["error"] is not None:
-        return error_response(finalResponse["error"], 500)
+    # if finalResponse["error"] is not None:
+    #     return error_response(finalResponse["error"], 500)
+    print(finalResponse)
 
 
     audit = getLog()
