@@ -53,7 +53,7 @@ promptReasoningOvertourism="If in the POI description you can't find infos about
 promptReasonPollens="If in the POI description you can't find infos about pollens: this can be detected by checking the current month and the historical data of the pollens in that month, or by checking real-time data if available"
 promptReasonAccessibility="If in the POI description you can't find infos about accessibility: this can be detected by checking the presence of accessibility features in the POI description, or by checking real-time data or statica data if available. If you can't reason about the place and other infos and see if you can assume accessibility"
 
-def consultLlm(policies: str,poi:str, visitDate:str, context:str) -> dict:
+def consultLlm(policies: str, poi: str, visitDate: str, context: str) -> dict:
     env = Env()
     geminiToken = env.token
 
@@ -61,14 +61,14 @@ def consultLlm(policies: str,poi:str, visitDate:str, context:str) -> dict:
         logEvent("API token not found. Please check your .env file.")
         raise ValueError("API token not found. Please check your .env file.")
 
-
     if context is not None and context != "":
         userInfos = "The user has provided the following context: " + context + ". "
     else:
         userInfos = ""
 
-    # 3. Pass the key explicitly to the Client
     client = genai.Client(api_key=geminiToken)
+
+    print(policies)
 
     logEvent("Consulting LLM with prompt")
 
@@ -86,7 +86,24 @@ def consultLlm(policies: str,poi:str, visitDate:str, context:str) -> dict:
         )
 
     logEvent("LLM response received")
-    with open('./geminiresponse.json', 'w') as f:
-        json.dump(json.loads(response.text), f)
-    return json.loads(response.text)
 
+    raw_text = getattr(response, "text", None)
+    if raw_text:
+        try:
+            parsed = json.loads(raw_text)
+        except json.JSONDecodeError:
+            # Fallback: try to extract the first JSON object from the response text
+            start = raw_text.find("{")
+            end = raw_text.rfind("}")
+            if start != -1 and end != -1 and end > start:
+                parsed = json.loads(raw_text[start:end + 1])
+            else:
+                raise
+    else:
+        # Fallback to the SDK structured output if available
+        parsed = response.parsed.model_dump() if getattr(response, "parsed", None) else {}
+
+    with open('./geminiresponse.json', 'w') as f:
+        json.dump(parsed, f)
+
+    return parsed

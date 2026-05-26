@@ -4,6 +4,7 @@ import google.genai.errors
 
 from llmCall import consultLlm, AppliedPolicy
 from auditLogger import logEvent
+from auditLogger import logEvent
 
 policies = None  # TODO
 
@@ -56,7 +57,7 @@ def make_decision(policies: dict, risk_score: int) -> (str, str):
 
     if any([policy["decision"] == "REJECT" for policy in policies]):
         final_decision = "REJECT"
-    logEvent("Decision is to" + final_decision)
+    logEvent("Decision is to " + final_decision)
     return final_decision, risk_level
 
 
@@ -67,16 +68,23 @@ def packageDecision(audit_id, final_decision, risk_level, justification, require
 
 
 def filterPolicies(policies:list, accessibility_issue: bool, translate_language: bool, overtourism: bool, allergy: bool) -> list:
+
+    logEvent("Filtering policies based on user input and Point Of Interest characteristics...")
+    logEvent("the user requested: Accessibility issue:" + str(accessibility_issue) + " Translate language:" + str(translate_language) + " Overtourism:" + str(overtourism) + " Allergy:" + str(allergy))
     filtered_policies = []
     logEvent("Filtering policies based on user input and Point Of Interest characteristics")
     for policy in policies:
         if policy["policy_id"] == "pollen_allergies_policy" and allergy:
+            logEvent("Allergy policy added")
             filtered_policies.append(policy)
         if policy["policy_id"] == "language_policy" and translate_language:
+            logEvent("Language policy added")
             filtered_policies.append(policy)
         if policy["policy_id"] == "accessibility_policy" and accessibility_issue:
+            logEvent("Accessibility policy added")
             filtered_policies.append(policy)
-        if policy["policy_id"] == "overtourism_policy" and overtourism:
+        if policy["policy_id"] == "overtourism_pollution_policy" and overtourism:
+            logEvent("Overtourism policy added")
             filtered_policies.append(policy)
     logEvent("Filtered policies based on user input and Point Of Interest characteristics successfully, " + str(len(filtered_policies)) + " policies selected for evaluation")
     return filtered_policies

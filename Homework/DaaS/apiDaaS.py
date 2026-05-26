@@ -8,6 +8,7 @@ from rdflib.namespace import XSD
 app = Flask(__name__)
 CORS(app)
 
+
 @app.route("/")
 def hello_world():
     return "<p>Hello, World! I'm working</p>"
@@ -37,10 +38,11 @@ def get_all():
              geo:lat ?lat ;
              geo:long ?long .
         
-          OPTIONAL { ?s umb:comment ?comment . }
+          OPTIONAL { ?s rdfs:comment ?comment . }
           OPTIONAL { ?s umb:descrizione_sintetica ?short_description . }
           OPTIONAL { ?s umb:immagine_copertina ?image . }
           OPTIONAL { ?s dbpedia-owl:municipality ?municipality . }
+            FILTER(LANG(?comment) = "en")
           
           FILTER(LANG(?title) = "en" && LANG(?description) = "en")
         }"""
@@ -77,13 +79,15 @@ def get_all():
 def get_all_basic():
     # Only vital infos (id, name, municipality)
     prepared = """
-        SELECT ?id ?title ?municipality
+        SELECT ?id ?title ?municipality ?comment
         WHERE {
             ?s umb:id ?id ;
             umb:titolo_testo ?title ;
-
+            
+            OPTIONAL { ?s rdfs:comment ?comment . }
             OPTIONAL { ?s dbpedia-owl:municipality ?municipality . }
-
+            
+            FILTER(LANG(?comment) = "en")
             FILTER(LANG(?title) = "en")
         }
         """
@@ -98,6 +102,7 @@ def get_all_basic():
                 "id": str(row.id) if row.id else None,
                 "title": str(row.title) if row.title else None,
                 "municipality": str(row.municipality) if row.municipality else None,
+                "comment": str(row.comment) if getattr(row, "comment", None) else None
             })
 
         return success_response(resultsJSON)
@@ -120,10 +125,12 @@ def get_by_id(poi_id):
              geo:lat ?lat ;
              geo:long ?long .
         
-          OPTIONAL { ?s umb:comment ?comment . }
+          OPTIONAL { ?s rdfs:comment ?comment . }
           OPTIONAL { ?s umb:descrizione_sintetica ?short_description . }
           OPTIONAL { ?s umb:immagine_copertina ?image . }
           OPTIONAL { ?s dbpedia-owl:municipality ?municipality . }
+          
+FILTER(LANG(?comment) = "en")
           
           FILTER(LANG(?title) = "en" && LANG(?description) = "en")
           FILTER(STR(?id) = STR(?idGet))
@@ -159,15 +166,18 @@ def get_by_id(poi_id):
 @app.get("/pois/municipality/<string:municipality>")
 def get_by_municipality(municipality):
     prepared = """
-        SELECT ?id ?title ?description
+        SELECT ?id ?title ?description ?comment
         WHERE {
           ?s dbpedia-owl:municipality ?m ;
              umb:id ?id ;
              umb:titolo_testo ?title ;
              umb:descrizione_sintetica ?description .
+             
+            OPTIONAL { ?s rdfs:comment ?comment . }
+            
 
           FILTER(LANG(?title) = "en")
-          
+          FILTER(LANG(?comment) = "en") 
           FILTER(STR(?m) = STR(?municipalityName))
         }
         """
@@ -181,7 +191,8 @@ def get_by_municipality(municipality):
                 # Convert rdflib types (Literal, URIRef) to standard Python strings
                 "id": str(row.id) if row.id else None,
                 "title": str(row.title) if row.title else None,
-                "description": str(row.description) if row.description else None
+                "description": str(row.description) if row.description else None,
+                "comment": str(row.comment) if getattr(row, "comment", None) else None
             })
 
         return success_response(resultsJSON)
@@ -217,7 +228,6 @@ def get_municipalities():
         return error_response(f"Failed to execute query or process results: {str(e)}", 500)
 
 
-
 # getByPosition - POST /pois/position
 @app.post("/pois/position")
 def get_by_position():
@@ -231,7 +241,7 @@ def get_by_position():
         return error_response("lat and lon must be provided as numbers")
 
     prepared = """
-        SELECT ?id ?title ?description ?municipality ?lat ?long
+        SELECT ?id ?title ?description ?municipality ?lat ?long ?comment
         WHERE {
           ?s umb:id ?id ;
              umb:titolo_testo ?title ;
@@ -239,8 +249,10 @@ def get_by_position():
              geo:lat ?lat ;
              geo:long ?long .
         
+          OPTIONAL { ?s rdfs:comment ?comment . }
           OPTIONAL { ?s dbpedia-owl:municipality ?municipality . }
           
+          FILTER(LANG(?comment) = "en")
           FILTER(LANG(?title) = "en" && LANG(?description) = "en")
           FILTER(STR(?lat) = STR(?latParam) && STR(?long) = STR(?longParam))
         }"""
@@ -261,6 +273,7 @@ def get_by_position():
                 "municipality": str(row.municipality) if row.municipality else None,
                 "lat": str(row.lat) if row.lat else None,
                 "long": str(row.long) if row.long else None,
+                "comment": str(row.comment) if getattr(row, "comment", None) else None
             })
 
         return success_response(resultsJSON)
@@ -292,7 +305,7 @@ def get_nearest():
     prepared = """
         
         
-        SELECT ?id ?title ?description ?municipality ?lat ?long
+        SELECT ?id ?title ?description ?municipality ?lat ?long ?comment
         WHERE {
           ?s umb:id ?id ;
              umb:titolo_testo ?title ;
@@ -301,7 +314,9 @@ def get_nearest():
              geo:long ?long .
         
           OPTIONAL { ?s dbpedia-owl:municipality ?municipality . }
+          OPTIONAL { ?s rdfs:comment ?comment . }
           
+            FILTER(LANG(?comment) = "en")
           FILTER(LANG(?title) = "en" && LANG(?description) = "en")
           FILTER(
             xsd:float(?lat) >= ?minLat && 
@@ -330,6 +345,7 @@ def get_nearest():
                 "municipality": str(row.municipality) if row.municipality else None,
                 "lat": str(row.lat) if row.lat else None,
                 "long": str(row.long) if row.long else None,
+                "comment": str(row.comment) if getattr(row, "comment", None) else None
             })
 
         return success_response(resultsJSON)
@@ -344,15 +360,18 @@ def get_nearest():
 @app.get("/pois/subject/<string:subject>")
 def get_by_subject(subject):
     prepared = """
-        SELECT ?id ?title ?description ?subj
+        SELECT ?id ?title ?description ?subj ?comment
         WHERE {
           ?s dcterms:subject ?subj ;
              umb:id ?id ;
              umb:titolo_testo ?title ;
              umb:testo ?description ;
-          
+             
+            OPTIONAL { ?s rdfs:comment ?comment . }
+            
+          FILTER(LANG(?comment) = "en")
           FILTER(LANG(?title) = "en" && LANG(?description) = "en")
-          # Usa CONTAINS per cercare la sottostringa all'interno del subject
+          
           FILTER(CONTAINS(LCASE(STR(?subj)), LCASE(STR(?subjGet))))
         }"""
 
@@ -367,7 +386,8 @@ def get_by_subject(subject):
                 "id": str(row.id) if row.id else None,
                 "title": str(row.title) if row.title else None,
                 "description": str(row.description) if row.description else None,
-                "subject": str(row.subj) if row.subj else None
+                "subject": str(row.subj) if row.subj else None,
+                "comment": str(row.comment) if getattr(row, "comment", None) else None
             })
 
         return success_response(resultsJSON)
@@ -403,6 +423,59 @@ def get_all_subjects():
                         unique_subjects.add(clean_subj)
 
         resultsJSON = [{"subject": subj} for subj in sorted(unique_subjects)]
+
+        return success_response(resultsJSON)
+
+    except Exception as e:
+        return error_response (f"Failed to execute query or process results: {str(e)}", 500)
+
+
+# getByKeyword - GET /pois/keyword/<keyword>
+@app.get("/pois/keyword/<string:keyword>")
+def get_by_keyword(keyword):
+    prepared = """
+        SELECT ?id ?title ?description ?comment ?short_description ?municipality ?lat ?long ?image
+        WHERE {
+          ?s umb:id ?id ;
+             umb:titolo_testo ?title ;
+             umb:testo ?description ;
+             geo:lat ?lat ;
+             geo:long ?long .
+        
+          OPTIONAL { ?s rdfs:comment ?comment . }
+          OPTIONAL { ?s umb:descrizione_sintetica ?short_description . }
+          OPTIONAL { ?s umb:immagine_copertina ?image . }
+          OPTIONAL { ?s dbpedia-owl:municipality ?municipality . }
+          OPTIONAL { ?s rdfs:label ?label . }
+          
+          FILTER(LANG(?comment) = "en")
+          FILTER(LANG(?title) = "en" && LANG(?description) = "en")
+          FILTER(
+            CONTAINS(LCASE(STR(?title)), LCASE(STR(?keywordParam))) ||
+            CONTAINS(LCASE(STR(?description)), LCASE(STR(?keywordParam))) ||
+            CONTAINS(LCASE(STR(?short_description)), LCASE(STR(?keywordParam))) ||
+            CONTAINS(LCASE(STR(?comment)), LCASE(STR(?keywordParam))) ||
+            CONTAINS(LCASE(STR(?label)), LCASE(STR(?keywordParam)))
+          )
+        }
+        LIMIT 100"""
+
+    try:
+        results = query(prepared, bindings={"keywordParam": keyword})
+
+        resultsJSON = []
+        for row in results:
+            resultsJSON.append({
+                "id": str(row.id) if row.id else None,
+                "title": str(row.title) if row.title else None,
+                "description": str(row.description) if row.description else None,
+                "comment": str(row.comment) if row.comment else None,
+                "short_description": str(row.short_description) if row.short_description else None,
+                "municipality": str(row.municipality) if row.municipality else None,
+                "lat": str(row.lat) if row.lat else None,
+                "long": str(row.long) if row.long else None,
+                "image": str(row.image) if row.image else None
+            })
 
         return success_response(resultsJSON)
 
@@ -465,4 +538,4 @@ def get_all_subjects():
 
 
 if __name__ == "__main__":
-    app.run(host="127.0.0.1",port=5000,debug=True)
+    app.run(host="127.0.0.1", port=5000, debug=True)

@@ -42,7 +42,6 @@ def evaluate():
     except (ValueError, TypeError) as e:
         return error_response(f"Invalid input: {str(e)}")
 
-
     logEvent("Validated input parameters for poiId: " + str(poiId))
     logEvent("Calling DaaS to get information about the Point Of Interest with id: " + str(poiId))
 
