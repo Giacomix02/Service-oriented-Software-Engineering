@@ -32,7 +32,7 @@
 ## Architecture
 
 ```
-User Request ──── filter and requeste POIs ────────────┐
+User Request ──── filter and request POIs ─────────────┐
      │                                                 │
      ▼                                                 ▼
 [EaaS API :5001]  ──── fetches POI data ────▶  [DaaS API :5000]
