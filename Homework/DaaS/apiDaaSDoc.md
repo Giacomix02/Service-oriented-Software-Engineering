@@ -45,6 +45,7 @@
   - id
   - title
   - municipality
+  - comment
 
 ---
 
@@ -90,6 +91,7 @@
   - id
   - title
   - description
+  - comment
 
 ---
 
@@ -130,6 +132,7 @@
   - lat
   - long
   - municipality
+  - comment
 
 ---
 
@@ -171,6 +174,7 @@
   - title
   - description
   - subject
+  - comment
 
 ---
 
@@ -187,6 +191,33 @@
 *Output:*
 - array of
   - subject
+
+---
+
+### getByKeyword
+
+>/pois/keyword/<string:keyword>
+
+*Method:* **GET**
+
+*Param Format:* **URL Param**
+
+*Params*:
+- **keyword**: string
+
+*Description:* extract all POIs that match the given keyword. The search is performed across all text fields: title, description, short_description, comment, and label (case-insensitive).
+
+*Output:*
+- array of
+  - id
+  - title
+  - description
+  - comment
+  - short_description
+  - municipality
+  - lat
+  - long
+  - image
 
 ---
 

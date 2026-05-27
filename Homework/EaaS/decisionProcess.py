@@ -4,6 +4,9 @@ import google.genai.errors
 
 from llmCall import consultLlm, AppliedPolicy
 from auditLogger import logEvent
+from auditLogger import logEvent
+
+from pathlib import Path # Import Path from pathlib
 
 policies = None  # TODO
 
@@ -46,7 +49,7 @@ def make_decision(policies: dict, risk_score: int) -> (str, str):
 
     if any([policy["decision"] == "REJECT" for policy in policies]):
         final_decision = "REJECT"
-    logEvent("Decision is to" + final_decision)
+    logEvent("Decision is to " + final_decision)
     return final_decision, risk_level
 
 
@@ -57,16 +60,23 @@ def packageDecision(audit_id, final_decision, risk_level, justification, require
 
 
 def filterPolicies(policies:list, accessibility_issue: bool, translate_language: bool, overtourism: bool, allergy: bool) -> list:
+
+    logEvent("Filtering policies based on user input and Point Of Interest characteristics...")
+    logEvent("the user requested: Accessibility issue:" + str(accessibility_issue) + " Translate language:" + str(translate_language) + " Overtourism:" + str(overtourism) + " Allergy:" + str(allergy))
     filtered_policies = []
     logEvent("Filtering policies based on user input and Point Of Interest characteristics")
     for policy in policies:
         if policy["policy_id"] == "pollen_allergies_policy" and allergy:
+            logEvent("Allergy policy added")
             filtered_policies.append(policy)
         if policy["policy_id"] == "language_policy" and translate_language:
+            logEvent("Language policy added")
             filtered_policies.append(policy)
         if policy["policy_id"] == "accessibility_policy" and accessibility_issue:
+            logEvent("Accessibility policy added")
             filtered_policies.append(policy)
-        if policy["policy_id"] == "overtourism_policy" and overtourism:
+        if policy["policy_id"] == "overtourism_pollution_policy" and overtourism:
+            logEvent("Overtourism policy added")
             filtered_policies.append(policy)
     logEvent("Filtered policies based on user input and Point Of Interest characteristics successfully, " + str(len(filtered_policies)) + " policies selected for evaluation")
     return filtered_policies
@@ -77,11 +87,24 @@ def decide(selected_poi: dict,
            visitDate: str, context: str = None) -> dict:
     try:
         logEvent("Loading policies from policies.json")
-        with open("policies.json") as f:
+        
+        # --- MODIFICATION START ---
+        # Determine the directory of the current script
+        script_dir = Path(__file__).resolve().parent
+        # Construct the full path to policies.json
+        policies_path = script_dir / "policies.json"
+        
+        with open(policies_path, 'r') as f:
             policies: list = json.load(f)
+        # --- MODIFICATION END ---
+        
+    except FileNotFoundError:
+        logEvent("Error: policies.json not found.")
+        raise FileNotFoundError("policies.json not found in the script directory.")
     except Exception as e:
         logEvent("Error loading policies from policies.json: " + str(e))
         raise e
+        
     logEvent("Loaded policies from policies.json successfully")
 
     policiesFiltered = filterPolicies(policies, accessibility_issue, translate_language, overtourism, allergy)
@@ -92,7 +115,6 @@ def decide(selected_poi: dict,
     except (google.genai.errors.ClientError, google.genai.errors.ServerError)  as e:
         logEvent("Google Gemini servers unreachable: " + e.response.text)
         return {"error": e.response.text}
-    
 
     justification = llmReply["justification"]
     required_actions = llmReply["required_actions"]

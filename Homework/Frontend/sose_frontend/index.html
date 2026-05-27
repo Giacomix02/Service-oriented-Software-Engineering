@@ -1,13 +1,180 @@
 <!doctype html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>sose_frontend</title>
-  </head>
-  <body>
-    <div id="app"></div>
-    <script type="module" src="/src/main.js"></script>
-  </body>
+
+<head>
+    <meta charset="UTF-8"/>
+    <link rel="icon" type="image/png" href="/mountain.png"/>
+    <link rel="stylesheet" href="src/style.css" type="text/css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Attraction recommender</title>
+</head>
+
+<body>
+<header>
+    <h1>Attraction recommender</h1>
+    <span>- Points of interest</span>
+</header>
+
+<div class="layout">
+    <!-- Left panel -->
+    <div class="left-panel">
+
+        <!-- Find -->
+        <p class="panel-label">01 · Find by:</p>
+        <div class="search-tabs">
+            <button class="tab-btn active" data-tab="keyword">Keyword</button>
+            <button class="tab-btn" data-tab="filters">Filters</button>
+            <button class="tab-btn" data-tab="geo">Geo</button>
+        </div>
+
+        <div class="search-panel active" id="panel-keyword">
+            <input id="input-keyword" type="text" placeholder="Search by keyword">
+        </div>
+
+        <div class="search-panel" id="panel-filters">
+            <select id="select-municipality">
+                <option value="" selected>All municipalities</option>
+            </select>
+            <div>
+                or
+            </div>
+            <select id="select-subject">
+                <option value="" selected>All subjects</option>
+            </select>
+        </div>
+
+        <div class="search-panel" id="panel-geo">
+            <div class="geo-row">
+                <input id="input-lat" type="number" step="any" placeholder="Lat">
+                <input id="input-long" type="number" step="any" placeholder="Long">
+                <input id="input-delta" type="number" step="any" placeholder="Delta">
+            </div>
+            <p>Leave delta empty to search a exact location.</p>
+        </div>
+
+        <!-- Search and evaluate -->
+        <div id="action-section">
+            <button id="btn-find" class="btn-primary">
+                🔍 Find
+            </button>
+            <p class="action-note">
+                Searches attractions and evaluates each one against your preferences using the policy engine.
+            </p>
+        </div>
+
+        <!-- User preferences -->
+        <p class="panel-label">02 · Your preferences</p>
+
+        <div id="user-prefs">
+            <div class="form-group">
+                <label for="form-visit-date">Visit date</label>
+                <input id="form-visit-date" type="text" placeholder="DD/MM/YYYY" required>
+            </div>
+
+            <div class="check-group">
+                <input type="checkbox" id="form-language">
+                <label for="form-language">I prefer content in English</label>
+            </div>
+            <div class="check-group">
+                <input type="checkbox" id="form-accessibility">
+                <label for="form-accessibility">I have accessibility needs</label>
+            </div>
+            <div class="check-group">
+                <input type="checkbox" id="form-allergy">
+                <label for="form-allergy">I have a pollen allergy</label>
+            </div>
+            <div class="check-group">
+                <input type="checkbox" id="form-pollution">
+                <label for="form-pollution">Avoid overtourism / pollution</label>
+            </div>
+
+            <div class="form-group">
+                <label for="form-context">Additional context</label>
+                <textarea id="form-context" placeholder="e.g. I have osteoarthritis, travelling with kids…"></textarea>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Right panel -->
+    <div class="right-panel">
+
+        <div id="loading">
+            <span class="spinner"></span>
+        </div>
+
+        <!-- Placeholder -->
+        <div id="placeholder">
+            <img class="placeholder-icon" src="./public/mountain.png" alt="montagna"></img>
+            <span>Set your preferences and click <strong>Find and Evaluate</strong> to get started.</span>
+        </div>
+
+        <!-- Results header -->
+        <div id="results-header">
+            <h2 id="results-title">Results</h2>
+            <p id="results-count"></p>
+        </div>
+
+        <!-- Results list -->
+        <div id="results-grid"></div>
+
+        <!-- Detail view -->
+        <div id="poi-detail">
+            <button id="btn-back-list" class="btn-ghost">← Back to results</button>
+
+            <div class="detail-verdict-row">
+                <span id="detail-badge" class="badge"></span>
+                <span id="detail-risk-badge" class="badge"></span>
+            </div>
+
+            <h2 id="detail-title"></h2>
+            <p id="detail-meta" class="detail-meta"></p>
+
+            <img id="detail-img" class="detail-img" style="display:none" alt="">
+
+            <p id="detail-desc" class="detail-desc"></p>
+
+            <div class="eval-cards">
+                <!-- Decision card -->
+                <div class="eval-form-card">
+                    <h3>Policy verdict</h3>
+                    <p id="eval-justification" style="font-size:.85rem;line-height:1.6;color:var(--text)"></p>
+                </div>
+
+                <!-- Audit card -->
+                <div class="eval-form-card" id="audit-card" style="display:none">
+                    <h3>Audit log</h3>
+                    <div id="audit-log" class="audit-log"></div>
+                </div>
+
+                <!-- Actions card -->
+                <div class="eval-form-card" id="eval-actions-card" style="display:none">
+                    <h3>Required actions</h3>
+                    <ul id="eval-actions" class="result-section"
+                        style="margin:0;padding-left:18px;font-size:.85rem;line-height:1.8;color:var(--text)"></ul>
+                </div>
+
+                <div class="eval-form-card" id="detail-fields-card" style="display:none">
+                    <h3>Evaluation details</h3>
+                    <ul id="detail-fields" class="result-section" style="margin:0;padding-left:18px;font-size:.85rem;line-height:1.8;color:var(--text)"></ul>
+                </div>
+            </div>
+
+            <p class="audit-id" id="detail-audit-id"></p>
+        </div>
+    </div>
+</div>
+
+<!-- Error modal -->
+<div id="error-modal" class="modal" style="display:none">
+    <div class="modal-backdrop"></div>
+    <div class="modal-card" role="dialog" aria-modal="true" aria-labelledby="error-modal-title">
+        <h3 id="error-modal-title">Error</h3>
+        <p id="error-modal-message"></p>
+        <button id="error-modal-close" class="btn-primary">Close</button>
+    </div>
+</div>
+
+<script type="module" src="/src/main.js"></script>
+</body>
 </html>

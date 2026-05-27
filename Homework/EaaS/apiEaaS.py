@@ -1,4 +1,5 @@
 from flask import Flask, request, jsonify
+from flask_cors import CORS
 from auditLogger import logEvent, getLog, newAudit
 from decisionProcess import decide
 import datetime
@@ -8,6 +9,7 @@ import requests
 ipDaaS = "http://127.0.0.1:5000"
 
 app = Flask(__name__)
+CORS(app)
 
 # Helpers
 def success_response(data):
@@ -40,7 +42,6 @@ def evaluate():
     except (ValueError, TypeError) as e:
         return error_response(f"Invalid input: {str(e)}")
 
-
     logEvent("Validated input parameters for poiId: " + str(poiId))
     logEvent("Calling DaaS to get information about the Point Of Interest with id: " + str(poiId))
 
@@ -55,8 +56,9 @@ def evaluate():
     logEvent("Received response from DaaS for poiId: " + str(poiId))
 
     finalResponse = decide(selected_poi=poiData, accessibility_issue=accessibility, translate_language=language, overtourism=pollution, allergy=allergies, visitDate=visitDate, context=context)
-    if finalResponse["error"] is not None:
-        return error_response(finalResponse["error"], 500)
+    # if finalResponse["error"] is not None:
+    #     return error_response(finalResponse["error"], 500)
+    print(finalResponse)
 
 
     audit = getLog()
