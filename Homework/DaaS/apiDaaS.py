@@ -48,7 +48,7 @@ def get_all():
         }"""
 
     try:
-        # TODO: use bindings to avoid injection
+        # use bindings to avoid injection
         results = query(prepared, bindings={})  # No need for bindings?
 
         resultsJSON = []
@@ -93,7 +93,7 @@ def get_all_basic():
         """
 
     try:
-        # TODO: use bindings to avoid injection
+        # use bindings to avoid injection
         results = query(prepared, bindings={})
 
         resultsJSON = []
@@ -137,7 +137,7 @@ FILTER(LANG(?comment) = "en")
         }"""
 
     try:
-        # TODO: use bindings to avoid injection
+        #use bindings to avoid injection
         results = query(prepared, bindings={"idGet": poi_id})
 
         resultsJSON = []
@@ -258,7 +258,7 @@ def get_by_position():
         }"""
 
     try:
-        # TODO: use bindings to avoid injection
+        #use bindings to avoid injection
         results = query(prepared, bindings={
             "latParam": str(lat),
             "longParam": str(long)
@@ -328,7 +328,7 @@ def get_nearest():
         }"""
 
     try:
-        # TODO: use bindings to avoid injection
+        # use bindings to avoid injection
         results = query(prepared, bindings={
             "minLat": Literal(lat - delta, datatype=XSD.float),
             "maxLat": Literal(lat + delta, datatype=XSD.float),
@@ -376,7 +376,7 @@ def get_by_subject(subject):
         }"""
 
     try:
-        # TODO: use bindings to avoid injection
+        # use bindings to avoid injection
         results = query(prepared, bindings={"subjGet": subject})
 
         resultsJSON = []
@@ -523,11 +523,11 @@ def get_by_keyword(keyword):
 #         """
 #
 #     try:
-#         # TODO: use bindings to avoid injection
+#         
 #         results = query(prepared, bindings={})
 #
 #         resultsJSON = []
-#         # TODO: transform results into a json
+#        
 #
 #         return success_response(resultsJSON)
 #
@@ -538,4 +538,4 @@ def get_by_keyword(keyword):
 
 
 if __name__ == "__main__":
-    app.run(host="127.0.0.1", port=5000, debug=True)
+    app.run(host="127.0.0.1", port=5000, debug=True, threaded=False)

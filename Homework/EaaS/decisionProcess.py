@@ -6,6 +6,8 @@ from llmCall import consultLlm, AppliedPolicy
 from auditLogger import logEvent
 from auditLogger import logEvent
 
+from pathlib import Path # Import Path from pathlib
+
 policies = None  # TODO
 
 
@@ -95,11 +97,24 @@ def decide(selected_poi: dict,
            visitDate: str, context: str = None) -> dict:
     try:
         logEvent("Loading policies from policies.json")
-        with open("policies.json") as f:
+        
+        # --- MODIFICATION START ---
+        # Determine the directory of the current script
+        script_dir = Path(__file__).resolve().parent
+        # Construct the full path to policies.json
+        policies_path = script_dir / "policies.json"
+        
+        with open(policies_path, 'r') as f:
             policies: list = json.load(f)
+        # --- MODIFICATION END ---
+        
+    except FileNotFoundError:
+        logEvent("Error: policies.json not found.")
+        raise FileNotFoundError("policies.json not found in the script directory.")
     except Exception as e:
         logEvent("Error loading policies from policies.json: " + str(e))
         raise e
+        
     logEvent("Loaded policies from policies.json successfully")
 
     policiesFiltered = filterPolicies(policies, accessibility_issue, translate_language, overtourism, allergy)
@@ -110,7 +125,6 @@ def decide(selected_poi: dict,
     except (google.genai.errors.ClientError, google.genai.errors.ServerError)  as e:
         logEvent("Google Gemini servers unreachable: " + e.response.text)
         return {"error": e.response.text}
-    
 
     justification = llmReply["justification"]
     required_actions = llmReply["required_actions"]
