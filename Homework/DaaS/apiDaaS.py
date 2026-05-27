@@ -130,9 +130,9 @@ def get_by_id(poi_id):
           OPTIONAL { ?s umb:immagine_copertina ?image . }
           OPTIONAL { ?s dbpedia-owl:municipality ?municipality . }
           
-FILTER(LANG(?comment) = "en")
-          
+          FILTER(LANG(?comment) = "en")
           FILTER(LANG(?title) = "en" && LANG(?description) = "en")
+          
           FILTER(STR(?id) = STR(?idGet))
         }"""
 
