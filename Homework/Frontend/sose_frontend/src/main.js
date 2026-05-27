@@ -203,8 +203,8 @@ async function fetchPois() {
         const delta = parseFloat(document.getElementById('input-delta').value);
         if (isNaN(lat) || isNaN(lon)) throw new Error('Please provide valid coordinates.');
         return !isNaN(delta)
-            ? await apiPost(DAAS, '/pois/nearest', {lat, lon, delta})
-            : await apiPost(DAAS, '/pois/position', {lat, lon});
+            ? await apiPost(DAAS, '/pois/nearest', {"lat":lat, "long":lon, "delta":delta})
+            : await apiPost(DAAS, '/pois/position', {"lat":lat, "long":lon});
     }
 
     return [];

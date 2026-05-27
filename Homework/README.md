@@ -19,6 +19,7 @@
 - [LLM Integration](#llm-integration)
 - [DaaS API Reference](#daas-api-reference)
 - [AaaS API Reference](#eaas-api-reference)
+- [Fronted](#fronted)
 - [Setup](#setup)
 
 
@@ -26,6 +27,8 @@
 ## Overview
 
 **SoSe** is a two-service system for evaluating tourist Points of Interest (POIs) against a set of configurable policies. It combines a **Data-as-a-Service (DaaS)** layer for querying POI data from an RDF dataset, and an **Ethics-as-a-Service (EaaS)** layer that applies AI-powered policy checks to produce a risk-scored decision.
+
+>You can find the rdf document [here](https://dati.regione.umbria.it/dataset/turismo-attrattori/resource/df1012df-04d4-4666-acd1-d756d3b1c903)
 
 ---
 
@@ -200,30 +203,34 @@ A user visiting a historic village in November, who prefers English content but 
 **Request:**
 ```json
 {
-  "poiId": 5033571,
+  "poiId": 4133042,
   "accessibility": false,
-  "language": true,
-  "allergies": false,
-  "pollution": false,
+  "language": false,
+  "allergies": true,
+  "pollution": true,
   "context": "",
-  "visitDate": "10/11/2026"
+  "visitDate": "15/11/2026"
 }
 ```
 
 **Response (abbreviated):**
 ```json
 {
-  "decision": {
-    "audit_id": "agliano_ancient_village",
-    "final_decision": "PASS",
-    "risk_level": "LOW",
-    "justification": "The POI description is only available in Italian, triggering the language policy. No other policies apply. Risk score: 3.",
-    "required_action": ["Translate the POI description from Italian to English."]
-  }
+	"data": {
+		"audit": "2026-05-28 00:53:38.687530: Received evaluation request in /api/evaluate with data from user...",
+		"decision": {
+			"audit_id": "trevi_olive_oil_capital",
+			"final_decision": "PASS",
+			"justification": "The POI is a small medieval town focusing on olive oil production and natural settings. Given the visit date of November 15th, which coincides with the olive harvest period, the area is likely to be peacefully visited without overtourism risks and pollen concentrations are typically low in mid-November.",
+			"required_action": [],
+			"risk_level": "LOW"
+		},
+		"poiId": 4133042,
+		"timestamp": "2026-05-28 00:53:51.415749"
+	},
+	"status": "ok"
 }
 ```
-
-**Why:** Only the language policy is triggered (risk weight 3), resulting in a LOW risk score and a PASS decision with a recommended translation action.
 
 ---
 
@@ -234,34 +241,37 @@ A user with a pollen allergy and accessibility needs planning a summer visit to 
 **Request:**
 ```json
 {
-  "poiId": 5041892,
+  "poiId": 4133042,
   "accessibility": true,
   "language": true,
   "allergies": true,
   "pollution": true,
-  "context": "I use a wheelchair and have severe hay fever",
-  "visitDate": "15/06/2026"
+  "context": "I use a weelchair",
+  "visitDate": "15/11/2026"
 }
 ```
 
 **Response (abbreviated):**
 ```json
 {
-  "decision": {
-    "audit_id": "monte_subasio_natural_park",
-    "final_decision": "REJECT",
-    "risk_level": "HIGH",
-    "justification": "The POI is a natural park with unpaved trails, presenting significant accessibility barriers for wheelchair users. June is peak pollen season in Umbria, making this visit high-risk for someone with severe hay fever. The pollen allergy policy mandates rejection.",
-    "required_action": [
-      "Do not recommend this POI to this user.",
-      "Suggest accessible indoor alternatives in the same municipality.",
-      "Translate the POI description to English."
-    ]
-  }
+	"data": {
+		"audit": "2026-05-28 00:52:25.547882: Received evaluation request in /api/evaluate with data from user\n2026-05-28 00:52:25.548960: Validated input parameters for...",
+		"decision": {
+			"audit_id": "Trevi_Olive_Oil_Capital",
+			"final_decision": "REVISE",
+			"justification": "The POI is recommended for a wheelchair user, but the description provides no information regarding accessibility. Additionally, it is a medieval town, which typically implies cobblestone streets and architectural barriers, making it potentially inaccessible.",
+			"required_action": [
+				"Verify accessibility features for wheelchair users in the medieval center of Trevi.",
+				"Determine if the 'Olive Trail' is accessible by wheelchair."
+			],
+			"risk_level": "MEDIUM"
+		},
+		"poiId": 4133042,
+		"timestamp": "2026-05-28 00:52:41.670668"
+	},
+	"status": "ok"
 }
 ```
-
-**Why:** The pollen policy (risk weight 8) triggers a hard REJECT override regardless of the total score. Additionally, the accessibility policy (weight 6) and language policy (weight 3) are triggered, bringing the total risk score to 17 — HIGH level.
 
 ---
 
@@ -404,6 +414,18 @@ Full documentation: [`apiEaaSDoc.md`](./EaaS/apiEaaSDoc.md)
 | `/evaluate` | POST | Submit a POI for policy evaluation |
 
 ---
+
+## Fronted
+
+Full documentation: [`frontendDoc.md`](./Frontend/sose_frontend/frontendDoc.md)
+
+| Layer | Technology |
+|---|---|
+| Bundler | Vite |
+| Language | Vanilla JavaScript (ES modules) |
+| HTTP client | Axios |
+| Styling | Plain CSS (`style.css`) |
+| Entry point | `src/main.js` |
 
 ## Setup
 
