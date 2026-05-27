@@ -8,16 +8,6 @@ from auditLogger import logEvent
 policies = None  # TODO
 
 
-def match_string_decision_to_priority(string: str):
-    if string == "REVISE":
-        return 1
-    if string == "REJECT":
-        return 2
-    if string == "ESCALATE":
-        return 3
-    return 0
-
-
 def assess_risk(policies) -> (
         int, list):
     risk_score = 0
