@@ -27,6 +27,16 @@
 
 **SoSe** is a two-service system for evaluating tourist Points of Interest (POIs) against a set of configurable policies. It combines a **Data-as-a-Service (DaaS)** layer for querying POI data from an RDF dataset, and an **Ethics-as-a-Service (EaaS)** layer that applies AI-powered policy checks to produce a risk-scored decision.
 
+### Why did we choose this dataset?
+The POI data comes from the [Attrattori turistici](https://dati.regione.umbria.it/dataset/turismo-attrattori/resource/df1012df-04d4-4666-acd1-d756d3b1c903) dataset, published by the Regione Umbria Open Data Portal under an open license. It covers hundreds of Points of Interest across Umbria (churches, natural parks, historic villages, museums, and more) with GPS coordinates, descriptions, and category tags. 
+
+We chose it because it was publicly available, well-structured, and easy to load directly with rdflib (the parsed graph yields around 18,000 triples, which is a manageable size for local querying and experimentation).
+
+### Why is our application useful?
+Tourism recommendation systems usually just tell you where to go, our attraction recommender adds a layer that asks the question: should this specific user go there? 
+
+Things like accessibility, pollen allergies, language barriers, and overtourism are real concerns that a generic recommender ignores. Our application makes those checks explicit, auditable, and configurable, which is especially relevant as AI systems are increasingly used to drive decisions that affect people's experiences.
+
 ---
 
 ## Architecture
