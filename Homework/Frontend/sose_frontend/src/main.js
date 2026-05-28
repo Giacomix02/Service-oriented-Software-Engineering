@@ -55,11 +55,11 @@ function showView(view) {
 }
 
 // Robust api GET with timeout + retries
-async function apiGet(path, retries = 2, timeout = 20000) { // Set default timeout to 15000ms
+async function apiGet(path, retries = 2, timeout = 30000) { // Set default timeout to 15000ms
     const url = DAAS + path;
     // Keyword search needs more time and retries
     if (path.includes('/keyword/')) {
-        timeout = 20000;
+        timeout = 30000;
         retries = 3;
     }
     for (let attempt = 0; attempt <= retries; attempt++) {
@@ -79,7 +79,7 @@ async function apiGet(path, retries = 2, timeout = 20000) { // Set default timeo
     }
 }
 
-async function apiPost(base, path, body, timeout = 20000) { // Added timeout parameter
+async function apiPost(base, path, body, timeout = 30000) { // Added timeout parameter
     const res = await axios.post(base + path, body, { timeout }); // Apply timeout here
     console.log(res);
     return res.data.data ?? res.data;

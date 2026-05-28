@@ -1,1 +1,19 @@
-{"audit_id": "trevi_olive_oil_capital", "justification": "The POI is a small medieval town with olive groves; however, there is no explicit information regarding accessibility for disabled users, and it's a natural/rural setting which may have pollen risks in November, although the primary issue is missing accessibility data.", "applied_policies": [{"policy_id": "accessibility_policy", "reason": "The description of Trevi focuses on olive oil, the Olive Trail, and history, but contains no mentions of wheelchair accessibility, ramps, or inclusive infrastructure.", "status": "triggered"}, {"policy_id": "language_policy", "reason": "The content is provided in English, satisfying the user's preference.", "status": "passed"}, {"policy_id": "overtourism_pollution_policy", "reason": "Trevi is described as a 'small medieval town' and a 'land of meditation' suggesting it is not currently suffering from high-concentration overtourism.", "status": "passed"}, {"policy_id": "pollen_allergies_policy", "reason": "While the town has many olive groves, the visit date is November 15th. Olive pollination typically occurs in spring (April-May), so pollen risk is low in November.", "status": "passed"}], "required_actions": ["Verify and add accessibility information for the medieval town center and the Olive Trail to ensure it is suitable for users with mobility impairments."]}
+{
+  "audit_id": "church_san_giovanni_battista_eggi",
+  "justification": "The POI is a church in a village, and the user's visit date (June 14, 2026) falls in the middle of pollen season. Since the location is surrounded by olive groves and valleys, it is likely to have a high pollen concentration, triggering the pollen allergy policy.",
+  "applied_policies": [
+    {
+      "policy_id": "language_policy",
+      "reason": "The content is available in English, so the language policy is passed.",
+      "status": "passed"
+    },
+    {
+      "policy_id": "pollen_allergies_policy",
+      "reason": "The POI is located in a village surrounded by olive groves and nature, and the visit date is June, which is high pollen season for various species including grasses and olive trees in Italy. User has pollen allergy preference triggered.",
+      "status": "triggered"
+    }
+  ],
+  "required_actions": [
+    "Reject the recommendation of the Church of San Giovanni Battista in Eggi due to high pollen risk in June."
+  ]
+}
