@@ -1,11 +1,19 @@
 # GigSync
 
+## USED TECHNOLOGIES
+### Spring Boot
+- **Java version**: 26
+- **Spring Boot version**: 4.0.6
+
+### Apache CXF
+
+### Jakarta
 
 ## ARCHITECTURAL COMPONENTS
 | ID | COMPONENT         | ROLE         | TECHNOLOGY        | DESCRIPTION                                                                                            |
 |----|-------------------|--------------|-------------------|--------------------------------------------------------------------------------------------------------|
 | 1  | API Gateway       | **Gateway**  | Spring            | Acts as the single entry point for all client-to-service interactions. Built with Spring Cloud Gateway |
-| 2  | Ticket Provider   | **Prosumer** | Spring (REST)     | It queries both ticket providers (4,5)                                                                 |
+| 2  | Ticket Searcher   | **Prosumer** | Spring (REST)     | It queries both ticket providers (4,5)                                                                 |
 | 3  | Artist Analyzer   | **Prosumer** | Spring (REST)     | Fetches the artist's trending tracks and overall information (6)                                       |
 | 4  | Legacy box office | **Provider** | Apache CXF (SOAP) | A service exposing a SOAP interface returning official prices                                          |
 | 5  | Reseller          | **Provider** | Jakarta (REST)    | A service returning secondary market prices                                                            |
@@ -98,7 +106,7 @@ Here are the database schemas from the image converted into Markdown tables, org
 | 8  | ...                                            | ...       | Add other endpoints if we want                                                   |
 
 ## ASYNCHRONOUS COMMUNICATION
-The asynconus comminication is implemented inside the **Ticket Provider** that has to call two different services (4,5) to get the price of the tickets and get the aviable events.
+The asyncronus communication is implemented inside the **Ticket Provider** that has to call two different services (4,5) to get the price of the tickets and get the aviable events.
 
 
 ## INTERACTING SCENARIOS
