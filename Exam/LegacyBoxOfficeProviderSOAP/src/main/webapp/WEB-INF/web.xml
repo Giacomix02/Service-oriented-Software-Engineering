@@ -5,9 +5,9 @@ id="WebApp_ID" version="6.0">
   
   <display-name>SumSOAPServiceMaven</display-name>
 	<servlet>
-  		<display-name>SimpleCXFNonSpringServlet</display-name>
+  		<display-name>LegacyBoxOfficeProviderSOAP</display-name>
 		<servlet-name>SimpleCXFNonSpringServlet</servlet-name>
-		<servlet-class>it.univaq.odws.maven.sum.SimpleCXFNonSpringServlet</servlet-class>
+		<servlet-class>it.univaq.sose.LegacyBoxOfficeProviderSOAP.SimpleCXFNonSpringServlet</servlet-class>
 	</servlet>
 	<servlet-mapping>
 		<servlet-name>SimpleCXFNonSpringServlet</servlet-name>

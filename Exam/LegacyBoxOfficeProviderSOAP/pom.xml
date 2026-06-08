@@ -1,10 +1,10 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
-  <groupId>it.univaq.odws.maven.sum</groupId>
-  <artifactId>SumSOAPServiceMaven</artifactId>
+  <groupId>it.univaq.sose</groupId>
+  <artifactId>LegacyBoxOfficeProviderSOAP</artifactId>
   <version>0.0.1-SNAPSHOT</version>
   <packaging>war</packaging>
-<properties>
+  <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <cxf.version>4.0.7</cxf.version>
     <maven.compiler.version>3.14.0</maven.compiler.version>
@@ -41,7 +41,6 @@
         <version>4.0.0</version>
     </dependency>
 </dependencies>
-
 <build>
     <plugins>
         <plugin>
@@ -62,78 +61,4 @@
     </plugins>
     <finalName>SumSOAPServiceMaven</finalName>
 </build>
-	<profiles>
-	
-		<!-- launch the command mvn clean verify -PdeployOnTomcatTest1 -->
-		<!-- or mvn -PdeployOnTomcatTest1 -->
-		<profile>
-			<id>deployOnTomcatTest1</id>
-			<activation>
-				<activeByDefault>false</activeByDefault>
-			</activation>
-
-			<build>
-				<!-- execute these goals for generating the war -->
-				<defaultGoal>clean verify</defaultGoal>
-
-				<plugins>
-					<plugin>
-						<groupId>org.apache.maven.plugins</groupId>
-						<artifactId>maven-war-plugin</artifactId>
-						<version>3.2.3</version>
-						<configuration>
-							<outputDirectory>${project.basedir}/../../../apache/apache-tomcat-11.0.5/webapps</outputDirectory>
-						</configuration>
-					</plugin>
-				</plugins>
-			</build>
-		</profile>
-
-
-		<!-- launch the command mvn clean verify –PdeployOnTomcatTest2 -->
-		<!-- or mvn –PdeployOnTomcatTest2 -->
-		<profile>
-			<id>deployOnTomcatTest2</id>
-			<activation>
-				<activeByDefault>false</activeByDefault>
-			</activation>
-
-			<build>
-				<!-- execute these goals for generating the war -->
-				<defaultGoal>clean verify</defaultGoal>
-
-				<plugins>
-					<plugin>
-						<groupId>org.apache.maven.plugins</groupId>
-						<artifactId>maven-resources-plugin</artifactId>
-						<version>3.0.1</version>
-						<executions>
-							<execution>
-								<id>copy-war</id>
-								<!-- execute this plugin during the phase verify -->
-								<phase>verify</phase>
-								<goals>
-									<goal>copy-resources</goal>
-								</goals>
-								<configuration>
-									<outputDirectory>${project.basedir}/../../../apache/apache-tomcat-11.0.5/webapps</outputDirectory>
-									<resources>
-										<resource>
-											<directory>${project.basedir}/target</directory>
-											<includes>
-												<include>SumSOAPServiceMaven.war</include>
-											</includes>
-										</resource>
-									</resources>
-								</configuration>
-							</execution>
-						</executions>
-					</plugin>
-				</plugins>
-			</build>
-		</profile>
-
-	</profiles>
-
 </project>
-

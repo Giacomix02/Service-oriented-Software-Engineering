@@ -1,4 +1,4 @@
-package it.univaq.odws.maven.sum;
+package it.univaq.sose.LegacyBoxOfficeProviderSOAP;
 
 import jakarta.jws.WebMethod;
 import jakarta.jws.WebService;
