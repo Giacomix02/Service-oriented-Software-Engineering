@@ -55,7 +55,6 @@
 
 | Column Name | Data Type |
 | --- | --- |
-| ID | int |
 | Event_Global_ID | int |
 | Name | str |
 | Artist Name | str |
@@ -69,9 +68,11 @@
 | ID | int |
 | Price | float |
 | Seat | str |
-| Event_ID | int |
+| Event_Global_ID | int |
 
-> **Relationship Note:** `Event_ID` in the **Ticket** table has a many-to-one relationship (`0,n` to `1,1`) with the `ID` column in the **Event** table.
+> **Ticket ID:** unique for each event, so same ID can't be in reseller and legacy box office
+
+> **Relationship Note:** `Event_Global_ID` in the **Ticket** table has a many-to-one relationship (`0,n` to `1,1`) with the `Event_Global_ID` column in the **Event** table.
 
 ---
 
@@ -94,6 +95,8 @@
 | Description | str |
 | Views | int |
 | ID_Artist | int |
+
+> ** Song ID:** unique, in different DBs the same song has the same ID. For example the Streaming and Music Stats DBs.
 
 > **Relationship Note:** `ID_Artist` in the **Song** table has a many-to-one relationship (`0,n` to `1,1`) with the `ID` column in the **Artist** table. 
 
@@ -129,20 +132,207 @@
 > * `ID_Song` in the **Availability** table has a many-to-one relationship (`0,n` to `1,n`) with the `ID` column in the **Song** table.
 
 ## ENDPOINTS
+
+### 1: Gateway
+
 >These are the endpoins visible by the user via the gateway
 
+| ID | URL                                            | METHOD    | DESCRIPTION                                                                                                                                               |
+|----|------------------------------------------------|-----------|-----------------------------------------------------------------------------------------------------------------------------------------------------------|
+| 1  | events/getEventByID/{Event_Global_ID}          | GET       | Get all infos of an event by its ID                                                                                                                       |
+| 2  | events/getAllEvents                            | GET       | Get all aviable events                                                                                                                                    |
+| 3  | events/searchByName/{Name}                     | GET       | Get all aviable events by the Name                                                                                                                        |
+| 4  | ...                                            | ...       | every type of search we want to implement                                                                                                                 |
+| 5  | events/getEventTickets/{Event_Global_ID}       | GET       | Get all aviable tickets by the Event ID                                                                                                                   |
+| 6  | events/getTicket/{Event_Global_ID}/{Ticket_ID} | GET/POST? | Get Ticket info by his ID and the Event. **IF IS A POST WE HAVE TO SEND A JSON**                                                                          |
+| 7  | stats/getArtist/{Artist_Name}                  | GET       | Search and get an Artist by his Name                                                                                                                      |
+| 8  | stats/getSong/{Song_Name}                      | GET       | Search and get a Song by its Name                                                                                                                         |
+| 9  | analyze/aviability/{Song_Name}                 | GET/POST? | Aggregate informations from two microservices and give the availability of a song inside streaming services **IF IS A POST WE CAN DO AN ADVANCED SEARCH** |
+| 10 | analyze/getAllInfos/{Song_Name}                | GET/POST? | Aggregate informations from two microservices and give all available data **IF IS A POST WE CAN DO AN ADVANCED SEARCH**                                   |
+| 11 | analyze/getAllSongs/{Artist_Name}              | GET/POST? | Aggregate informations from two microservices and give all songs with aviable services **IF IS A POST WE CAN DO A SEARCH WITH THE ID OR ARTIST NAME**     |
 
-| ID | URL                                            | METHOD    | DESCRIPTION                                                                      |
-|----|------------------------------------------------|-----------|----------------------------------------------------------------------------------|
-| 1  | events/getEventByID/{Event_Global_ID}          | GET       | Get all infos of an event by its ID                                              |
-| 2  | events/getAllEvents                            | GET       | Get all aviable events                                                           |
-| 3  | events/searchByName/{Name}                     | GET       | Get all aviable events by the Name                                               |
-| 4  | ...                                            | ...       | every type of search we want to implement                                        |
-| 5  | events/getEventTickets/{Event_Global_ID}       | GET       | Get all aviable tickets by the Event ID                                          |
-| 6  | events/getTicket/{Event_Global_ID}/{Ticket_ID} | GET/POST? | Get Ticket info by his ID and the Event. **IF IS A POST WE HAVE TO SEND A JSON** |
-| 7  | stats/getArtist/{Artist_Name}                  | GET       | Search and get an Artist by his Name                                             |
-| 8  | stats/getSong/{Song_Name}                      | GET       | Search and get a Song by its Name                                                |
-| 9  | ...                                            | ...       | Add other endpoints if we want                                                   |
+#### Json Outputs
+
+> 1
+
+
+```json
+{
+  "ID": 1,
+  "Event_Global_ID": 12345,
+  "Name": "Concert Name",
+  "Artist Name": "Artist Name",
+  "Location": "Venue Location",
+  "Description": "Event Description"
+}
+```
+
+---
+
+> 2 
+
+
+```json
+[
+  {
+    "ID": 1,
+    "Event_Global_ID": 12345,
+    "Name": "Concert Name",
+    "Artist Name": "Artist Name",
+    "Location": "Venue Location",
+    "Description": "Event Description"
+  },
+  {
+    "ID": 2,
+    "Event_Global_ID": 67890,
+    "Name": "Another Concert",
+    "Artist Name": "Another Artist",
+    "Location": "Another Venue",
+    "Description": "Another Event Description"
+  }
+]
+```
+---
+
+> 3
+
+```json
+[
+  {
+    "ID": 1,
+    "Event_Global_ID": 12345,
+    "Name": "Concert Name",
+    "Artist Name": "Artist Name",
+    "Location": "Venue Location",
+    "Description": "Event Description"
+  },
+  {
+    ...
+  }
+  
+]
+```
+---
+
+> 5
+
+```json
+[
+  {
+    "ID": 1,
+    "Price": 100.0,
+    "Seat": "A1",
+    "Event_ID": 12345
+  },
+  {
+    "ID": 2,
+    "Price": 150.0,
+    "Seat": "A2",
+    "Event_ID": 12345
+  }
+]
+```
+---
+
+> 6
+
+```json
+{
+  "ID": 1,
+  "Price": 100.0,
+  "Seat": "A1",
+  "Event_ID": 12345
+}
+```
+---
+
+> 7
+
+```json
+{
+  "ID": 1,
+  "Name": "Artist Name",
+  "Description": "Artist Description"
+}
+```
+---
+
+> 8
+
+```json
+{
+  "ID": 1,
+  "Name": "Song Name",
+  "Description": "Song Description",
+  "Views": 1000000,
+  "ID_Artist": 1
+}
+```
+
+> 9 
+
+```json
+{
+  "ID": 1,
+  "Song_Name": "Song Name",
+  "Availability": [
+    {
+      "Streaming_Service": "Service A"
+    },
+    {
+      "Streaming_Service": "Service B"
+    }
+  ]
+}
+```
+
+---
+
+> 10
+
+```json
+{
+  "ID": 1,
+  "Song_Name": "Song Name",
+  "Song_Description": "Song Description",
+  "Views": 1000000,
+  "Artist_Name": "Artist Name",
+  "Artist_Description": "Song Description",
+  "Availability": [
+    {
+      "Streaming_Service": "Service A"
+    },
+    {
+      "Streaming_Service": "Service B"
+    }
+  ]
+}
+```
+---
+
+> 11
+
+```json
+[
+  {
+    "ID": 1,
+    "Song_Name": "Song Name",
+    "Song_Description": "Song Description",
+    "Views": 1000000,
+    "Availability": [
+      {
+        "Streaming_Service": "Service A"
+      },
+      {
+        "Streaming_Service": "Service B"
+      }
+    ]
+  },
+  {
+    ...
+  }
+]
+```
 
 ### 2: Ticket Searcher
 | ID | URL                                     | METHOD    | DESCRIPTION                                                                                                                                  |
