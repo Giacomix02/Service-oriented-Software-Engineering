@@ -1,4 +1,3 @@
--- Create the Event table first since Ticket depends on it
 CREATE TABLE Event (
                        ID INT PRIMARY KEY,
                        Event_Global_ID INT,
@@ -8,7 +7,7 @@ CREATE TABLE Event (
                        Description TEXT
 );
 
--- Create the Ticket table with a foreign key referencing Event
+
 CREATE TABLE Ticket (
                         ID INT PRIMARY KEY,
                         Price FLOAT,

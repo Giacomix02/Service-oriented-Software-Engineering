@@ -6,19 +6,22 @@
 - **Spring Boot version**: 4.0.6
 
 ### Apache CXF
+- **Java version**: 21
 
 ### Jakarta
+- **Java version**: 21
 
 ## ARCHITECTURAL COMPONENTS
-| ID | COMPONENT         | ROLE              | TECHNOLOGY        | DESCRIPTION                                                                                            |
-|----|-------------------|-------------------|-------------------|--------------------------------------------------------------------------------------------------------|
-| 1  | API Gateway       | **Gateway**       | Spring            | Acts as the single entry point for all client-to-service interactions. Built with Spring Cloud Gateway |
-| 2  | Ticket Searcher   | **Prosumer**      | Spring (REST)     | It queries both ticket providers (4,5)                                                                 |
-| 3  | Artist Analyzer   | **Prosumer**      | Spring (REST)     | Fetches the artist's trending tracks and overall information (6)                                       |
-| 4  | Legacy box office | **Provider**      | Apache CXF (SOAP) | A service exposing a SOAP interface returning official prices                                          |
-| 5  | Reseller          | **Provider**      | Jakarta (REST)    | A service returning secondary market prices                                                            |
-| 6  | Music stats       | **Provider**      | Spring (REST)     | A service returning all info about the artist and his songs                                            |
-| 7  | Load Balancer     | **Load Balancer** | Spring            | Load balancer                                                                                          |
+| ID | COMPONENT            | ROLE                  | TECHNOLOGY        | DESCRIPTION                                                                                           |
+|----|----------------------|-----------------------|-------------------|-------------------------------------------------------------------------------------------------------|
+| 1  | API Gateway          | **Gateway**           | Spring Cloud      | Acts as the single entry point for all client-to-service interactions. Built with Spring Cloud Gateway |
+| 2  | Ticket Searcher      | **Prosumer**          | Spring (REST)     | It queries both ticket providers (4,5)                                                                |
+| 3  | Artist Analyzer      | **Prosumer**          | Spring (REST)     | Fetches the artist's trending tracks and overall information (6,7)                                    |
+| 4  | Legacy box office    | **Provider**          | Apache CXF (SOAP) | A service exposing a SOAP interface returning official prices                                         |
+| 5  | Reseller             | **Provider**          | Jakarta (REST)    | A service returning secondary market prices                                                           |
+| 6  | Music stats          | **Provider/Prosumer** | Spring (REST)     | A service returning all info about the artist and his songs                                           |
+| 7  | Streaming Aviability | **Provider**          | Spring (REST)     | A service that returns if a song is aviable inside n streaming services                               |
+| 8  | Load Balancer        | **Load Balancer**     | Spring Eureka     | Load balancer                                                                                         |
 
 
 ## ARCHITECTURE DIAGRAM
@@ -40,11 +43,15 @@
 ![](./img/ticketDB.png)
 
 
-Here are the database schemas from the image converted into Markdown tables, organized by their respective sections.
+> DB diagram for:
+> - Streaming Availability
 
-## Legacy Box Office and Reseller
+![](./img/Streaming.png)
 
-### Event
+
+### Legacy Box Office and Reseller
+
+#### Event
 
 | Column Name | Data Type |
 | --- | --- |
@@ -55,7 +62,7 @@ Here are the database schemas from the image converted into Markdown tables, org
 | Location | str |
 | Description | str |
 
-### Ticket
+#### Ticket
 
 | Column Name | Data Type |
 | --- | --- |
@@ -68,9 +75,9 @@ Here are the database schemas from the image converted into Markdown tables, org
 
 ---
 
-## Music Stats
+### Music Stats
 
-### Artist
+#### Artist
 
 | Column Name | Data Type |
 | --- | --- |
@@ -78,7 +85,7 @@ Here are the database schemas from the image converted into Markdown tables, org
 | Name | str |
 | Description | str |
 
-### Song
+#### Song
 
 | Column Name | Data Type |
 | --- | --- |
@@ -88,7 +95,38 @@ Here are the database schemas from the image converted into Markdown tables, org
 | Views | int |
 | ID_Artist | int |
 
-> **Relationship Note:** `ID_Artist` in the **Song** table has a many-to-one relationship (`0,n` to `1,1`) with the `ID` column in the **Artist** table.
+> **Relationship Note:** `ID_Artist` in the **Song** table has a many-to-one relationship (`0,n` to `1,1`) with the `ID` column in the **Artist** table. 
+
+### Streaming Availability
+
+#### Streaming_Service
+
+| Column Name | Data Type |
+| --- | --- |
+| ID | int |
+| Name | str |
+| Description | str |
+
+---
+
+#### Availability
+
+| Column Name | Data Type |
+| --- | --- |
+| ID_Song | int |
+| ID_Streaming_Service | int |
+
+---
+
+#### Song
+
+| Column Name | Data Type |
+| --- | --- |
+| ID | int |
+
+> **Relationship Note:** The **Availability** table serves as a junction table to establish a many-to-many relationship between **Streaming_Service** and **Song**.
+> * `ID_Streaming_Service` in the **Availability** table has a many-to-one relationship (`0,n` to `1,n`) with the `ID` column in the **Streaming_Service** table.
+> * `ID_Song` in the **Availability** table has a many-to-one relationship (`0,n` to `1,n`) with the `ID` column in the **Song** table.
 
 ## ENDPOINTS
 >These are the endpoins visible by the user via the gateway
