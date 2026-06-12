@@ -140,24 +140,24 @@
 | 4  | ...                                            | ...       | every type of search we want to implement                                        |
 | 5  | events/getEventTickets/{Event_Global_ID}       | GET       | Get all aviable tickets by the Event ID                                          |
 | 6  | events/getTicket/{Event_Global_ID}/{Ticket_ID} | GET/POST? | Get Ticket info by his ID and the Event. **IF IS A POST WE HAVE TO SEND A JSON** |
-| 7  | stats/getArtist/{Artist_Name]                  | GET       | Search and get an Artist by his Name                                             |
-| 8  | stats/getSong/{Song_Name]                      | GET       | Search and get a Song by its Name                                                |
+| 7  | stats/getArtist/{Artist_Name}                  | GET       | Search and get an Artist by his Name                                             |
+| 8  | stats/getSong/{Song_Name}                      | GET       | Search and get a Song by its Name                                                |
 | 9  | ...                                            | ...       | Add other endpoints if we want                                                   |
 
 ### 2: Ticket Searcher
-| ID | URL                                            | METHOD    | DESCRIPTION                                                                      |
-|----|------------------------------------------------|-----------|----------------------------------------------------------------------------------|
-| 1  | getEventByID/{Event_Global_ID}          | GET       | Get all infos of an event directly from Legacy box office                                             |
-| 2  | getAllEvents                            | GET       | Get all aviable events directly from Legacy box office                                                         |
-| 3  | searchByName/{Name}                     | GET       | Get all aviable events by the Name directly from Legacy box office                                               |
-| 5  | getEventTickets/{Event_Global_ID}       | GET       | Get all aviable tickets by the Event ID by querying both Legacy box office and resellers                                          |
+| ID | URL                                     | METHOD    | DESCRIPTION                                                                                                                                  |
+|----|-----------------------------------------|-----------|----------------------------------------------------------------------------------------------------------------------------------------------|
+| 1  | getEventByID/{Event_Global_ID}          | GET       | Get all infos of an event directly from Legacy box office                                                                                    |
+| 2  | getAllEvents                            | GET       | Get all aviable events directly from Legacy box office                                                                                       |
+| 3  | searchByName/{Name}                     | GET       | Get all aviable events by the Name directly from Legacy box office                                                                           |
+| 5  | getEventTickets/{Event_Global_ID}       | GET       | Get all aviable tickets by the Event ID by querying both Legacy box office and resellers                                                     |
 | 6  | getTicket/{Event_Global_ID}/{Ticket_ID} | GET/POST? | Get Ticket info by his ID and the Event. Fetching it from either the Legacy box office or resellers  **IF IS A POST WE HAVE TO SEND A JSON** |
 
 ### 3: Artist Analyzer
-| ID | URL                                            | METHOD    | DESCRIPTION                                                                      |
-|----|------------------------------------------------|-----------|----------------------------------------------------------------------------------|
-| 7  | getArtist/{Artist_Name]                  | GET       | Search and get an Artist by his Name querying it from Music stats, along with artist songs availabilities fetched from Streaming Availability                                             |
-| 8  | getSong/{Song_Name]                      | GET       | Search and get a Song by its Name from Music stats, along with its availability from Streaming Availability                                                |
+| ID | URL                     | METHOD | DESCRIPTION                                                                                                                                   |
+|----|-------------------------|--------|-----------------------------------------------------------------------------------------------------------------------------------------------|
+| 7  | getArtist/{Artist_Name} | GET    | Search and get an Artist by his Name querying it from Music stats, along with artist songs availabilities fetched from Streaming Availability |
+| 8  | getSong/{Song_Name}     | GET    | Search and get a Song by its Name from Music stats, along with its availability from Streaming Availability                                   |
 
 ### 4: Legacy box office
 | ID | URL                                            | METHOD    | DESCRIPTION                                                                      |
@@ -175,16 +175,16 @@
 | 6  | getTicket/{Event_Global_ID}/{Ticket_ID} | GET/POST? | Get Ticket info by his ID and the Event. **IF IS A POST WE HAVE TO SEND A JSON** |
 
 ### 6: Music stats
-| ID | URL                                            | METHOD    | DESCRIPTION                                                                      |
-|----|------------------------------------------------|-----------|----------------------------------------------------------------------------------|
-| 7  | getArtist/{Artist_Name]                  | GET       | Search and get an Artist by his Name                                             |
-| 8  | getSong/{Song_Name]  | GET       |  Search and get a Song by its Name
+| ID | URL                     | METHOD    | DESCRIPTION                                                                      |
+|----|-------------------------|-----------|----------------------------------------------------------------------------------|
+| 7  | getArtist/{Artist_Name} | GET       | Search and get an Artist by his Name                                             |
+| 8  | getSong/{Song_Name}     | GET       |  Search and get a Song by its Name
 
 ### 7: Streaming Aviability
-| ID | URL                                            | METHOD    | DESCRIPTION                                                                      |
-|----|------------------------------------------------|-----------|----------------------------------------------------------------------------------|
-| 1  | getArtistSongsAvailability/{Artist_Name]                  | GET       | Gets streaming availability for all songs of the requested artist                                             |
-| 2  | getSongAvailability/{Song_Name]                           | GET       | Gets streaming availability for the requested song
+| ID | URL                                      | METHOD    | DESCRIPTION                                                                      |
+|----|------------------------------------------|-----------|----------------------------------------------------------------------------------|
+| 1  | getArtistSongsAvailability/{Artist_Name} | GET       | Gets streaming availability for all songs of the requested artist                                             |
+| 2  | getSongAvailability/{Song_Name}          | GET       | Gets streaming availability for the requested song
 
 
 ## ASYNCHRONOUS COMMUNICATION

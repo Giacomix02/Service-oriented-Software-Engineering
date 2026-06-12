@@ -14,3 +14,131 @@ services:
       - "openjob-mysql:db"
     depends_on:
       - openjob-mysql
+
+  gateway:
+    build: ./gateway
+    ports:
+      - "9000:9000"
+    environment:
+      CONFIG_SERVER_HOST: config-server
+      CONFIG_SERVER_PORT: 8888
+      EUREKA_SERVER: http://discovery-server:8761/eureka/
+    depends_on:
+      - config-server
+      - discovery-server
+
+
+  legacy-box-office-microservice:
+    build: ./legacy-box-office
+    ports:
+      - "9045-9049:9045"
+    environment:
+      CONFIG_SERVER_HOST: config-server
+      CONFIG_SERVER_PORT: 8888
+      EUREKA_SERVER: http://discovery-server:8761/eureka/
+      MYSQL_HOST: ticketing-mysql:3306
+      MYSQL_DB: ticketing
+      MYSQL_USER: root
+      MYSQL_PASSWORD: root
+    depends_on:
+      - config-server
+      - discovery-server
+      - ticketing-mysql
+    deploy:
+      replicas: 5
+
+  music-stats-microservice:
+    build: ./music-stats
+    ports:
+      - "9050-9055:9050"
+    environment:
+      CONFIG_SERVER_HOST: config-server
+      CONFIG_SERVER_PORT: 8888
+      EUREKA_SERVER: http://discovery-server:8761/eureka/
+      MYSQL_HOST: ticketing-mysql:3306
+      MYSQL_DB: ticketing
+      MYSQL_USER: root
+      MYSQL_PASSWORD: root
+    depends_on:
+      - config-server
+      - discovery-server
+      - ticketing-mysql
+    deploy:
+      replicas: 5
+
+
+  streaming-availability-microservice:
+    build: ./streaming-availability
+    ports:
+      - "9056-9060:9056"
+    environment:
+      CONFIG_SERVER_HOST: config-server
+      CONFIG_SERVER_PORT: 8888
+      EUREKA_SERVER: http://discovery-server:8761/eureka/
+      MYSQL_HOST: ticketing-mysql:3306
+      MYSQL_DB: ticketing
+      MYSQL_USER: root
+      MYSQL_PASSWORD: root
+    depends_on:
+      - config-server
+      - discovery-server
+      - ticketing-mysql
+    deploy:
+      replicas: 5
+
+  ticket-reseller-microservice:
+    build: ./ticket-reseller
+    ports:
+      - "9061-9065:9061"
+    environment:
+      CONFIG_SERVER_HOST: config-server
+      CONFIG_SERVER_PORT: 8888
+      EUREKA_SERVER: http://discovery-server:8761/eureka/
+      MYSQL_HOST: ticketing-mysql:3306
+      MYSQL_DB: ticketing
+      MYSQL_USER: root
+      MYSQL_PASSWORD: root
+    depends_on:
+      - config-server
+      - discovery-server
+      - ticketing-mysql
+    deploy:
+      replicas: 5
+
+  ticket-searcher-microservice:
+    build: ./ticket-searcher
+    ports:
+      - "9066-9070:9066"
+    environment:
+      CONFIG_SERVER_HOST: config-server
+      CONFIG_SERVER_PORT: 8888
+      EUREKA_SERVER: http://discovery-server:8761/eureka/
+      MYSQL_HOST: ticketing-mysql:3306
+      MYSQL_DB: ticketing
+      MYSQL_USER: root
+      MYSQL_PASSWORD: root
+    depends_on:
+      - config-server
+      - discovery-server
+      - ticketing-mysql
+    deploy:
+      replicas: 5
+
+  artist-analyzer-microservice:
+    build: ./artist-analyzer
+    ports:
+      - "9071-9075:9071"
+    environment:
+      CONFIG_SERVER_HOST: config-server
+      CONFIG_SERVER_PORT: 8888
+      EUREKA_SERVER: http://discovery-server:8761/eureka/
+      MYSQL_HOST: ticketing-mysql:3306
+      MYSQL_DB: ticketing
+      MYSQL_USER: root
+      MYSQL_PASSWORD: root
+    depends_on:
+      - config-server
+      - discovery-server
+      - ticketing-mysql
+    deploy:
+      replicas: 5
