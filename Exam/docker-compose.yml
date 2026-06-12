@@ -1,0 +1,16 @@
+services:
+  ticketing-mysql:
+    image: mysql:latest
+    volumes:
+      - mysql-data:/var/lib/mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+
+  ticketing-phpmyadmin:
+    image: phpmyadmin:latest
+    ports:
+      - "8081:80"
+    links:
+      - "openjob-mysql:db"
+    depends_on:
+      - openjob-mysql

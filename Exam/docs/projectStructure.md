@@ -10,14 +10,15 @@
 ### Jakarta
 
 ## ARCHITECTURAL COMPONENTS
-| ID | COMPONENT         | ROLE         | TECHNOLOGY        | DESCRIPTION                                                                                            |
-|----|-------------------|--------------|-------------------|--------------------------------------------------------------------------------------------------------|
-| 1  | API Gateway       | **Gateway**  | Spring            | Acts as the single entry point for all client-to-service interactions. Built with Spring Cloud Gateway |
-| 2  | Ticket Searcher   | **Prosumer** | Spring (REST)     | It queries both ticket providers (4,5)                                                                 |
-| 3  | Artist Analyzer   | **Prosumer** | Spring (REST)     | Fetches the artist's trending tracks and overall information (6)                                       |
-| 4  | Legacy box office | **Provider** | Apache CXF (SOAP) | A service exposing a SOAP interface returning official prices                                          |
-| 5  | Reseller          | **Provider** | Jakarta (REST)    | A service returning secondary market prices                                                            |
-| 6  | Music stats       | **Provider** | Spring (REST)     | A service returning all info about the artist and his songs                                            |
+| ID | COMPONENT         | ROLE              | TECHNOLOGY        | DESCRIPTION                                                                                            |
+|----|-------------------|-------------------|-------------------|--------------------------------------------------------------------------------------------------------|
+| 1  | API Gateway       | **Gateway**       | Spring            | Acts as the single entry point for all client-to-service interactions. Built with Spring Cloud Gateway |
+| 2  | Ticket Searcher   | **Prosumer**      | Spring (REST)     | It queries both ticket providers (4,5)                                                                 |
+| 3  | Artist Analyzer   | **Prosumer**      | Spring (REST)     | Fetches the artist's trending tracks and overall information (6)                                       |
+| 4  | Legacy box office | **Provider**      | Apache CXF (SOAP) | A service exposing a SOAP interface returning official prices                                          |
+| 5  | Reseller          | **Provider**      | Jakarta (REST)    | A service returning secondary market prices                                                            |
+| 6  | Music stats       | **Provider**      | Spring (REST)     | A service returning all info about the artist and his songs                                            |
+| 7  | Load Balancer     | **Load Balancer** | Spring            | Load balancer                                                                                          |
 
 
 ## ARCHITECTURE DIAGRAM
