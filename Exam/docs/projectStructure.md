@@ -6,10 +6,9 @@
 - **Spring Boot version**: 4.0.6
 
 ### Apache CXF
-- **Java version**: 21
 
 ### Jakarta
-- **Java version**: 21
+
 
 ## ARCHITECTURAL COMPONENTS
 | ID | COMPONENT            | ROLE                  | TECHNOLOGY        | DESCRIPTION                                                                                           |
@@ -30,15 +29,16 @@
 ## DB DIAGRAM
 
 > DB diagram for:
-> - Legacy box office
-> - Legacy box office
+> - Music stats
+
 
 ![](./img/musicStatsDB.png)
 
 ---
 
 > DB diagram for:
-> - Music stats
+> - Legacy box office
+> - Reseller
 
 ![](./img/ticketDB.png)
 
@@ -71,6 +71,8 @@
 | Event_Global_ID | int |
 
 > **Ticket ID:** unique for each event, so same ID can't be in reseller and legacy box office
+ 
+> **Event_Global_ID:** unique, in different DBs the same event has the same ID.
 
 > **Relationship Note:** `Event_Global_ID` in the **Ticket** table has a many-to-one relationship (`0,n` to `1,1`) with the `Event_Global_ID` column in the **Event** table.
 
@@ -96,7 +98,7 @@
 | Views | int |
 | ID_Artist | int |
 
-> ** Song ID:** unique, in different DBs the same song has the same ID. For example the Streaming and Music Stats DBs.
+> **Song ID:** unique, in different DBs the same song has the same ID. For example the Streaming and Music Stats DBs.
 
 > **Relationship Note:** `ID_Artist` in the **Song** table has a many-to-one relationship (`0,n` to `1,1`) with the `ID` column in the **Artist** table. 
 
@@ -370,11 +372,12 @@
 | 7  | getArtist/{Artist_Name} | GET       | Search and get an Artist by his Name                                             |
 | 8  | getSong/{Song_Name}     | GET       |  Search and get a Song by its Name
 
-### 7: Streaming Aviability
-| ID | URL                                      | METHOD    | DESCRIPTION                                                                      |
-|----|------------------------------------------|-----------|----------------------------------------------------------------------------------|
-| 1  | getArtistSongsAvailability/{Artist_Name} | GET       | Gets streaming availability for all songs of the requested artist                                             |
-| 2  | getSongAvailability/{Song_Name}          | GET       | Gets streaming availability for the requested song
+### 7: Streaming Aviability (/streamingAvailability)
+| ID | URL                                | METHOD    | DESCRIPTION                                                                      |
+|----|------------------------------------|-----------|----------------------------------------------------------------------------------|
+| 1  | getSongAvailability/{Song_ID}      | GET       | Gets streaming availability for all songs of the requested artist                                             |
+| 2  | getAllSongsForService/{Service_ID} | GET       | Get all songs aviable for a specific streaming service
+| 3  | getAllStreamingServicies           | GET       | Gets all streaming services aviable in the system
 
 
 ## ASYNCHRONOUS COMMUNICATION

@@ -11,9 +11,9 @@ services:
     ports:
       - "8081:80"
     links:
-      - "openjob-mysql:db"
+      - "ticketing-mysql:db"
     depends_on:
-      - openjob-mysql
+      - ticketing-mysql
 
   gateway:
     build: ./gateway
@@ -142,3 +142,5 @@ services:
       - ticketing-mysql
     deploy:
       replicas: 5
+volumes:
+  mysql-data:
