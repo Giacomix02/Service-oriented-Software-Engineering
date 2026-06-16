@@ -1,4 +1,5 @@
-package it.univaq.sose.musicstatsproviderprosumerrest.controller;
+package it.univaq.sose.artistanalyzerprosumerrest.controller;
+
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,17 +11,17 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import it.univaq.sose.musicstatsproviderprosumerrest.model.Song;
-import it.univaq.sose.musicstatsproviderprosumerrest.service.SongService;
+import it.univaq.sose.artistanalyzerprosumerrest.model.Song;
+import it.univaq.sose.artistanalyzerprosumerrest.service.SongService;
 
 @RestController
 @RequestMapping("/song")
 public class SongController {
-    
-	@Autowired
+	
+    @Autowired
 	private final SongService songService;
 
-	@Value("${server.port}")
+    @Value("${server.port}")
 	private String portNumber;
 
     public SongController(SongService songService) {
@@ -28,24 +29,23 @@ public class SongController {
     }
 
 	@GetMapping
-	public ResponseEntity<List<Song>> getAllSongs() {
+	public ResponseEntity<List<Song>> getAll() {
 		System.out.println(portNumber);
 		return new ResponseEntity<List<Song>>(songService.findAll(), HttpStatus.OK);
 	}
 
 	@GetMapping("/{id}")
 	public ResponseEntity<Song> getSongById(@PathVariable("id") Integer id) {
-		System.out.println(portNumber);
 		return new ResponseEntity<Song>(songService.findById(id), HttpStatus.OK);
 	}
 
-	@GetMapping("/byName/{name}")
+	@GetMapping("/byname/{name}")
 	public ResponseEntity<Song> getSongByName(@PathVariable("name") String name) {
 		return new ResponseEntity<Song>(songService.findByName(name), HttpStatus.OK);
 	}
 
-	@GetMapping("/byArtist/{name}")
-	public ResponseEntity<List<Song>> getSongsByArtist(@PathVariable("name") String name) {
+	@GetMapping("/byartist/{name}")
+	public ResponseEntity<List<Song>> getSongsByArtistName(@PathVariable("name") String name) {
 		return new ResponseEntity<List<Song>>(songService.findByArtistName(name), HttpStatus.OK);
 	}
 }

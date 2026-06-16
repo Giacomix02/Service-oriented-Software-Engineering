@@ -349,7 +349,7 @@
 | ID | URL                     | METHOD | DESCRIPTION                                                                                                                                   |
 |----|-------------------------|--------|-----------------------------------------------------------------------------------------------------------------------------------------------|
 | 7  | getArtist/{Artist_Name} | GET    | Search and get an Artist by his Name querying it from Music stats, along with artist songs availabilities fetched from Streaming Availability |
-| 8  | getSong/{Song_Name}     | GET    | Search and get a Song by its Name from Music stats, along with its availability from Streaming Availability                                   |
+| 8  | song/byName/{Song_Name}     | GET    | Search and get a Song by its Name from Music stats, along with its availability from Streaming Availability                                   |
 
 ### 4: Legacy box office
 | ID | URL                                            | METHOD    | DESCRIPTION                                                                      |
@@ -369,8 +369,9 @@
 ### 6: Music stats
 | ID | URL                     | METHOD    | DESCRIPTION                                                                      |
 |----|-------------------------|-----------|----------------------------------------------------------------------------------|
-| 7  | getArtist/{Artist_Name} | GET       | Search and get an Artist by his Name                                             |
-| 8  | getSong/{Song_Name}     | GET       |  Search and get a Song by its Name
+| 7  | artist/byName/{Artist_Name} | GET       | Search and get an Artist by his Name                                             |
+| 8  | song/byName/{Song_Name}     | GET       |  Search and get a Song by its Name
+| ?  | song/byArtist/{Artist_Name}     | GET       |  Search and get a Song by its Name
 
 ### 7: Streaming Aviability (/streamingAvailability)
 | ID | URL                                | METHOD    | DESCRIPTION                                                                      |

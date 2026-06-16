@@ -1,6 +1,6 @@
-package it.univaq.sose.musicstatsproviderprosumerrest.model;
+package it.univaq.sose.artistanalyzerprosumerrest.model;
 
-import it.univaq.sose.musicstatsproviderprosumerrest.model.audit.DateAudit;
+import it.univaq.sose.artistanalyzerprosumerrest.model.audit.DateAudit;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
