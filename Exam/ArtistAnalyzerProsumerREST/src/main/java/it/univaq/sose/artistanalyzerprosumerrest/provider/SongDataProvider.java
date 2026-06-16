@@ -1,6 +1,6 @@
 package it.univaq.sose.artistanalyzerprosumerrest.provider;
 
-import java.net.URI;
+import java.util.List;
 import java.util.concurrent.Future;
 import java.util.stream.Stream;
 
@@ -10,7 +10,6 @@ import org.springframework.web.reactive.function.client.WebClient;
 
 import it.univaq.sose.artistanalyzerprosumerrest.model.Song;
 import it.univaq.sose.artistanalyzerprosumerrest.model.StreamingService;
-import reactor.core.Disposable;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -18,58 +17,81 @@ import reactor.core.publisher.Mono;
 @Component
 public class SongDataProvider {
 
-    @Value("${musicstats.uri}") //TODO if URI doesn't work migrate type to String, it will work anyway
-    String musicStatsBaseURI;
-  
+    @Value("${musicstats.uri}")
+    private String musicStatsBaseURI;
+
     @Value("${streamingavailability.uri}")
-    String streamingAvailabilityBaseURI;
+    private String streamingAvailabilityBaseURI;
 
-    private final WebClient.Builder webClientBuilder = WebClient.builder();
+    private final WebClient webClient;
 
-    public Future<Song> get(Song song) {
-        String uriMS = musicStatsBaseURI.concat(("/song/"+ song.getId()));
-        Mono<Song> songMono = webClientBuilder.build()
-                .get()
-                .uri(uriMS)
-                .retrieve()
-                .bodyToMono(Song.class);
-        String uriSA = streamingAvailabilityBaseURI.concat("/streamingAvailability/getSongAvailability/"+ song.getId());
-        Flux<StreamingService> streamingServices = webClientBuilder.build()
-                .get()
-                .uri(uriSA)
-                .retrieve()
-                .bodyToFlux(StreamingService.class);
-
-        
-        return songMono.map( s -> {
-            s.setStreamingServices(streamingServices.toStream().toList()); 
-            return s;
-        } ).toFuture();       
-
+    // Best Practice: Build the WebClient once in the constructor
+    public SongDataProvider(WebClient.Builder webClientBuilder) {
+        this.webClient = webClientBuilder.build();
     }
 
-
-    public Stream<Song> getAll(String artist){
-        String uriMS = musicStatsBaseURI.concat(("/song/byArtist/"+ artist));
-
-        Flux<Song> songFlux = webClientBuilder.build()
-                .get()
-                .uri(uriMS)
+    public Song getSongById(Integer songId) {
+        return webClient.get()
+                // Use URI variables instead of string concatenation for safety and cleaner code
+                .uri(musicStatsBaseURI + "/song/{id}", songId)
                 .retrieve()
-                .bodyToFlux(Song.class);
-
-        songFlux.subscribe((Song s) -> {
-            String uriSA = streamingAvailabilityBaseURI.concat("/streamingAvailability/getSongAvailability/"+ s.getId());
-            Flux<StreamingService> streamingServices = webClientBuilder.build()
-                .get()
-                .uri(uriSA)
-                .retrieve()
-                .bodyToFlux(StreamingService.class);
-
-            s.setStreamingServices(streamingServices.toStream().toList());
-        });
-        return songFlux.toStream();
-                          
+                .bodyToMono(Song.class)
+                // flatMap chains the next async call AFTER the first one succeeds
+                .flatMap(song ->
+                        webClient.get()
+                                .uri(streamingAvailabilityBaseURI + "/streamingAvailability/getSongAvailability/{id}", songId)
+                                .retrieve()
+                                .bodyToFlux(StreamingService.class)
+                                .collectList() // Converts Flux<StreamingService> to Mono<List<StreamingService>> asynchronously
+                                .map(services -> {
+                                    song.setStreamingServices(services);
+                                    return song;
+                                })
+                )
+                // .block() waits for the entire async chain to finish and returns the actual Song object
+                .block();
     }
-        
+
+    public List<Song> getAllSongs(){
+        return webClient.get()
+                .uri(musicStatsBaseURI + "/song")
+                .retrieve()
+                .bodyToFlux(Song.class)
+                .flatMap(song ->
+                        webClient.get()
+                                .uri(streamingAvailabilityBaseURI + "/streamingAvailability/getSongAvailability/{id}", song.getId())
+                                .retrieve()
+                                .bodyToFlux(StreamingService.class)
+                                .collectList()
+                                .map(services -> {
+                                    song.setStreamingServices(services);
+                                    return song;
+                                })
+                )
+                .collectList()
+                .block();
+    }
+
+    public List<Song> getAllByArtist(String artist) {
+        return webClient.get()
+                .uri(musicStatsBaseURI + "/song/byArtist/{artist}", artist)
+                .retrieve()
+                .bodyToFlux(Song.class)
+                // flatMap handles the concurrent fetching of streaming services for EVERY song in the flux
+                .flatMap(song ->
+                        webClient.get()
+                                .uri(streamingAvailabilityBaseURI + "/streamingAvailability/getSongAvailability/{id}", song.getId())
+                                .retrieve()
+                                .bodyToFlux(StreamingService.class)
+                                .collectList()
+                                .map(services -> {
+                                    song.setStreamingServices(services);
+                                    return song;
+                                })
+                )
+                // Collect all the fully populated Song objects into a List
+                .collectList()
+                // Block until all songs and their respective services are fetched
+                .block();
+    }
 }

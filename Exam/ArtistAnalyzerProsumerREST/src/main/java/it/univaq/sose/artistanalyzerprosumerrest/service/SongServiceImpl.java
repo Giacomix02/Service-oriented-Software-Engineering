@@ -18,40 +18,36 @@ public class SongServiceImpl implements SongService {
     
 
 
-	// @Override
-	// @Transactional(readOnly=true)
-	// public Job findById(Long id) {
-	// 	return repository.findById(id).orElse(null);
-	// }
-
     @Override
-    @Transactional
+    @Transactional(readOnly=true)
     public List<Song> findAll() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'findByArtistByName'");
-        // return songRepository.findAll();
+        return songDataProvider.getAllSongs();
     }
 
     @Override
     @Transactional(readOnly=true)
     public Song findById(int id) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'findByArtistByName'");
-    //    return songRepository.getReferenceById(id);
+        return songDataProvider.getSongById(id);
     }
 
     @Override
-    public Song findByName(String name) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'findByArtistByName'");
-        // Song song = new Song();
-        // song.setName(name);
-        // return songRepository.findByName(name);
+    @Transactional(readOnly=true)
+    public List<Song> findByName(String name) {
+
+        List<Song> filteredSongs = null;
+        List<Song> songs = songDataProvider.getAllSongs();
+        for (Song song : songs) {
+            if (song.getName().contains(name)) {
+                filteredSongs.add(song);
+            }
+        }
+        return filteredSongs;
     }
 
     @Override
+    @Transactional(readOnly=true)
     public List<Song> findByArtistName(String name) {
-        return songDataProvider.getAll(name).toList();
+        return songDataProvider.getAllByArtist(name);
     }
     
 
