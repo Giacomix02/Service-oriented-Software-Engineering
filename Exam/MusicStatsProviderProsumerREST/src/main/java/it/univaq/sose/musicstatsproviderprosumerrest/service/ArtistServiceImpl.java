@@ -6,7 +6,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import it.univaq.sose.musicstatsproviderprosumerrest.model.Artist;
 import it.univaq.sose.musicstatsproviderprosumerrest.repository.ArtistRepository;
+import org.springframework.stereotype.Service;
 
+@Service
 public class ArtistServiceImpl implements ArtistService {
 
     @Autowired

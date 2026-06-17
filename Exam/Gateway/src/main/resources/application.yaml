@@ -6,19 +6,23 @@ server:
 spring:
   cloud:
     gateway:
-      routes:
-        - id: music_stats_route
-          uri: http://${MUSIC_STATS_HOST}:{MUSIC_STATS_PORT}
-          predicates:
-          - Path=/api/stats/**
-          filters:
-          - RewritePath=/api/stats(?<segment>), $\{segment}
-        - id: artist_analyzer_route
-          uri: http://${ARTIST_ANALYZER_HOST}:${ARTIST_ANALYZER_PORT}
-          predicates:
-          - Path=/api/analyze/**
-          filters:
-            - RewritePath=/api/analyze(?<segment>), /artist-analyzer$\{segment}
+      server:
+        webmvc:
+          routes:
+            - id: music_stats_route
+              uri: http://${MUSIC_STATS_HOST}:${MUSIC_STATS_PORT}
+              predicates:
+                - Path=/api/stats/**
+              filters:
+                - RewritePath=/api/stats/(?<segment>.*), /$\{segment}
+                - logPath
+            - id: artist_analyzer_route
+              uri: http://${ARTIST_ANALYZER_HOST}:${ARTIST_ANALYZER_PORT}
+              predicates:
+                - Path=/api/analyze/**
+              filters:
+                - RewritePath=/api/analyze/(?<segment>.*), /artist-analyzer/$\{segment}
+                - logPath
 
 # Spring Boot Actuator configuration
 management:

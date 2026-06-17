@@ -22,10 +22,6 @@ public class StreamingService extends DateAudit {
     @Column(nullable = false)
     private String description;
 
-    // Relation towards Aviability
-    @OneToMany(mappedBy = "streamingService", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Availability> availabilities;
-
     public StreamingService() {}
 
     // Getters and Setters
@@ -37,9 +33,6 @@ public class StreamingService extends DateAudit {
 
     public String getDescription() { return description; }
     public void setDescription(String description) { this.description = description; }
-
-    public List<Availability> getAvailabilities() { return availabilities; }
-    public void setAvailabilities(List<Availability> availabilities) { this.availabilities = availabilities; }
 
 
 }

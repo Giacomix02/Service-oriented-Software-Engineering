@@ -60,7 +60,7 @@ services:
   music-stats-microservice:
     build: ./MusicStatsProviderProsumerREST
     ports:
-      - "9050-9055:9050"
+      - "9050:9050"
     environment:
       SERVER_PORT: 9050
       CONFIG_SERVER_HOST: config-server
@@ -80,7 +80,7 @@ services:
   streaming-availability-microservice:
     build: ./StreamingAvailabilityProsumerREST
     ports:
-      - "9056-9060:9056"
+      - "9056:9056"
     environment:
       SERVER_PORT: 9056
       CONFIG_SERVER_HOST: config-server
@@ -135,7 +135,7 @@ services:
   artist-analyzer-microservice:
     build: ./ArtistAnalyzerProsumerREST
     ports:
-      - "9071-9075:9071"
+      - "9071:9071"
     environment:
       MUSIC_STATS_HOST: music-stats-microservice
       MUSIC_STATS_PORT: 9050

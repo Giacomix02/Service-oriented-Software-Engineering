@@ -76,7 +76,7 @@ public class Song extends DateAudit{
         this.artist = artist;
     }
 
-        public List<StreamingService> getStreamingServices() {
+    public List<StreamingService> getStreamingServices() {
         return streamingServices;
     }
 
