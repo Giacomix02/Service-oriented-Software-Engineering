@@ -24,15 +24,19 @@ services:
     depends_on:
       - ticketing-mysql
 
-#  gateway:
-#    build: ./Gateway
-#    ports:
-#      - "9000:9000"
-#    environment:
-#      SERVER_PORT: 9000
-#      CONFIG_SERVER_HOST: config-server
-#      CONFIG_SERVER_PORT: 8888
-#      EUREKA_SERVER: http://discovery-server:8761/eureka/
+  gateway:
+    build: ./Gateway
+    ports:
+      - "9000:9000"
+    environment:
+      MUSIC_STATS_HOST: music-stats-microservice
+      MUSIC_STATS_PORT: 9050
+      ARTIST_ANALYZER_HOST: artist-analyzer-microservice
+      ARTIST_ANALYZER_PORT: 9071
+      SERVER_PORT: 9000
+      CONFIG_SERVER_HOST: config-server
+      CONFIG_SERVER_PORT: 8888
+      EUREKA_SERVER: http://discovery-server:8761/eureka/
 
 
 #  legacy-box-office-microservice:

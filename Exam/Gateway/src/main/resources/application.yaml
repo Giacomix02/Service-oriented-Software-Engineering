@@ -1,0 +1,35 @@
+# Port of the gateway
+server:
+  port: ${SERVER_PORT}
+  
+# Gateway configuration
+spring:
+  cloud:
+    gateway:
+      routes:
+        - id: music_stats_route
+          uri: http://${MUSIC_STATS_HOST}:{MUSIC_STATS_PORT}
+          predicates:
+          - Path=/api/stats/**
+          filters:
+          - RewritePath=/api/stats(?<segment>), $\{segment}
+        - id: artist_analyzer_route
+          uri: http://${ARTIST_ANALYZER_HOST}:${ARTIST_ANALYZER_PORT}
+          predicates:
+          - Path=/api/analyze/**
+          filters:
+            - RewritePath=/api/analyze(?<segment>), /artist-analyzer$\{segment}
+
+# Spring Boot Actuator configuration
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info
+
+# Application info
+info:
+  application:
+    name: Api Gateway
+    description: GigSync Api Gateway
+    version: 1.0.0
