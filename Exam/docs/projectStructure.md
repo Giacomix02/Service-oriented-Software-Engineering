@@ -372,14 +372,15 @@
 | 6  | getTicket/{Event_Global_ID}/{Ticket_ID} | GET/POST? | Get Ticket info by his ID and the Event. **IF IS A POST WE HAVE TO SEND A JSON** |
 
 ### 6: Music stats
-| ID | URL                     | METHOD    | DESCRIPTION                                                                      |
-|----|-------------------------|-----------|----------------------------------------------------------------------------------|                                         
-| 1 | songs | GET | Get all songs |
-| 2  | songs/by-name/{Song_Name}     | GET       |  Search and get a Song by its Name
-| 3  | songs/by-artist/{Artist_Name}     | GET       |  Search and get a Song by its Name
-| 4 | artists | GET | Get all artists |
-| 5 | artists/{id} | GET | Get an artist by their id
+| ID | URL                           | METHOD    | DESCRIPTION                          |
+|----|-------------------------------|-----------|--------------------------------------|                                         
+| 1  | songs                         | GET | Get all songs                        |
+| 2  | songs/by-name/{Song_Name}     | GET       | Search and get a Song by its Name    
+| 3  | songs/by-artist/{Artist_Name} | GET       | Search and get a Song by its Name    
+| 4  | artists                       | GET | Get all artists                      |
+| 5  | artists/{id}                  | GET | Get an artist by their id            
 | 6  | artists/by-name/{Artist_Name} | GET       | Search and get an Artist by his Name |
+| 7  | songs/{id}                    | GET       | get a song by its id                 |
 
 ### 7: Streaming Aviability (/streaming-availability/)
 | ID | URL                                | METHOD    | DESCRIPTION                                                                      |

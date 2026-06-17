@@ -33,7 +33,7 @@ public class SongServiceImpl implements SongService {
     @Override
     @Transactional(readOnly=true)
     public Song findById(int id) {
-       return songRepository.getReferenceById(id);
+       return songRepository.findById(id).orElse(null);
     }
 
     @Override

@@ -14,7 +14,6 @@ import jakarta.persistence.Table;
 public class Song extends DateAudit{
     
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "id")
     private int id;
 
