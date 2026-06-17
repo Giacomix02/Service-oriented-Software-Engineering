@@ -2,8 +2,6 @@ package it.univaq.sose.artistanalyzerprosumerrest.provider;
 
 import java.util.List;
 import java.util.concurrent.Future;
-import java.util.stream.Stream;
-
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.client.WebClient;
@@ -11,8 +9,6 @@ import org.springframework.web.reactive.function.client.WebClient;
 import it.univaq.sose.artistanalyzerprosumerrest.model.Artist;
 import it.univaq.sose.artistanalyzerprosumerrest.model.Song;
 import it.univaq.sose.artistanalyzerprosumerrest.model.StreamingService;
-import reactor.core.publisher.Flux;
-import reactor.core.publisher.Mono;
 
 
 @Component

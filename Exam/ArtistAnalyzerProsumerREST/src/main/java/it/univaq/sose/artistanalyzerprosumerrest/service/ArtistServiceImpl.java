@@ -2,12 +2,11 @@ package it.univaq.sose.artistanalyzerprosumerrest.service;
 
 import java.util.List;
 
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import it.univaq.sose.artistanalyzerprosumerrest.model.Artist;
-import it.univaq.sose.artistanalyzerprosumerrest.model.Song;
-import it.univaq.sose.artistanalyzerprosumerrest.provider.ArtistDataProvider;
 import it.univaq.sose.artistanalyzerprosumerrest.provider.MusicStatsDataProvider;
 
 @Service

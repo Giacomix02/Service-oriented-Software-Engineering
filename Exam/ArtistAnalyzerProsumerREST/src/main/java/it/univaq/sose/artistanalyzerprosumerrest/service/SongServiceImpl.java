@@ -1,4 +1,5 @@
 package it.univaq.sose.artistanalyzerprosumerrest.service;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,7 +35,7 @@ public class SongServiceImpl implements SongService {
     @Transactional(readOnly=true)
     public List<Song> findByName(String name) {
 
-        List<Song> filteredSongs = null;
+        List<Song> filteredSongs = new ArrayList<Song>();
         List<Song> songs = songDataProvider.getAllSongs();
         for (Song song : songs) {
             if (song.getName().contains(name)) {

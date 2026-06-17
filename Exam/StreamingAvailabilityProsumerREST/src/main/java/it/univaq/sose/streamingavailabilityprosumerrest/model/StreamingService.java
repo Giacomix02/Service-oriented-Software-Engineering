@@ -3,8 +3,6 @@ package it.univaq.sose.streamingavailabilityprosumerrest.model;
 import it.univaq.sose.streamingavailabilityprosumerrest.model.Audit.DateAudit;
 import jakarta.persistence.*;
 
-import java.util.List;
-
 @Entity
 @Table(name= "streaming_service")
 

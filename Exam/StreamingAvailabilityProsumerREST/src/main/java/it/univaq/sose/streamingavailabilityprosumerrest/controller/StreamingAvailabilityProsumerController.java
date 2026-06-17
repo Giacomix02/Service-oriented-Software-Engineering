@@ -3,7 +3,6 @@ package it.univaq.sose.streamingavailabilityprosumerrest.controller;
 import it.univaq.sose.streamingavailabilityprosumerrest.model.Song;
 import it.univaq.sose.streamingavailabilityprosumerrest.model.StreamingService;
 import it.univaq.sose.streamingavailabilityprosumerrest.service.AvailabilityService;
-import it.univaq.sose.streamingavailabilityprosumerrest.service.SongService;
 import it.univaq.sose.streamingavailabilityprosumerrest.service.StreamingServiceService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -22,9 +21,7 @@ public class StreamingAvailabilityProsumerController {
     @Autowired
     private AvailabilityService availabilityService;
 
-    @Autowired
-    private SongService songService;
-
+ 
     @Autowired
     private StreamingServiceService streamingServiceService;
 
