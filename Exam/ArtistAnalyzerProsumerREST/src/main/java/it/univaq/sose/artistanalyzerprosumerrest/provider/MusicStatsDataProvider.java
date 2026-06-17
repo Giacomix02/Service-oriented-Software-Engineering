@@ -30,13 +30,13 @@ public class MusicStatsDataProvider {
     public Song getSongById(Integer songId) {
         return webClient.get()
                 // Use URI variables instead of string concatenation for safety and cleaner code
-                .uri(musicStatsBaseURI + "/song/{id}", songId)
+                .uri(musicStatsBaseURI + "/songs/{id}", songId)
                 .retrieve()
                 .bodyToMono(Song.class)
                 // flatMap chains the next async call AFTER the first one succeeds
                 .flatMap(song ->
                         webClient.get()
-                                .uri(streamingAvailabilityBaseURI + "/streamingAvailability/getSongAvailability/{id}", songId)
+                                .uri(streamingAvailabilityBaseURI + "/streaming-availability/get-song-availability/{id}", songId)
                                 .retrieve()
                                 .bodyToFlux(StreamingService.class)
                                 .collectList() // Converts Flux<StreamingService> to Mono<List<StreamingService>> asynchronously
@@ -51,12 +51,12 @@ public class MusicStatsDataProvider {
 
     public List<Song> getAllSongs(){
         return webClient.get()
-                .uri(musicStatsBaseURI + "/song")
+                .uri(musicStatsBaseURI + "/songs")
                 .retrieve()
                 .bodyToFlux(Song.class)
                 .flatMap(song ->
                         webClient.get()
-                                .uri(streamingAvailabilityBaseURI + "/streamingAvailability/getSongAvailability/{id}", song.getId())
+                                .uri(streamingAvailabilityBaseURI + "/streaming-availability/get-song-availability/{id}", song.getId())
                                 .retrieve()
                                 .bodyToFlux(StreamingService.class)
                                 .collectList()
@@ -71,13 +71,13 @@ public class MusicStatsDataProvider {
 
     public List<Song> getAllByArtist(String artist) {
         return webClient.get()
-                .uri(musicStatsBaseURI + "/song/byArtist/{artist}", artist)
+                .uri(musicStatsBaseURI + "/songs/by-artist/{artist}", artist)
                 .retrieve()
                 .bodyToFlux(Song.class)
                 // flatMap handles the concurrent fetching of streaming services for EVERY song in the flux
                 .flatMap(song ->
                         webClient.get()
-                                .uri(streamingAvailabilityBaseURI + "/streamingAvailability/getSongAvailability/{id}", song.getId())
+                                .uri(streamingAvailabilityBaseURI + "/streaming-availability/get-song-availability/{id}", song.getId())
                                 .retrieve()
                                 .bodyToFlux(StreamingService.class)
                                 .collectList()
@@ -104,7 +104,7 @@ public class MusicStatsDataProvider {
 
 
     public Future<Artist> getArtistByName(Artist artist){
-        String uri = musicStatsBaseURI + "/artists/name/"+artist.getName();
+        String uri = musicStatsBaseURI + "/artists/by-name/"+artist.getName();
         return webClient
                 .get()
                 .uri(uri)

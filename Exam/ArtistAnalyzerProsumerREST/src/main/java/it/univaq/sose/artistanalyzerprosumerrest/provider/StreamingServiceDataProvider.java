@@ -27,7 +27,7 @@ public class StreamingServiceDataProvider {
 
     public List<StreamingService> getAllStreamingServices() {
         return webClient.get()
-                .uri(streamingAvailabilityBaseURI + "/getAllStreamingServicies")
+                .uri(streamingAvailabilityBaseURI + "/get-all-streaming-services")
                 .retrieve()
                 .bodyToFlux(StreamingService.class)
                 .collectList() // Converts Flux<StreamingService> to Mono<List<StreamingService>> asynchronously
