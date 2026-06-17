@@ -14,7 +14,7 @@ public class Artist extends DateAudit{
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "artist_id")
+	@Column(name = "id")
     private int id;
 
     @Column

@@ -6,13 +6,12 @@ import jakarta.persistence.*;
 import java.util.List;
 
 @Entity
-@Table(name= "Streaming_Service")
+@Table(name= "streaming_service")
 
 public class StreamingService extends DateAudit {
     private static final long serialVersionUID = -3246829878748726299L;
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
     @Column(nullable = false)
@@ -20,10 +19,6 @@ public class StreamingService extends DateAudit {
 
     @Column(nullable = false)
     private String description;
-
-    // Relation towards Aviability
-    @OneToMany(mappedBy = "streamingService", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Availability> availabilities;
 
     public StreamingService() {}
 
@@ -36,9 +31,5 @@ public class StreamingService extends DateAudit {
 
     public String getDescription() { return description; }
     public void setDescription(String description) { this.description = description; }
-
-    public List<Availability> getAvailabilities() { return availabilities; }
-    public void setAvailabilities(List<Availability> availabilities) { this.availabilities = availabilities; }
-
 
 }

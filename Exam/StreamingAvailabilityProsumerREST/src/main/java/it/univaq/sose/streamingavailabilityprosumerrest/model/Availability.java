@@ -1,10 +1,11 @@
 package it.univaq.sose.streamingavailabilityprosumerrest.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import it.univaq.sose.streamingavailabilityprosumerrest.model.Audit.DateAudit;
 import jakarta.persistence.*;
 
 @Entity
-@Table(name= "Availability")
+@Table(name= "availability")
 
 public class Availability extends DateAudit {
     private static final long serialVersionUID = -3246829878748768308L;
@@ -15,10 +16,12 @@ public class Availability extends DateAudit {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_song", nullable = false)
+    @JsonIgnoreProperties("availabilities")
     private Song song;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_streaming_service", nullable = false)
+    @JsonIgnoreProperties("availabilities")
     private StreamingService streamingService;
 
     public Availability() {}

@@ -1,10 +1,19 @@
 services:
   ticketing-mysql:
     image: mysql:latest
+    ports:
+      - "3306:3306"
     volumes:
       - mysql-data:/var/lib/mysql
+      - ./DB/infos.sql:/docker-entrypoint-initdb.d/1_infos.sql
+      - ./DB/streaming.sql:/docker-entrypoint-initdb.d/2_streaming.sql
     environment:
       MYSQL_ROOT_PASSWORD: root
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-proot"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
 
   ticketing-phpmyadmin:
     image: phpmyadmin:latest
@@ -15,132 +24,131 @@ services:
     depends_on:
       - ticketing-mysql
 
-  gateway:
-    build: ./gateway
-    ports:
-      - "9000:9000"
-    environment:
-      CONFIG_SERVER_HOST: config-server
-      CONFIG_SERVER_PORT: 8888
-      EUREKA_SERVER: http://discovery-server:8761/eureka/
-    depends_on:
-      - config-server
-      - discovery-server
+#  gateway:
+#    build: ./Gateway
+#    ports:
+#      - "9000:9000"
+#    environment:
+#      SERVER_PORT: 9000
+#      CONFIG_SERVER_HOST: config-server
+#      CONFIG_SERVER_PORT: 8888
+#      EUREKA_SERVER: http://discovery-server:8761/eureka/
 
 
-  legacy-box-office-microservice:
-    build: ./legacy-box-office
-    ports:
-      - "9045-9049:9045"
-    environment:
-      CONFIG_SERVER_HOST: config-server
-      CONFIG_SERVER_PORT: 8888
-      EUREKA_SERVER: http://discovery-server:8761/eureka/
-      MYSQL_HOST: ticketing-mysql:3306
-      MYSQL_DB: ticketing
-      MYSQL_USER: root
-      MYSQL_PASSWORD: root
-    depends_on:
-      - config-server
-      - discovery-server
-      - ticketing-mysql
-    deploy:
-      replicas: 5
+#  legacy-box-office-microservice:
+#    build: ./LegacyBoxOfficeProviderSOAP
+#    ports:
+#      - "9045-9049:9045"
+#    environment:
+#      SERVER_PORT: 9045
+#      CONFIG_SERVER_HOST: config-server
+#      CONFIG_SERVER_PORT: 8888
+#      EUREKA_SERVER: http://discovery-server:8761/eureka/
+#      MYSQL_HOST: ticketing-mysql:3306
+#      MYSQL_DB: ticketing
+#      MYSQL_USER: root
+#      MYSQL_PASSWORD: root
+#    depends_on:
+#      - ticketing-mysql
+#    deploy:
+#      replicas: 1
 
   music-stats-microservice:
-    build: ./music-stats
+    build: ./MusicStatsProviderProsumerREST
     ports:
       - "9050-9055:9050"
     environment:
+      SERVER_PORT: 9050
       CONFIG_SERVER_HOST: config-server
       CONFIG_SERVER_PORT: 8888
       EUREKA_SERVER: http://discovery-server:8761/eureka/
       MYSQL_HOST: ticketing-mysql:3306
-      MYSQL_DB: ticketing
+      MYSQL_DB: MusicStats
       MYSQL_USER: root
       MYSQL_PASSWORD: root
     depends_on:
-      - config-server
-      - discovery-server
-      - ticketing-mysql
+      ticketing-mysql:
+        condition: service_healthy
     deploy:
-      replicas: 5
+      replicas: 1
 
 
   streaming-availability-microservice:
-    build: ./streaming-availability
+    build: ./StreamingAvailabilityProsumerREST
     ports:
       - "9056-9060:9056"
     environment:
+      SERVER_PORT: 9056
       CONFIG_SERVER_HOST: config-server
       CONFIG_SERVER_PORT: 8888
       EUREKA_SERVER: http://discovery-server:8761/eureka/
       MYSQL_HOST: ticketing-mysql:3306
-      MYSQL_DB: ticketing
+      MYSQL_DB: StreamingAvailability
       MYSQL_USER: root
       MYSQL_PASSWORD: root
     depends_on:
-      - config-server
-      - discovery-server
-      - ticketing-mysql
+      ticketing-mysql:
+        condition: service_healthy
     deploy:
-      replicas: 5
+      replicas: 1
 
-  ticket-reseller-microservice:
-    build: ./ticket-reseller
-    ports:
-      - "9061-9065:9061"
-    environment:
-      CONFIG_SERVER_HOST: config-server
-      CONFIG_SERVER_PORT: 8888
-      EUREKA_SERVER: http://discovery-server:8761/eureka/
-      MYSQL_HOST: ticketing-mysql:3306
-      MYSQL_DB: ticketing
-      MYSQL_USER: root
-      MYSQL_PASSWORD: root
-    depends_on:
-      - config-server
-      - discovery-server
-      - ticketing-mysql
-    deploy:
-      replicas: 5
+#  ticket-reseller-microservice:
+#    build: ./TicketResellerProviderREST
+#    ports:
+#      - "9061-9065:9061"
+#    environment:
+#      SERVER_PORT: 9061
+#      CONFIG_SERVER_HOST: config-server
+#      CONFIG_SERVER_PORT: 8888
+#      EUREKA_SERVER: http://discovery-server:8761/eureka/
+#      MYSQL_HOST: ticketing-mysql:3306
+#      MYSQL_DB: ticketing
+#      MYSQL_USER: root
+#      MYSQL_PASSWORD: root
+#    depends_on:
+#      - ticketing-mysql
+#    deploy:
+#      replicas: 1
 
-  ticket-searcher-microservice:
-    build: ./ticket-searcher
-    ports:
-      - "9066-9070:9066"
-    environment:
-      CONFIG_SERVER_HOST: config-server
-      CONFIG_SERVER_PORT: 8888
-      EUREKA_SERVER: http://discovery-server:8761/eureka/
-      MYSQL_HOST: ticketing-mysql:3306
-      MYSQL_DB: ticketing
-      MYSQL_USER: root
-      MYSQL_PASSWORD: root
-    depends_on:
-      - config-server
-      - discovery-server
-      - ticketing-mysql
-    deploy:
-      replicas: 5
+#  ticket-searcher-microservice:
+#    build: ./TicketSearcherProsumerREST
+#    ports:
+#      - "9066-9070:9066"
+#    environment:
+#      SERVER_PORT: 9066
+#      CONFIG_SERVER_HOST: config-server
+#      CONFIG_SERVER_PORT: 8888
+#      EUREKA_SERVER: http://discovery-server:8761/eureka/
+#      MYSQL_HOST: ticketing-mysql:3306
+#      MYSQL_DB: ticketing
+#      MYSQL_USER: root
+#      MYSQL_PASSWORD: root
+#    depends_on:
+#      - ticketing-mysql
+#    deploy:
+#      replicas: 1
 
   artist-analyzer-microservice:
-    build: ./artist-analyzer
+    build: ./ArtistAnalyzerProsumerREST
     ports:
       - "9071-9075:9071"
     environment:
+      MUSIC_STATS_HOST: music-stats-microservice
+      MUSIC_STATS_PORT: 9050
+      STREAMING_AVAILABILITY_HOST: streaming-availability-microservice
+      STREAMING_AVAILABILITY_PORT: 9056
+      SERVER_PORT: 9071
       CONFIG_SERVER_HOST: config-server
       CONFIG_SERVER_PORT: 8888
       EUREKA_SERVER: http://discovery-server:8761/eureka/
-      MYSQL_HOST: ticketing-mysql:3306
-      MYSQL_DB: ticketing
-      MYSQL_USER: root
-      MYSQL_PASSWORD: root
+#      MYSQL_HOST: ticketing-mysql:3306
+#      MYSQL_DB: ticketing
+#      MYSQL_USER: root
+#      MYSQL_PASSWORD: root
     depends_on:
-      - config-server
-      - discovery-server
-      - ticketing-mysql
+      ticketing-mysql:
+        condition: service_healthy
     deploy:
-      replicas: 5
+      replicas: 1
 volumes:
   mysql-data:

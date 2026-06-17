@@ -15,7 +15,7 @@ public class Song extends DateAudit{
     
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "song_id")
+	@Column(name = "id")
     private int id;
 
     @Column

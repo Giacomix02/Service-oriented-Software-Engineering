@@ -29,23 +29,25 @@ public class SongController {
 
 	@GetMapping
 	public ResponseEntity<List<Song>> getAllSongs() {
-		System.out.println(portNumber);
+		System.out.println("---- Give all Songs requested ----");
 		return new ResponseEntity<List<Song>>(songService.findAll(), HttpStatus.OK);
 	}
 
 	@GetMapping("/{id}")
 	public ResponseEntity<Song> getSongById(@PathVariable("id") Integer id) {
-		System.out.println(portNumber);
+		System.out.println("---- Search Song by id requested ----");
 		return new ResponseEntity<Song>(songService.findById(id), HttpStatus.OK);
 	}
 
 	@GetMapping("/byName/{name}")
 	public ResponseEntity<Song> getSongByName(@PathVariable("name") String name) {
+		System.out.println("---- Search Song by name requested ----");
 		return new ResponseEntity<Song>(songService.findByName(name), HttpStatus.OK);
 	}
 
 	@GetMapping("/byArtist/{name}")
 	public ResponseEntity<List<Song>> getSongsByArtist(@PathVariable("name") String name) {
+		System.out.println("---- Search Songs by artist name requested ----");
 		return new ResponseEntity<List<Song>>(songService.findByArtistName(name), HttpStatus.OK);
 	}
 }

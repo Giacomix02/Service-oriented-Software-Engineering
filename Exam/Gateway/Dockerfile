@@ -1,6 +1,6 @@
 FROM maven:3.9.16-eclipse-temurin-26
 
-WORKDIR /LegacyBoxOfficeProviderSOAP
+WORKDIR /Gateway
 COPY  . .
 
 RUN mvn clean install
