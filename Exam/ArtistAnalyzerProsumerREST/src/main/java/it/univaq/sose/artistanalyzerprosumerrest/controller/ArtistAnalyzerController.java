@@ -45,6 +45,11 @@ public class ArtistAnalyzerController {
 		return new ResponseEntity<>(artistService.findAll(), HttpStatus.OK);
 	}
 
+	@GetMapping("artists/{id}")
+	public ResponseEntity<Artist> getArtistById(@PathVariable int id) {
+		return new ResponseEntity<>(artistService.findById(id), HttpStatus.OK);
+	}
+
 	// Get all songs
 	@GetMapping("songs")
 	public ResponseEntity<List<Song>> getAllSongs() {

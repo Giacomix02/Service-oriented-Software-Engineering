@@ -21,20 +21,17 @@ public class ArtistServiceImpl implements ArtistService {
 
     @Override
     public List<Artist> findAll() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'findAll'");
+        return musicStatsDataProvider.getAllArtists();
     }
 
     @Override
     public Artist findById(int id) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'findById'");
+        return musicStatsDataProvider.getArtistById(id);
     }
 
     @Override
     public Artist findByName(String name) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'findByName'");
+        return musicStatsDataProvider.getArtistByName(name);
     }
 
     // @Override

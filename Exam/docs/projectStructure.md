@@ -346,14 +346,15 @@
 | 6  | getTicket/{Event_Global_ID}/{Ticket_ID} | GET/POST? | Get Ticket info by his ID and the Event. Fetching it from either the Legacy box office or resellers  **IF IS A POST WE HAVE TO SEND A JSON** |
 
 ### 3: Artist Analyzer (/artist-analyzer/)
-| ID | URL                     | METHOD | DESCRIPTION                                                                                                                                   |
-|----|-------------------------|--------|-----------------------------------------------------------------------------------------------------------------------------------------------|
-| 1 | artists | GET | Get all artists |
-| 2 | songs | GET | Get all songs |
-| 3 | songs/{id} | GET | Get a song by its id |
-| 4 | songs/by-name/{name} | GET | Get songs by name |
-| 5 | songs/by-artist/{name} | GET | Get songs by their artist's name |
-| 6 | streaming-services | GET | Get all available streaming services |
+| ID | URL                    | METHOD | DESCRIPTION                          |
+|----|------------------------|--------|--------------------------------------|
+| 1  | artists                | GET    | Get all artists                      |
+| 2  | songs                  | GET    | Get all songs                        |
+| 3  | songs/{id}             | GET    | Get a song by its id                 |
+| 4  | songs/by-name/{name}   | GET    | Get songs by name                    |
+| 5  | songs/by-artist/{name} | GET    | Get songs by their artist's name     |
+| 6  | streaming-services     | GET    | Get all available streaming services |
+| 7  | artists/{id}           | GET    | Get artist by its id                 |
 
 
 ### 4: Legacy box office
@@ -372,23 +373,23 @@
 | 6  | getTicket/{Event_Global_ID}/{Ticket_ID} | GET/POST? | Get Ticket info by his ID and the Event. **IF IS A POST WE HAVE TO SEND A JSON** |
 
 ### 6: Music stats
-| ID | URL                           | METHOD    | DESCRIPTION                          |
-|----|-------------------------------|-----------|--------------------------------------|                                         
-| 1  | songs                         | GET | Get all songs                        |
-| 2  | songs/by-name/{Song_Name}     | GET       | Search and get a Song by its Name    
-| 3  | songs/by-artist/{Artist_Name} | GET       | Search and get a Song by its Name    
-| 4  | artists                       | GET | Get all artists                      |
-| 5  | artists/{id}                  | GET | Get an artist by their id            
-| 6  | artists/by-name/{Artist_Name} | GET       | Search and get an Artist by his Name |
-| 7  | songs/{id}                    | GET       | get a song by its id                 |
+| ID | URL                           | METHOD | DESCRIPTION                          |
+|----|-------------------------------|--------|--------------------------------------|                                         
+| 1  | songs                         | GET    | Get all songs                        |
+| 2  | songs/by-name/{Song_Name}     | GET    | Search and get a Song by its Name    |
+| 3  | songs/by-artist/{Artist_Name} | GET    | Search and get a Song by its Name    |
+| 4  | artists                       | GET    | Get all artists                      |
+| 5  | artists/{id}                  | GET    | Get an artist by their id            |
+| 6  | artists/by-name/{Artist_Name} | GET    | Search and get an Artist by his Name |
+| 7  | songs/{id}                    | GET    | get a song by its id                 |
+
 
 ### 7: Streaming Aviability (/streaming-availability/)
-| ID | URL                                | METHOD    | DESCRIPTION                                                                      |
-|----|------------------------------------|-----------|----------------------------------------------------------------------------------|
-| 1  | get-song-availability/{Song_ID}      | GET       | Gets streaming availability for all songs of the requested artist                                             |
-| 2  | get-all-songs-for-service/{Service_ID} | GET       | Get all songs aviable for a specific streaming service
-| 3  | get-all-streaming-services           | GET       | Gets all streaming services aviable in the system
-
+| ID | URL                                    | METHOD | DESCRIPTION                                                       |
+|----|----------------------------------------|--------|-------------------------------------------------------------------|
+| 1  | get-song-availability/{Song_ID}        | GET    | Gets streaming availability for all songs of the requested artist |
+| 2  | get-all-songs-for-service/{Service_ID} | GET    | Get all songs aviable for a specific streaming service            |
+| 3  | get-all-streaming-services             | GET    | Gets all streaming services aviable in the system                 |
 
 ## ASYNCHRONOUS COMMUNICATION
 The asyncronus communication is implemented inside the **Ticket Provider** that has to call two different services (4,5) to get the price of the tickets and get the aviable events.

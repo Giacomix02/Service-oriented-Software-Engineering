@@ -1,7 +1,6 @@
 package it.univaq.sose.artistanalyzerprosumerrest.provider;
 
 import java.util.List;
-import java.util.concurrent.Future;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.client.WebClient;
@@ -92,23 +91,35 @@ public class MusicStatsDataProvider {
                 .block();
     }
 
-    public Future<Artist> getArtistById(Artist artist) {
-        String uri = musicStatsBaseURI + "/artists/"+artist.getId();
+    public Artist getArtistById(int id) {
         return webClient
                 .get()
-                .uri(uri)
+                .uri(musicStatsBaseURI + "/artists/{id}", id)
                 .retrieve()
-                .bodyToMono(Artist.class).toFuture();
+                .bodyToMono(Artist.class)
+                .block();
 
     }
 
 
-    public Future<Artist> getArtistByName(Artist artist){
-        String uri = musicStatsBaseURI + "/artists/by-name/"+artist.getName();
+    public Artist getArtistByName(String name){
         return webClient
                 .get()
-                .uri(uri)
+                .uri(musicStatsBaseURI + "/artists/by-name/{name}", name)
                 .retrieve()
-                .bodyToMono(Artist.class).toFuture();
+                .bodyToMono(Artist.class)
+                .block();
     }
+
+
+    public List<Artist> getAllArtists(){
+        return webClient
+                .get()
+                .uri(musicStatsBaseURI + "/artists")
+                .retrieve()
+                .bodyToFlux(Artist.class)
+                .collectList()
+                .block();
+    }
+
 }
