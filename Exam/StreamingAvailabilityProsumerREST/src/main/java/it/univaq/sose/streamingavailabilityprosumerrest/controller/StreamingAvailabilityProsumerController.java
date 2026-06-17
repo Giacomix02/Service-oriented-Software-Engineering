@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 @RestController
-@RequestMapping("/streamingAvailability")
+@RequestMapping("/streaming-availability")
 public class StreamingAvailabilityProsumerController {
 
     @Autowired
@@ -28,19 +28,19 @@ public class StreamingAvailabilityProsumerController {
     @Value("${server.port}")
     private String portNumber;
 
-    @GetMapping("getSongAvailability/{Song_ID}")
+    @GetMapping("get-song-availability/{Song_ID}")
     public ResponseEntity<List<StreamingService>> getSongAvailability(@PathVariable Integer Song_ID) {
         System.out.println("--------- getSongAvailability requested ---------");
         return ResponseEntity.ok(availabilityService.getAviableServicesForSong(Song_ID));
     }
 
-    @GetMapping("getAllSongsForService/{Service_ID}")
+    @GetMapping("get-all-songs-for-service/{Service_ID}")
     public ResponseEntity<List<Song>> getAllSongsForService(@PathVariable Integer Service_ID) {
         System.out.println("--------- getAllSongsForService requested ---------");
         return ResponseEntity.ok(availabilityService.getAviableSongsForService(Service_ID));
     }
 
-    @GetMapping("getAllStreamingServices")
+    @GetMapping("get-all-streaming-services")
     public ResponseEntity<List<StreamingService>> getAllStreamingServices() {
         System.out.println("--------- getAllStreamingServices requested ---------");
         return ResponseEntity.ok(streamingServiceService.getAll());

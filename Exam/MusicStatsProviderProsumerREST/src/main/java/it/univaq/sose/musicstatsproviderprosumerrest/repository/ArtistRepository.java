@@ -9,5 +9,7 @@ import it.univaq.sose.musicstatsproviderprosumerrest.model.Artist;
 @Repository
 public interface ArtistRepository extends JpaRepository<Artist, Integer> {
 
+    Artist findByName(String name);
+
     
 } 

@@ -1,7 +1,6 @@
 package it.univaq.sose.gateway;
 
-import org.junit.jupiter.api.Test;
-import org.springframework.boot.test.context.SpringBootTest;
+
 
 @SpringBootTest
 class GatewayApplicationTests {

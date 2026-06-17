@@ -14,7 +14,7 @@ import it.univaq.sose.musicstatsproviderprosumerrest.model.Song;
 import it.univaq.sose.musicstatsproviderprosumerrest.service.SongService;
 
 @RestController
-@RequestMapping("/song")
+@RequestMapping("/songs")
 public class SongController {
     
 	@Autowired
@@ -39,13 +39,13 @@ public class SongController {
 		return new ResponseEntity<Song>(songService.findById(id), HttpStatus.OK);
 	}
 
-	@GetMapping("/byName/{name}")
+	@GetMapping("/by-name/{name}")
 	public ResponseEntity<Song> getSongByName(@PathVariable("name") String name) {
 		System.out.println("---- Search Song by name requested ----");
 		return new ResponseEntity<Song>(songService.findByName(name), HttpStatus.OK);
 	}
 
-	@GetMapping("/byArtist/{name}")
+	@GetMapping("/by-artist/{name}")
 	public ResponseEntity<List<Song>> getSongsByArtist(@PathVariable("name") String name) {
 		System.out.println("---- Search Songs by artist name requested ----");
 		return new ResponseEntity<List<Song>>(songService.findByArtistName(name), HttpStatus.OK);
