@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.client.WebClient;
 
+import it.univaq.sose.artistanalyzerprosumerrest.model.Artist;
 import it.univaq.sose.artistanalyzerprosumerrest.model.Song;
 import it.univaq.sose.artistanalyzerprosumerrest.model.StreamingService;
 import reactor.core.publisher.Flux;
@@ -15,7 +16,7 @@ import reactor.core.publisher.Mono;
 
 
 @Component
-public class SongDataProvider {
+public class MusicStatsDataProvider {
 
     @Value("${musicstats.uri}")
     private String musicStatsBaseURI;
@@ -26,7 +27,7 @@ public class SongDataProvider {
     private final WebClient webClient;
 
     // Best Practice: Build the WebClient once in the constructor
-    public SongDataProvider(WebClient.Builder webClientBuilder) {
+    public MusicStatsDataProvider(WebClient.Builder webClientBuilder) {
         this.webClient = webClientBuilder.build();
     }
 
@@ -93,5 +94,25 @@ public class SongDataProvider {
                 .collectList()
                 // Block until all songs and their respective services are fetched
                 .block();
+    }
+
+    public Future<Artist> getArtistById(Artist artist) {
+        String uri = musicStatsBaseURI + "/artists/"+artist.getId();
+        return webClient
+                .get()
+                .uri(uri)
+                .retrieve()
+                .bodyToMono(Artist.class).toFuture();
+
+    }
+
+
+    public Future<Artist> getArtistByName(Artist artist){
+        String uri = musicStatsBaseURI + "/artists/name/"+artist.getName();
+        return webClient
+                .get()
+                .uri(uri)
+                .retrieve()
+                .bodyToMono(Artist.class).toFuture();
     }
 }

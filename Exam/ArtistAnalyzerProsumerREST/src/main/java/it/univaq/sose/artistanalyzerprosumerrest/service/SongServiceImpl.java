@@ -6,7 +6,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import it.univaq.sose.artistanalyzerprosumerrest.model.Song;
-import it.univaq.sose.artistanalyzerprosumerrest.provider.SongDataProvider;
+import it.univaq.sose.artistanalyzerprosumerrest.provider.MusicStatsDataProvider;
 
 
 @Service
@@ -14,7 +14,7 @@ public class SongServiceImpl implements SongService {
 
 
     @Autowired
-    private SongDataProvider songDataProvider;
+    private MusicStatsDataProvider songDataProvider;
     
 
 

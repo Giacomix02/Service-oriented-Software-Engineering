@@ -4,8 +4,11 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import it.univaq.sose.artistanalyzerprosumerrest.model.Artist;
 import it.univaq.sose.artistanalyzerprosumerrest.model.Song;
 import it.univaq.sose.artistanalyzerprosumerrest.provider.ArtistDataProvider;
+import it.univaq.sose.artistanalyzerprosumerrest.provider.MusicStatsDataProvider;
 
 @Service
 public class ArtistServiceImpl implements ArtistService {
@@ -15,22 +18,22 @@ public class ArtistServiceImpl implements ArtistService {
     
 
     @Autowired
-    private ArtistDataProvider artistDataProvider;
+    private MusicStatsDataProvider musicStatsDataProvider;
 
     @Override
-    public List<Song> findAll() {
+    public List<Artist> findAll() {
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'findAll'");
     }
 
     @Override
-    public Song findById(int id) {
+    public Artist findById(int id) {
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'findById'");
     }
 
     @Override
-    public Song findByName(String name) {
+    public Artist findByName(String name) {
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'findByName'");
     }
