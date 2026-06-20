@@ -1,6 +1,6 @@
 # Port of the gateway
 server:
-  port: ${SERVER_PORT}
+  port: ${SERVER_PORT:9010}
   
 # Gateway configuration
 spring:
@@ -10,14 +10,14 @@ spring:
         webmvc:
           routes:
             - id: music_stats_route
-              uri: http://${MUSIC_STATS_HOST}:${MUSIC_STATS_PORT}
+              uri: http://${MUSIC_STATS_HOST:localhost}:${MUSIC_STATS_PORT:9001}
               predicates:
                 - Path=/api/stats/**
               filters:
                 - RewritePath=/api/stats/(?<segment>.*), /$\{segment}
                 - logPath
             - id: artist_analyzer_route
-              uri: http://${ARTIST_ANALYZER_HOST}:${ARTIST_ANALYZER_PORT}
+              uri: http://${ARTIST_ANALYZER_HOST:localhost}:${ARTIST_ANALYZER_PORT:9002}
               predicates:
                 - Path=/api/analyze/**
               filters:
