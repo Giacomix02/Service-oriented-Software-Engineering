@@ -8,4 +8,5 @@ import java.util.List;
 public interface AvailabilityRepository extends JpaRepository<Availability, Integer> {
     List<Availability> findAllBySong_Id(Integer songId);
     List<Availability> findAllByStreamingService_Id(Integer streamingServiceId);
+    List<Availability> findAll();
 }

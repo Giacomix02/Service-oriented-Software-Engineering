@@ -32,4 +32,10 @@ public class StreamingServiceDTO extends AuditDTO{
     public void setDescription(String description) {
         this.description = description;
     }
+
+    public StreamingServiceDTO(Integer id, String name, String description) {
+        this.id = id;
+        this.name = name;
+        this.description = description;
+    }
 }

@@ -1,10 +1,12 @@
 package it.univaq.sose.streamingavailabilityproviderrest.controller;
 
+import it.univaq.sose.streamingavailabilityproviderrest.dto.AvailabilityDTO;
 import it.univaq.sose.streamingavailabilityproviderrest.dto.Mappers.AvailabilityMapper;
 import it.univaq.sose.streamingavailabilityproviderrest.dto.Mappers.SongMapper;
 import it.univaq.sose.streamingavailabilityproviderrest.dto.Mappers.StreamingServiceMapper;
 import it.univaq.sose.streamingavailabilityproviderrest.dto.SongDTO;
 import it.univaq.sose.streamingavailabilityproviderrest.dto.StreamingServiceDTO;
+import it.univaq.sose.streamingavailabilityproviderrest.model.Availability;
 import it.univaq.sose.streamingavailabilityproviderrest.service.AvailabilityService;
 import it.univaq.sose.streamingavailabilityproviderrest.service.StreamingServiceService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -60,6 +62,12 @@ public class StreamingAvailabilityProsumerController {
         System.out.println("--------- getAllStreamingServices requested ---------");
         List<StreamingServiceDTO> streamingServiceDTOList = streamingServiceMapper.streamingServicesToStreamingServicesDTO(streamingServiceService.getAll());
         return ResponseEntity.ok(streamingServiceDTOList);
+    }
+
+    @GetMapping("get-all-availabilities")
+    public ResponseEntity<List<AvailabilityDTO>> getAllAvailabilities() {
+        System.out.println("--------- getAllAvailabilities requested ---------");
+        return ResponseEntity.ok(availabilityService.getAllAvailabilities());
     }
 
 }

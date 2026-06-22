@@ -139,19 +139,19 @@
 
 >These are the endpoins visible by the user via the gateway
 
-| ID | URL                                            | METHOD    | DESCRIPTION                                                                                                                                               |
-|----|------------------------------------------------|-----------|-----------------------------------------------------------------------------------------------------------------------------------------------------------|
-| 1  | events/getEventByID/{Event_Global_ID}          | GET       | Get all infos of an event by its ID                                                                                                                       |
-| 2  | events/getAllEvents                            | GET       | Get all aviable events                                                                                                                                    |
-| 3  | events/searchByName/{Name}                     | GET       | Get all aviable events by the Name                                                                                                                        |
-| 4  | ...                                            | ...       | every type of search we want to implement                                                                                                                 |
-| 5  | events/getEventTickets/{Event_Global_ID}       | GET       | Get all aviable tickets by the Event ID                                                                                                                   |
+| ID | URL                                            | METHOD   | DESCRIPTION                                                                                                                                               |
+|----|------------------------------------------------|----------|-----------------------------------------------------------------------------------------------------------------------------------------------------------|
+| 1  | events/getEventByID/{Event_Global_ID}          | GET      | Get all infos of an event by its ID                                                                                                                       |
+| 2  | events/getAllEvents                            | GET      | Get all aviable events                                                                                                                                    |
+| 3  | events/searchByName/{Name}                     | GET      | Get all aviable events by the Name                                                                                                                        |
+| 4  | ...                                            | ...      | every type of search we want to implement                                                                                                                 |
+| 5  | events/getEventTickets/{Event_Global_ID}       | GET      | Get all aviable tickets by the Event ID                                                                                                                   |
 | 6  | events/getTicket/{Event_Global_ID}/{Ticket_ID} | GET/POST? | Get Ticket info by his ID and the Event. **IF IS A POST WE HAVE TO SEND A JSON**                                                                          |
-| 7  | stats/getArtist/{Artist_Name}                  | GET       | Search and get an Artist by his Name                                                                                                                      |
-| 8  | stats/getSong/{Song_Name}                      | GET       | Search and get a Song by its Name                                                                                                                         |
-| 9  | analyze/aviability/{Song_Name}                 | GET/POST? | Aggregate informations from two microservices and give the availability of a song inside streaming services **IF IS A POST WE CAN DO AN ADVANCED SEARCH** |
-| 10 | analyze/getAllInfos/{Song_Name}                | GET/POST? | Aggregate informations from two microservices and give all available data **IF IS A POST WE CAN DO AN ADVANCED SEARCH**                                   |
-| 11 | analyze/getAllSongs/{Artist_Name}              | GET/POST? | Aggregate informations from two microservices and give all songs with aviable services **IF IS A POST WE CAN DO A SEARCH WITH THE ID OR ARTIST NAME**     |
+| 7  | stats/getArtist/{Artist_Name}                  | GET      | Search and get an Artist by his Name                                                                                                                      |
+| 8  | stats/getSong/{Song_Name}                      | GET      | Search and get a Song by its Name                                                                                                                         |
+| 9  | analyze/aviability/{Song_Name}                 | GET | Aggregate informations from two microservices and give the availability of a song inside streaming services  |
+| 10 | analyze/getAllInfos/{Song_Name}                | GET | Aggregate informations from two microservices and give all available data                                  |
+| 11 | analyze/getAllSongs/{Artist_Name}              | GET | Aggregate informations from two microservices and give all songs with aviable services    |
 
 #### Json Outputs
 

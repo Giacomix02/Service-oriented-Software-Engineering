@@ -1,13 +1,15 @@
 package it.univaq.sose.streamingavailabilityproviderrest.dto;
 
 
+import java.util.List;
+
 public class AvailabilityDTO extends AuditDTO{
 
     private Integer id;
 
     private SongDTO song;
 
-    private StreamingServiceDTO streamingService;
+    private List<StreamingServiceDTO> streamingServices;
 
     public Integer getId() {
         return id;
@@ -25,17 +27,17 @@ public class AvailabilityDTO extends AuditDTO{
         this.song = song;
     }
 
-    public StreamingServiceDTO getStreamingService() {
-        return streamingService;
+    public List<StreamingServiceDTO> getStreamingServices() {
+        return streamingServices;
     }
 
-    public void setStreamingService(StreamingServiceDTO streamingService) {
-        this.streamingService = streamingService;
+    public void setStreamingServices(List<StreamingServiceDTO> streamingServices) {
+        this.streamingServices = streamingServices;
     }
 
-    public AvailabilityDTO(Integer id, SongDTO song, StreamingServiceDTO streamingService) {
+    public AvailabilityDTO(Integer id, SongDTO song, List<StreamingServiceDTO> streamingServices) {
         this.id = id;
         this.song = song;
-        this.streamingService = streamingService;
+        this.streamingServices = streamingServices;
     }
 }
