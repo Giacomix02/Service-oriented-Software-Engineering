@@ -1,6 +1,10 @@
 package it.univaq.sose.artistanalyzerprosumerrest.provider;
 
 import java.util.List;
+
+import it.univaq.sose.artistanalyzerprosumerrest.dto.ArtistDTO;
+import it.univaq.sose.artistanalyzerprosumerrest.dto.SongDTO;
+import it.univaq.sose.artistanalyzerprosumerrest.dto.StreamingServiceDTO;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.client.WebClient;
@@ -26,18 +30,18 @@ public class MusicStatsDataProvider {
         this.webClient = webClientBuilder.build();
     }
 
-    public Song getSongById(Integer songId) {
+    public SongDTO getSongById(Integer songId) {
         return webClient.get()
                 // Use URI variables instead of string concatenation for safety and cleaner code
                 .uri(musicStatsBaseURI + "/songs/{id}", songId)
                 .retrieve()
-                .bodyToMono(Song.class)
+                .bodyToMono(SongDTO.class)
                 // flatMap chains the next async call AFTER the first one succeeds
                 .flatMap(song ->
                         webClient.get()
                                 .uri(streamingAvailabilityBaseURI + "/streaming-availability/get-song-availability/{id}", songId)
                                 .retrieve()
-                                .bodyToFlux(StreamingService.class)
+                                .bodyToFlux(StreamingServiceDTO.class)
                                 .collectList() // Converts Flux<StreamingService> to Mono<List<StreamingService>> asynchronously
                                 .map(services -> {
                                     song.setStreamingServices(services);
@@ -48,16 +52,16 @@ public class MusicStatsDataProvider {
                 .block();
     }
 
-    public List<Song> getAllSongs(){
+    public List<SongDTO> getAllSongs(){
         return webClient.get()
                 .uri(musicStatsBaseURI + "/songs")
                 .retrieve()
-                .bodyToFlux(Song.class)
+                .bodyToFlux(SongDTO.class)
                 .flatMap(song ->
                         webClient.get()
                                 .uri(streamingAvailabilityBaseURI + "/streaming-availability/get-song-availability/{id}", song.getId())
                                 .retrieve()
-                                .bodyToFlux(StreamingService.class)
+                                .bodyToFlux(StreamingServiceDTO.class)
                                 .collectList()
                                 .map(services -> {
                                     song.setStreamingServices(services);
@@ -68,17 +72,17 @@ public class MusicStatsDataProvider {
                 .block();
     }
 
-    public List<Song> getAllByArtist(String artist) {
+    public List<SongDTO> getAllByArtist(String artist) {
         return webClient.get()
                 .uri(musicStatsBaseURI + "/songs/by-artist/{artist}", artist)
                 .retrieve()
-                .bodyToFlux(Song.class)
+                .bodyToFlux(SongDTO.class)
                 // flatMap handles the concurrent fetching of streaming services for EVERY song in the flux
                 .flatMap(song ->
                         webClient.get()
                                 .uri(streamingAvailabilityBaseURI + "/streaming-availability/get-song-availability/{id}", song.getId())
                                 .retrieve()
-                                .bodyToFlux(StreamingService.class)
+                                .bodyToFlux(StreamingServiceDTO.class)
                                 .collectList()
                                 .map(services -> {
                                     song.setStreamingServices(services);
@@ -91,33 +95,33 @@ public class MusicStatsDataProvider {
                 .block();
     }
 
-    public Artist getArtistById(int id) {
+    public ArtistDTO getArtistById(int id) {
         return webClient
                 .get()
                 .uri(musicStatsBaseURI + "/artists/{id}", id)
                 .retrieve()
-                .bodyToMono(Artist.class)
+                .bodyToMono(ArtistDTO.class)
                 .block();
 
     }
 
 
-    public Artist getArtistByName(String name){
+    public ArtistDTO getArtistByName(String name){
         return webClient
                 .get()
                 .uri(musicStatsBaseURI + "/artists/by-name/{name}", name)
                 .retrieve()
-                .bodyToMono(Artist.class)
+                .bodyToMono(ArtistDTO.class)
                 .block();
     }
 
 
-    public List<Artist> getAllArtists(){
+    public List<ArtistDTO> getAllArtists(){
         return webClient
                 .get()
                 .uri(musicStatsBaseURI + "/artists")
                 .retrieve()
-                .bodyToFlux(Artist.class)
+                .bodyToFlux(ArtistDTO.class)
                 .collectList()
                 .block();
     }

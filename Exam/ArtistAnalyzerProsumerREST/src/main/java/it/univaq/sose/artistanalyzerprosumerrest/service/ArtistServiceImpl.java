@@ -3,6 +3,7 @@ package it.univaq.sose.artistanalyzerprosumerrest.service;
 import java.util.List;
 
 
+import it.univaq.sose.artistanalyzerprosumerrest.dto.ArtistDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -20,17 +21,17 @@ public class ArtistServiceImpl implements ArtistService {
     private MusicStatsDataProvider musicStatsDataProvider;
 
     @Override
-    public List<Artist> findAll() {
+    public List<ArtistDTO> findAll() {
         return musicStatsDataProvider.getAllArtists();
     }
 
     @Override
-    public Artist findById(int id) {
+    public ArtistDTO findById(int id) {
         return musicStatsDataProvider.getArtistById(id);
     }
 
     @Override
-    public Artist findByName(String name) {
+    public ArtistDTO findByName(String name) {
         return musicStatsDataProvider.getArtistByName(name);
     }
 

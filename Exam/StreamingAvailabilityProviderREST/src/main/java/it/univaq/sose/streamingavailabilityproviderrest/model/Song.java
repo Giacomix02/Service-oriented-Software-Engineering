@@ -1,0 +1,22 @@
+package it.univaq.sose.streamingavailabilityproviderrest.model;
+
+import it.univaq.sose.streamingavailabilityproviderrest.model.Audit.DateAudit;
+import jakarta.persistence.*;
+
+@Entity
+@Table(name= "song")
+
+public class Song extends DateAudit {
+    private static final long serialVersionUID = -3246829878748726296L;
+
+    @Id
+    private Integer id;
+
+    public Song() {}
+
+    // Getters and Setters
+    public Integer getId() { return id; }
+    public void setId(Integer id) { this.id = id; }
+
+
+}

@@ -1,6 +1,6 @@
 # Port of the gateway
 server:
-  port: ${SERVER_PORT:9010}
+  port: ${SERVER_PORT:9000}
   
 # Gateway configuration
 spring:

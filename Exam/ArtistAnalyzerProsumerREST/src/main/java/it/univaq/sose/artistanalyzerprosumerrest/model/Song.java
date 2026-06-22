@@ -20,9 +20,6 @@ public class Song extends DateAudit{
     @GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "song_id")
     private int id;
-    
-    @Transient
-    private List<StreamingService> streamingServices;
 
     @Column
     private String name;
@@ -75,13 +72,6 @@ public class Song extends DateAudit{
     public void setArtist(Artist artist) {
         this.artist = artist;
     }
-
-    public List<StreamingService> getStreamingServices() {
-        return streamingServices;
-    }
-
-    public void setStreamingServices(List<StreamingService> streamingServices) {
-        this.streamingServices = streamingServices;
-    }
-
 }
+
+

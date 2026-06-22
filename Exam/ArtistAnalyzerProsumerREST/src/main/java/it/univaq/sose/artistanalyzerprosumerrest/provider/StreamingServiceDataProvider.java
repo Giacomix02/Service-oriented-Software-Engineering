@@ -2,6 +2,7 @@ package it.univaq.sose.artistanalyzerprosumerrest.provider;
 
 import java.util.List;
 
+import it.univaq.sose.artistanalyzerprosumerrest.dto.StreamingServiceDTO;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.client.WebClient;
@@ -25,11 +26,11 @@ public class StreamingServiceDataProvider {
         this.webClient = webClientBuilder.build();
     }
 
-    public List<StreamingService> getAllStreamingServices() {
+    public List<StreamingServiceDTO> getAllStreamingServices() {
         return webClient.get()
                 .uri(streamingAvailabilityBaseURI + "/streaming-availability/get-all-streaming-services")
                 .retrieve()
-                .bodyToFlux(StreamingService.class)
+                .bodyToFlux(StreamingServiceDTO.class)
                 .collectList() // Converts Flux<StreamingService> to Mono<List<StreamingService>> asynchronously
                 .block(); // Waits for the async call to complete and returns the List<StreamingService>
     }

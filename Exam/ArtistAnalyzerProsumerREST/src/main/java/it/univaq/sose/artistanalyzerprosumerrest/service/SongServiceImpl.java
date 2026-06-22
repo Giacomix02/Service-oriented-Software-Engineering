@@ -2,6 +2,7 @@ package it.univaq.sose.artistanalyzerprosumerrest.service;
 import java.util.ArrayList;
 import java.util.List;
 
+import it.univaq.sose.artistanalyzerprosumerrest.dto.SongDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -16,28 +17,24 @@ public class SongServiceImpl implements SongService {
 
     @Autowired
     private MusicStatsDataProvider songDataProvider;
-    
-
 
     @Override
-    @Transactional(readOnly=true)
-    public List<Song> findAll() {
+    public List<SongDTO> findAll() {
         return songDataProvider.getAllSongs();
     }
 
     @Override
     @Transactional(readOnly=true)
-    public Song findById(int id) {
+    public SongDTO findById(int id) {
         return songDataProvider.getSongById(id);
     }
 
     @Override
-    @Transactional(readOnly=true)
-    public List<Song> findByName(String name) {
+    public List<SongDTO> findByName(String name) {
 
-        List<Song> filteredSongs = new ArrayList<Song>();
-        List<Song> songs = songDataProvider.getAllSongs();
-        for (Song song : songs) {
+        List<SongDTO> filteredSongs = new ArrayList<SongDTO>();
+        List<SongDTO> songs = songDataProvider.getAllSongs();
+        for (SongDTO song : songs) {
             if (song.getName().contains(name)) {
                 filteredSongs.add(song);
             }
@@ -47,7 +44,7 @@ public class SongServiceImpl implements SongService {
 
     @Override
     @Transactional(readOnly=true)
-    public List<Song> findByArtistName(String name) {
+    public List<SongDTO> findByArtistName(String name) {
         return songDataProvider.getAllByArtist(name);
     }
     

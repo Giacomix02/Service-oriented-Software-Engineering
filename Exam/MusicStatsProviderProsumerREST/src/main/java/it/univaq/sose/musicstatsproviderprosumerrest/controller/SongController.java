@@ -1,6 +1,8 @@
 package it.univaq.sose.musicstatsproviderprosumerrest.controller;
 import java.util.List;
 
+import it.univaq.sose.musicstatsproviderprosumerrest.dto.Mappers.SongMapper;
+import it.univaq.sose.musicstatsproviderprosumerrest.dto.SongDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
@@ -20,6 +22,9 @@ public class SongController {
 	@Autowired
 	private final SongService songService;
 
+	@Autowired
+	private SongMapper songMapper;
+
 	@Value("${server.port}")
 	private String portNumber;
 
@@ -28,26 +33,30 @@ public class SongController {
     }
 
 	@GetMapping
-	public ResponseEntity<List<Song>> getAllSongs() {
+	public ResponseEntity<List<SongDTO>> getAllSongs() {
 		System.out.println("---- Give all Songs requested ----");
-		return new ResponseEntity<List<Song>>(songService.findAll(), HttpStatus.OK);
+		List<SongDTO> songDTOList = songMapper.songsToSongsDTO(songService.findAll());
+		return new ResponseEntity<>(songDTOList, HttpStatus.OK);
 	}
 
 	@GetMapping("/{id}")
-	public ResponseEntity<Song> getSongById(@PathVariable("id") Integer id) {
+	public ResponseEntity<SongDTO> getSongById(@PathVariable("id") Integer id) {
 		System.out.println("---- Search Song by id requested ----");
-		return new ResponseEntity<Song>(songService.findById(id), HttpStatus.OK);
+		SongDTO songDTOList = songMapper.songToSongDTO(songService.findById(id));
+		return new ResponseEntity<>(songDTOList, HttpStatus.OK);
 	}
 
 	@GetMapping("/by-name/{name}")
-	public ResponseEntity<Song> getSongByName(@PathVariable("name") String name) {
+	public ResponseEntity<SongDTO> getSongByName(@PathVariable("name") String name) {
 		System.out.println("---- Search Song by name requested ----");
-		return new ResponseEntity<Song>(songService.findByName(name), HttpStatus.OK);
+		SongDTO songDTOList = songMapper.songToSongDTO(songService.findByName(name));
+		return new ResponseEntity<>(songDTOList, HttpStatus.OK);
 	}
 
 	@GetMapping("/by-artist/{name}")
-	public ResponseEntity<List<Song>> getSongsByArtist(@PathVariable("name") String name) {
+	public ResponseEntity<List<SongDTO>> getSongsByArtist(@PathVariable("name") String name) {
 		System.out.println("---- Search Songs by artist name requested ----");
-		return new ResponseEntity<List<Song>>(songService.findByArtistName(name), HttpStatus.OK);
+		List<SongDTO> songsDTOList = songMapper.songsToSongsDTO(songService.findByArtistName(name));
+		return new ResponseEntity<>(songsDTOList, HttpStatus.OK);
 	}
 }

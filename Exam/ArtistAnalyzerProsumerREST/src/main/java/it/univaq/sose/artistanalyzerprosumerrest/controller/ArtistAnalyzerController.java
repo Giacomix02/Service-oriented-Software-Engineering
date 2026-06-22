@@ -2,6 +2,9 @@ package it.univaq.sose.artistanalyzerprosumerrest.controller;
 
 import java.util.List;
 
+import it.univaq.sose.artistanalyzerprosumerrest.dto.ArtistDTO;
+import it.univaq.sose.artistanalyzerprosumerrest.dto.SongDTO;
+import it.univaq.sose.artistanalyzerprosumerrest.dto.StreamingServiceDTO;
 import it.univaq.sose.artistanalyzerprosumerrest.model.StreamingService;
 import it.univaq.sose.artistanalyzerprosumerrest.service.StreamingServiceService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,44 +44,44 @@ public class ArtistAnalyzerController {
     }
 
 	@GetMapping("artists")
-	public ResponseEntity<List<Artist>> getAllArtists() {
-		return new ResponseEntity<>(artistService.findAll(), HttpStatus.OK);
+	public ResponseEntity<List<ArtistDTO>> getAllArtists() {
+		return new ResponseEntity<List<ArtistDTO>>(artistService.findAll(), HttpStatus.OK);
 	}
 
 	@GetMapping("artists/{id}")
-	public ResponseEntity<Artist> getArtistById(@PathVariable int id) {
-		return new ResponseEntity<>(artistService.findById(id), HttpStatus.OK);
+	public ResponseEntity<ArtistDTO> getArtistById(@PathVariable int id) {
+		return new ResponseEntity<ArtistDTO>(artistService.findById(id), HttpStatus.OK);
 	}
 
 	// Get all songs
 	@GetMapping("songs")
-	public ResponseEntity<List<Song>> getAllSongs() {
+	public ResponseEntity<List<SongDTO>> getAllSongs() {
 		System.out.println(portNumber);
-		return new ResponseEntity<List<Song>>(songService.findAll(), HttpStatus.OK);
+		return new ResponseEntity<List<SongDTO>>(songService.findAll(), HttpStatus.OK);
 	}
 
 	// Get a song by is id
 	@GetMapping("songs/{id}")
-	public ResponseEntity<Song> getSongById(@PathVariable("id") Integer id) {
-		return new ResponseEntity<Song>(songService.findById(id), HttpStatus.OK);
+	public ResponseEntity<SongDTO> getSongById(@PathVariable("id") Integer id) {
+		return new ResponseEntity<SongDTO>(songService.findById(id), HttpStatus.OK);
 	}
 
 	// Get a single song by the name
 	@GetMapping("songs/by-name/{name}")
-	public ResponseEntity<List<Song>> getSongByName(@PathVariable String name) { // not inserting ("name") is the same that inserting it, it can be retrieved by the String
-		return new ResponseEntity<List<Song>>(songService.findByName(name), HttpStatus.OK);
+	public ResponseEntity<List<SongDTO>> getSongByName(@PathVariable String name) { // not inserting ("name") is the same that inserting it, it can be retrieved by the String
+		return new ResponseEntity<List<SongDTO>>(songService.findByName(name), HttpStatus.OK);
 	}
 
 	// Get all songs by artist name
 	@GetMapping("songs/by-artist/{name}")
-	public ResponseEntity<List<Song>> getSongsByArtistName(@PathVariable("name") String name) {
-		return new ResponseEntity<List<Song>>(songService.findByArtistName(name), HttpStatus.OK);
+	public ResponseEntity<List<SongDTO>> getSongsByArtistName(@PathVariable("name") String name) {
+		return new ResponseEntity<List<SongDTO>>(songService.findByArtistName(name), HttpStatus.OK);
 	}
 
 	//Get all available streaming services
 	@GetMapping("streaming-services")
-	public ResponseEntity<List<StreamingService>> getStreamingServices() {
-		return new ResponseEntity<List<StreamingService>>(streamingServiceService.getAll(), HttpStatus.OK);
+	public ResponseEntity<List<StreamingServiceDTO>> getStreamingServices() {
+		return new ResponseEntity<List<StreamingServiceDTO>>(streamingServiceService.getAll(), HttpStatus.OK);
 	}
 
 }

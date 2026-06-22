@@ -2,6 +2,9 @@ package it.univaq.sose.musicstatsproviderprosumerrest.controller;
 
 import java.util.List;
 
+import it.univaq.sose.musicstatsproviderprosumerrest.dto.ArtistDTO;
+import it.univaq.sose.musicstatsproviderprosumerrest.dto.Mappers.ArtistMapper;
+import it.univaq.sose.musicstatsproviderprosumerrest.dto.Mappers.SongMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
@@ -17,33 +20,36 @@ import it.univaq.sose.musicstatsproviderprosumerrest.service.ArtistService;
 @RestController
 @RequestMapping("/artists")
 public class ArtistController {
-    
+
+    @Value("${server.port}")
+    private String portNumber;
+
     @Autowired
     private final ArtistService artistService;
+
+    @Autowired
+    private ArtistMapper artistMapper;
 
     public ArtistController(ArtistService artistService) {
         this.artistService = artistService;
     }
 
     @GetMapping
-    public ResponseEntity<List<Artist>> getAll() {
-        return new ResponseEntity<>(artistService.findAll(), HttpStatus.OK);
+    public ResponseEntity<List<ArtistDTO>> getAll() {
+        List<ArtistDTO> artistsDTO = artistMapper.artistsToArtistsDTO(artistService.findAll());
+        return new ResponseEntity<>(artistsDTO, HttpStatus.OK);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Artist> getById(@PathVariable("id") Integer id){
-        return new ResponseEntity<>(artistService.findById(id), HttpStatus.OK);
+    public ResponseEntity<ArtistDTO> getById(@PathVariable("id") Integer id){
+        ArtistDTO artistDTO = artistMapper.artistToArtistDTO(artistService.findById(id));
+        return new ResponseEntity<>(artistDTO, HttpStatus.OK);
     }
 
     @GetMapping("/by-name/{name}")
-    public ResponseEntity<Artist> getById(@PathVariable("name") String name){
-        return new ResponseEntity<>(artistService.findByName(name), HttpStatus.OK);
+    public ResponseEntity<ArtistDTO> getById(@PathVariable("name") String name){
+        ArtistDTO artistDTO = artistMapper.artistToArtistDTO(artistService.findByName(name));
+        return new ResponseEntity<>(artistDTO, HttpStatus.OK);
     }
-
-
-
-    @Value("${server.port}")
-	private String portNumber;
-
 
 }
