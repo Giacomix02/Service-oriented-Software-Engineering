@@ -1,6 +1,6 @@
 package it.univaq.sose.artistanalyzerprosumerrest.dto;
 
-import jakarta.persistence.*;
+
 
 import java.util.List;
 

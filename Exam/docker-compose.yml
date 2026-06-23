@@ -36,7 +36,13 @@ services:
       SERVER_PORT: 9000
       CONFIG_SERVER_HOST: config-server
       CONFIG_SERVER_PORT: 8888
-      EUREKA_SERVER: http://discovery-server:8761/eureka/
+      EUREKA_SERVER: http://discovery-service:8761/eureka/
+
+  discovery-service:
+    build: ./DiscoveryService
+    environment:
+      EUREKA_HOST: discovery-service
+      SERVER_PORT: 8761
 
 
 #  legacy-box-office-microservice:
@@ -65,7 +71,7 @@ services:
       SERVER_PORT: 9050
       CONFIG_SERVER_HOST: config-server
       CONFIG_SERVER_PORT: 8888
-      EUREKA_SERVER: http://discovery-server:8761/eureka/
+      EUREKA_SERVER: http://discovery-service:8761/eureka/
       MYSQL_HOST: ticketing-mysql:3306
       MYSQL_DB: MusicStats
       MYSQL_USER: root
@@ -78,14 +84,14 @@ services:
 
 
   streaming-availability-microservice:
-    build: ./StreamingAvailabilityProsumerREST
+    build: ./StreamingAvailabilityProviderREST
     ports:
       - "9056:9056"
     environment:
       SERVER_PORT: 9056
       CONFIG_SERVER_HOST: config-server
       CONFIG_SERVER_PORT: 8888
-      EUREKA_SERVER: http://discovery-server:8761/eureka/
+      EUREKA_SERVER: http://discovery-service:8761/eureka/
       MYSQL_HOST: ticketing-mysql:3306
       MYSQL_DB: StreamingAvailability
       MYSQL_USER: root
@@ -144,7 +150,7 @@ services:
       SERVER_PORT: 9071
       CONFIG_SERVER_HOST: config-server
       CONFIG_SERVER_PORT: 8888
-      EUREKA_SERVER: http://discovery-server:8761/eureka/
+      EUREKA_SERVER: http://discovery-service:8761/eureka/
 #      MYSQL_HOST: ticketing-mysql:3306
 #      MYSQL_DB: ticketing
 #      MYSQL_USER: root

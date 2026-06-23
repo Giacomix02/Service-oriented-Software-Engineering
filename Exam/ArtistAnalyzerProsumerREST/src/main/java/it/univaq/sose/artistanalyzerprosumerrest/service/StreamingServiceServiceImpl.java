@@ -5,7 +5,6 @@ import it.univaq.sose.artistanalyzerprosumerrest.model.StreamingService;
 import it.univaq.sose.artistanalyzerprosumerrest.provider.StreamingServiceDataProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -16,7 +15,6 @@ public class StreamingServiceServiceImpl implements StreamingServiceService {
     private StreamingServiceDataProvider streamingServiceDataProvider;
 
     @Override
-    @Transactional(readOnly = true)
     public List<StreamingServiceDTO> getAll(){
         return streamingServiceDataProvider.getAllStreamingServices();
     }

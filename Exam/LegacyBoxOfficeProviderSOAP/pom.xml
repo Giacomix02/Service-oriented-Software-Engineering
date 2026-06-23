@@ -9,7 +9,7 @@
     <cxf.version>4.0.7</cxf.version>
     <maven.compiler.version>3.14.0</maven.compiler.version>
     <maven.war.version>3.4.0</maven.war.version>
-    <java.version>21</java.version> 
+    <java.version>17</java.version> 
 </properties>
 
 <dependencies>

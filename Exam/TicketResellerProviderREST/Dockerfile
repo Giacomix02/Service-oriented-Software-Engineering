@@ -1,7 +1,10 @@
-FROM maven:3.9.16-eclipse-temurin-26
+FROM eclipse-temurin:17-jdk
 
 WORKDIR /TicketResellerProviderREST
-COPY  . .
+COPY target/TicketResellerProviderREST-0.0.1-SNAPSHOT.jar .
 
-RUN mvn clean install
-CMD mvn spring-boot:run
+# RUN apt-get update && apt-get install -y dos2unix
+# RUN dos2unix mvnw
+# RUN chmod +x mvnw
+# RUN ./mvnw clean install -DskipTests
+CMD ["java","-jar", "TicketResellerProviderREST-0.0.1-SNAPSHOT.jar"]
