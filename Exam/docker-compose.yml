@@ -40,6 +40,8 @@ services:
 
   discovery-service:
     build: ./DiscoveryService
+    ports:
+      - "8761:8761"
     environment:
       EUREKA_HOST: discovery-service
       SERVER_PORT: 8761
