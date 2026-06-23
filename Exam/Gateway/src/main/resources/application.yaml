@@ -10,20 +10,50 @@ spring:
         webmvc:
           routes:
             - id: music_stats_route
-              uri: http://${MUSIC_STATS_HOST:localhost}:${MUSIC_STATS_PORT:9001}
+              # uri: http://${MUSIC_STATS_HOST:localhost}:${MUSIC_STATS_PORT:9001}
+              uri: lb://MusicStatsProviderProsumerREST
               predicates:
                 - Path=/api/stats/**
               filters:
                 - RewritePath=/api/stats/(?<segment>.*), /$\{segment}
                 - logPath
             - id: artist_analyzer_route
-              uri: http://${ARTIST_ANALYZER_HOST:localhost}:${ARTIST_ANALYZER_PORT:9002}
+              # uri: http://${ARTIST_ANALYZER_HOST:localhost}:${ARTIST_ANALYZER_PORT:9002}
+              uri: lb://ArtistAnalyzerProsumerREST
               predicates:
                 - Path=/api/analyze/**
               filters:
                 - RewritePath=/api/analyze/(?<segment>.*), /artist-analyzer/$\{segment}
                 - logPath
-
+            # ROUTES FOR SWAGGER UI
+            - id: music_stats_docs_route
+              uri: lb://MusicStatsProviderProsumerREST
+              predicates:
+                - Path=/docs/stats
+              filters:
+                - RewritePath=/docs/stats, /v3/api-docs
+            - id: artist_analyzer_docs_route
+              uri: lb://ArtistAnalyzerProsumerREST
+              predicates:
+                - Path=/docs/analyze
+              filters:
+                - RewritePath=/docs/analyze, /v3/api-docs
+            - id: streaming_docs_route
+              uri: lb://StreamingAvailabilityProviderREST
+              predicates:
+                - Path=/docs/streaming
+              filters:
+                - RewritePath=/docs/streaming, /v3/api-docs
+springdoc:
+  swagger-ui:
+    path: /swagger-ui.html
+    urls:
+      - name: Music Stats
+        url: /docs/stats
+      - name: Artist Analyzer
+        url: /docs/analyze
+      - name: Streaming Availability
+        url: /docs/streaming
 
 # Eureka client configuration+
 eureka:
