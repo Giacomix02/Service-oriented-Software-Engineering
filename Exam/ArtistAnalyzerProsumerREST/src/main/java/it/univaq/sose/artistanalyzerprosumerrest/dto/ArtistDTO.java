@@ -1,6 +1,5 @@
 package it.univaq.sose.artistanalyzerprosumerrest.dto;
 
-
 public class ArtistDTO extends AuditDTO{
 
     private int id;

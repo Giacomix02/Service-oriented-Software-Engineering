@@ -1,44 +1,30 @@
 package it.univaq.sose.artistanalyzerprosumerrest.dto;
 
-import it.univaq.sose.artistanalyzerprosumerrest.model.Song;
-import it.univaq.sose.artistanalyzerprosumerrest.model.StreamingService;
+import java.util.List;
+
 
 
 public class AvailabilityDTO extends AuditDTO{
 
-    private Integer id;
+    private SongDTO song;
 
-    private Song song;
-
-    private StreamingServiceDTO streamingService;
-
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
-    public Song getSong() {
+    private List<StreamingServiceDTO> streamingService;
+    
+    public SongDTO getSong() {
         return song;
     }
 
-    public void setSong(Song song) {
+    public void setSong(SongDTO song) {
         this.song = song;
     }
 
-    public StreamingServiceDTO getStreamingService() {
+    public List<StreamingServiceDTO> getStreamingService() {
         return streamingService;
     }
 
-    public void setStreamingService(StreamingServiceDTO streamingService) {
+    public void setStreamingService(List<StreamingServiceDTO> streamingService) {
         this.streamingService = streamingService;
     }
 
-    public AvailabilityDTO(Integer id, Song song, StreamingServiceDTO streamingService) {
-        this.id = id;
-        this.song = song;
-        this.streamingService = streamingService;
-    }
+    
 }

@@ -1,10 +1,16 @@
 package it.univaq.sose.artistanalyzerprosumerrest.provider;
 
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 
 import it.univaq.sose.artistanalyzerprosumerrest.dto.ArtistDTO;
+import it.univaq.sose.artistanalyzerprosumerrest.dto.AvailabilityDTO;
 import it.univaq.sose.artistanalyzerprosumerrest.dto.SongDTO;
 import it.univaq.sose.artistanalyzerprosumerrest.dto.StreamingServiceDTO;
+import it.univaq.sose.artistanalyzerprosumerrest.dto.fromProviders.AvailabilityDTOProvider;
+
+import org.reactivestreams.Publisher;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.client.WebClient;
@@ -12,6 +18,8 @@ import org.springframework.web.reactive.function.client.WebClient;
 import it.univaq.sose.artistanalyzerprosumerrest.model.Artist;
 import it.univaq.sose.artistanalyzerprosumerrest.model.Song;
 import it.univaq.sose.artistanalyzerprosumerrest.model.StreamingService;
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
 
 @Component
@@ -73,26 +81,44 @@ public class MusicStatsDataProvider {
     }
 
     public List<SongDTO> getAllByArtist(String artist) {
-        return webClient.get()
+
+        Flux<SongDTO> songs = webClient.get()
                 .uri(musicStatsBaseURI + "/songs/by-artist/{artist}", artist)
                 .retrieve()
-                .bodyToFlux(SongDTO.class)
-                // flatMap handles the concurrent fetching of streaming services for EVERY song in the flux
-                .flatMap(song ->
-                        webClient.get()
-                                .uri(streamingAvailabilityBaseURI + "/streaming-availability/get-song-availability/{id}", song.getId())
-                                .retrieve()
-                                .bodyToFlux(StreamingServiceDTO.class)
-                                .collectList()
-                                .map(services -> {
-                                    song.setStreamingServices(services);
-                                    return song;
-                                })
-                )
-                // Collect all the fully populated Song objects into a List
-                .collectList()
-                // Block until all songs and their respective services are fetched
-                .block();
+                .bodyToFlux(SongDTO.class);
+        Flux<AvailabilityDTOProvider> availabilities = webClient.get()
+                .uri(streamingAvailabilityBaseURI + "/streaming-availability/get-all-availabilities")
+                .retrieve()
+                .bodyToFlux(AvailabilityDTOProvider.class);
+
+        Mono<List<SongDTO>> songsMono = songs.collectList();
+        Mono<List<AvailabilityDTOProvider>> availabilitiesMono = availabilities.collectList();
+
+        return Mono.zip(songsMono, availabilitiesMono).map(t -> {
+            List<SongDTO> s = t.getT1();
+            List<AvailabilityDTOProvider> av = t.getT2();
+
+            return s.stream().map(son -> {
+                AvailabilityDTOProvider avForSong = av.stream().filter(a -> a.getSong().getId() == son.getId()).findFirst().get();
+                son.setStreamingServices(avForSong.getStreamingServices());
+                
+                return son;
+            }).toList();
+
+        }).block();
+        // songs.collectList().block();
+        // availabilities.collectList().block();
+        // return songs.flatMap(song -> {
+        //         Mono<AvailabilityDTOProvider> availabilitiesForSong = availabilities.filter(t -> t.getSong().getId() == song.getId()).single();
+        //         List<StreamingServiceDTO> streamingServicesForSong = availabilitiesForSong.
+        //         song.setStreamingServices(streamingServicesForSong);
+        //         return Flux.just(song);
+        //     }
+        // )
+        // // Collect all the fully populated Song objects into a List
+        // .collectList()
+        // // Block until all songs and their respective services are fetched
+        // .block();
     }
 
     public ArtistDTO getArtistById(int id) {

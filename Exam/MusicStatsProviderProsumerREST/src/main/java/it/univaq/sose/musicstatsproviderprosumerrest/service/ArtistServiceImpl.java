@@ -3,6 +3,7 @@ package it.univaq.sose.musicstatsproviderprosumerrest.service;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import it.univaq.sose.musicstatsproviderprosumerrest.model.Artist;
 import it.univaq.sose.musicstatsproviderprosumerrest.repository.ArtistRepository;

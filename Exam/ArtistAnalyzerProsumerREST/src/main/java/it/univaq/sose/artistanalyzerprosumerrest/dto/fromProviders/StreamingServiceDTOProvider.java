@@ -1,7 +1,10 @@
-package it.univaq.sose.artistanalyzerprosumerrest.dto;
+package it.univaq.sose.artistanalyzerprosumerrest.dto.fromProviders;
 
-public class StreamingServiceDTO extends AuditDTO{
+import it.univaq.sose.artistanalyzerprosumerrest.dto.AuditDTO;
 
+public class StreamingServiceDTOProvider extends AuditDTO{
+
+    
     private String name;
 
     private String description;
