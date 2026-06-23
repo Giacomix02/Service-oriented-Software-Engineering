@@ -24,6 +24,19 @@ spring:
                 - RewritePath=/api/analyze/(?<segment>.*), /artist-analyzer/$\{segment}
                 - logPath
 
+
+# Eureka client configuration+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://${EUREKA_HOST:localhost}:${EUREKA_PORT:8761}/eureka/
+    register-with-eureka: true
+    healthcheck:
+      enabled: true
+    fetch-registry: true
+  instance:
+    lease-renewal-interval-in-seconds: 30
+
 # Spring Boot Actuator configuration
 management:
   endpoints:
