@@ -2,12 +2,14 @@
 
 ## USED TECHNOLOGIES
 ### Spring Boot
-- **Java version**: 26
+- **Java version**: 17
 - **Spring Boot version**: 4.0.6
 
 ### Apache CXF
+- **Java version**:
 
 ### Jakarta
+- **Java version**:
 
 
 ## ARCHITECTURAL COMPONENTS
@@ -80,261 +82,93 @@
 
 ### Music Stats
 
-#### Artist
+#### artist
 
 | Column Name | Data Type |
-| --- | --- |
-| ID | int |
-| Name | str |
-| Description | str |
+|-------------| --- |
+| id          | int |
+| name        | str |
+| description | str |
 
-#### Song
+#### song
 
 | Column Name | Data Type |
-| --- | --- |
-| ID | int |
-| Name | str |
-| Description | str |
-| Views | int |
-| ID_Artist | int |
+|-------------| --- |
+| id          | int |
+| name        | str |
+| description | str |
+| views       | int |
+| artist_id   | int |
 
 > **Song ID:** unique, in different DBs the same song has the same ID. For example the Streaming and Music Stats DBs.
 
-> **Relationship Note:** `ID_Artist` in the **Song** table has a many-to-one relationship (`0,n` to `1,1`) with the `ID` column in the **Artist** table. 
+> **Relationship Note:** `artist_id` in the **Song** table has a many-to-one relationship (`0,n` to `1,1`) with the `id` column in the **Artist** table. 
+
+---
 
 ### Streaming Availability
 
-#### Streaming_Service
+#### streaming_service
 
 | Column Name | Data Type |
-| --- | --- |
-| ID | int |
-| Name | str |
-| Description | str |
+|-------------| --- |
+| id          | int |
+| name        | str |
+| description | str |
 
----
 
-#### Availability
+#### availability
+
+| Column Name          | Data Type |
+|----------------------| --- |
+| id                   | int |
+| id_song              | int |
+| is_streaming_service | int |
+
+
+#### song
 
 | Column Name | Data Type |
-| --- | --- |
-| ID_Song | int |
-| ID_Streaming_Service | int |
-
----
-
-#### Song
-
-| Column Name | Data Type |
-| --- | --- |
-| ID | int |
+|-------------| --- |
+| id          | int |
 
 > **Relationship Note:** The **Availability** table serves as a junction table to establish a many-to-many relationship between **Streaming_Service** and **Song**.
-> * `ID_Streaming_Service` in the **Availability** table has a many-to-one relationship (`0,n` to `1,n`) with the `ID` column in the **Streaming_Service** table.
-> * `ID_Song` in the **Availability** table has a many-to-one relationship (`0,n` to `1,n`) with the `ID` column in the **Song** table.
+> * `id_streaming_service` in the **Availability** table has a many-to-one relationship (`0,n` to `1,n`) with the `id` column in the **Streaming_Service** table.
+> * `id_song` in the **Availability** table has a many-to-one relationship (`0,n` to `1,n`) with the `id` column in the **Song** table.
 
 ## ENDPOINTS
 
 ### 1: Gateway
 
+#### Swagger UI: http://localhost:8080/swagger-ui/index.html
+
+#### Endpoints
+
 >These are the endpoins visible by the user via the gateway
 
-| ID | URL                                            | METHOD   | DESCRIPTION                                                                                                                                               |
-|----|------------------------------------------------|----------|-----------------------------------------------------------------------------------------------------------------------------------------------------------|
-| 1  | events/getEventByID/{Event_Global_ID}          | GET      | Get all infos of an event by its ID                                                                                                                       |
-| 2  | events/getAllEvents                            | GET      | Get all aviable events                                                                                                                                    |
-| 3  | events/searchByName/{Name}                     | GET      | Get all aviable events by the Name                                                                                                                        |
-| 4  | ...                                            | ...      | every type of search we want to implement                                                                                                                 |
-| 5  | events/getEventTickets/{Event_Global_ID}       | GET      | Get all aviable tickets by the Event ID                                                                                                                   |
-| 6  | events/getTicket/{Event_Global_ID}/{Ticket_ID} | GET/POST? | Get Ticket info by his ID and the Event. **IF IS A POST WE HAVE TO SEND A JSON**                                                                          |
-| 7  | stats/getArtist/{Artist_Name}                  | GET      | Search and get an Artist by his Name                                                                                                                      |
-| 8  | stats/getSong/{Song_Name}                      | GET      | Search and get a Song by its Name                                                                                                                         |
-| 9  | analyze/aviability/{Song_Name}                 | GET | Aggregate informations from two microservices and give the availability of a song inside streaming services  |
-| 10 | analyze/getAllInfos/{Song_Name}                | GET | Aggregate informations from two microservices and give all available data                                  |
-| 11 | analyze/getAllSongs/{Artist_Name}              | GET | Aggregate informations from two microservices and give all songs with aviable services    |
-
-#### Json Outputs
-
-> 1
-
-
-```json
-{
-  "ID": 1,
-  "Event_Global_ID": 12345,
-  "Name": "Concert Name",
-  "Artist Name": "Artist Name",
-  "Location": "Venue Location",
-  "Description": "Event Description"
-}
-```
-
----
-
-> 2 
+| INVOLVED MICROSERVICES | URL                                   | METHOD | DESCRIPTION                                                     |
+|------------------------|---------------------------------------|--------|-----------------------------------------------------------------|
+|                        | events/getEventByID/{Event_Global_ID} | GET    | Get all infos of an event by its ID                             |
+|                        | events/getAllEvents                   | GET    | Get all aviable events                                          |
+|                        | events/searchByName/{Name}            | GET    | Get all aviable events by the Name                              |
+| ...........            | .............................         | ...    | .............................                                   |
+| 3, 6, 7                | /api/analyze/streaming-services       | GET    | Get all aviable streaming services                              |
+| 3, 6, 7                | /api/analyze/songs                    | GET    | Get all songs with associated streaming services                |
+| 3, 6, 7                | /api/analyze/songs/{id}               | GET    | Get a song by ID with its associated streaming services         |
+| 3, 6, 7                | /api/analyze/songs/by-name/{name}     | GET    | Get a song by Name with its associated streaming services       |
+| 3, 6, 7                | /api/analyze/songs/by-artist/{name}   | GET    | Get all artist's songs with their associated streaming services |
+| 3, 6                   | /api/analyze/artists                  | GET    | Get all artists                                                 |
+| 3, 6                   | /api/analyze/artists/{id}             | GET    | Get artist by his ID                                            |
+| ...........            | .............................         | ...    | .............................                                   |
+| 6                      | /api/stats/artists                    | GET    | Get all artists                                                 |
+| 6                      | /api/stats/artists/{id}               | GET    | Get artist by his ID                                            |
+| 6                      | /api/stats/songs                      | GET    | Get all songs                                                   |
+| 6                      | /api/stats/songs/{id}                 | GET    | Get a song by ID                                                |
+| 6                      | /api/stats/songs/by-name/{name}       | GET    | Get a song by its Name                                          |
+| 6                      | /api/stats/songs/by-artist/{name}     | GET    | Get all songs by artist Name                                    |
+| 6                      | /api/stats/artists/by-name/{name}     | GET    | Get an artist by Name                                           |
 
 
-```json
-[
-  {
-    "ID": 1,
-    "Event_Global_ID": 12345,
-    "Name": "Concert Name",
-    "Artist Name": "Artist Name",
-    "Location": "Venue Location",
-    "Description": "Event Description"
-  },
-  {
-    "ID": 2,
-    "Event_Global_ID": 67890,
-    "Name": "Another Concert",
-    "Artist Name": "Another Artist",
-    "Location": "Another Venue",
-    "Description": "Another Event Description"
-  }
-]
-```
----
-
-> 3
-
-```json
-[
-  {
-    "ID": 1,
-    "Event_Global_ID": 12345,
-    "Name": "Concert Name",
-    "Artist Name": "Artist Name",
-    "Location": "Venue Location",
-    "Description": "Event Description"
-  },
-  {
-    ...
-  }
-  
-]
-```
----
-
-> 5
-
-```json
-[
-  {
-    "ID": 1,
-    "Price": 100.0,
-    "Seat": "A1",
-    "Event_ID": 12345
-  },
-  {
-    "ID": 2,
-    "Price": 150.0,
-    "Seat": "A2",
-    "Event_ID": 12345
-  }
-]
-```
----
-
-> 6
-
-```json
-{
-  "ID": 1,
-  "Price": 100.0,
-  "Seat": "A1",
-  "Event_ID": 12345
-}
-```
----
-
-> 7
-
-```json
-{
-  "ID": 1,
-  "Name": "Artist Name",
-  "Description": "Artist Description"
-}
-```
----
-
-> 8
-
-```json
-{
-  "ID": 1,
-  "Name": "Song Name",
-  "Description": "Song Description",
-  "Views": 1000000,
-  "ID_Artist": 1
-}
-```
-
-> 9 
-
-```json
-{
-  "ID": 1,
-  "Song_Name": "Song Name",
-  "Availability": [
-    {
-      "Streaming_Service": "Service A"
-    },
-    {
-      "Streaming_Service": "Service B"
-    }
-  ]
-}
-```
-
----
-
-> 10
-
-```json
-{
-  "ID": 1,
-  "Song_Name": "Song Name",
-  "Song_Description": "Song Description",
-  "Views": 1000000,
-  "Artist_Name": "Artist Name",
-  "Artist_Description": "Song Description",
-  "Availability": [
-    {
-      "Streaming_Service": "Service A"
-    },
-    {
-      "Streaming_Service": "Service B"
-    }
-  ]
-}
-```
----
-
-> 11
-
-```json
-[
-  {
-    "ID": 1,
-    "Song_Name": "Song Name",
-    "Song_Description": "Song Description",
-    "Views": 1000000,
-    "Availability": [
-      {
-        "Streaming_Service": "Service A"
-      },
-      {
-        "Streaming_Service": "Service B"
-      }
-    ]
-  },
-  {
-    ...
-  }
-]
-```
 
 ### 2: Ticket Searcher
 | ID | URL                                     | METHOD    | DESCRIPTION                                                                                                                                  |
@@ -342,8 +176,8 @@
 | 1  | getEventByID/{Event_Global_ID}          | GET       | Get all infos of an event directly from Legacy box office                                                                                    |
 | 2  | getAllEvents                            | GET       | Get all aviable events directly from Legacy box office                                                                                       |
 | 3  | searchByName/{Name}                     | GET       | Get all aviable events by the Name directly from Legacy box office                                                                           |
-| 5  | getEventTickets/{Event_Global_ID}       | GET       | Get all aviable tickets by the Event ID by querying both Legacy box office and resellers                                                     |
-| 6  | getTicket/{Event_Global_ID}/{Ticket_ID} | GET/POST? | Get Ticket info by his ID and the Event. Fetching it from either the Legacy box office or resellers  **IF IS A POST WE HAVE TO SEND A JSON** |
+| 4  | getEventTickets/{Event_Global_ID}       | GET       | Get all aviable tickets by the Event ID by querying both Legacy box office and resellers                                                     |
+| 5  | getTicket/{Event_Global_ID}/{Ticket_ID} | GET/POST? | Get Ticket info by his ID and the Event. Fetching it from either the Legacy box office or resellers  **IF IS A POST WE HAVE TO SEND A JSON** |
 
 ### 3: Artist Analyzer (/artist-analyzer/)
 | ID | URL                    | METHOD | DESCRIPTION                          |
@@ -363,16 +197,16 @@
 | 1  | getEventByID/{Event_Global_ID}          | GET       | Get all infos of an event by its ID                                              |
 | 2  | getAllEvents                            | GET       | Get all aviable events                                                           |
 | 3  | searchByName/{Name}                     | GET       | Get all aviable events by the Name                                               |
-| 5  | getEventTickets/{Event_Global_ID}       | GET       | Get all aviable tickets by the Event ID                                          |
-| 6  | getTicket/{Event_Global_ID}/{Ticket_ID} | GET/POST? | Get Ticket info by his ID and the Event. **IF IS A POST WE HAVE TO SEND A JSON** |
+| 4  | getEventTickets/{Event_Global_ID}       | GET       | Get all aviable tickets by the Event ID                                          |
+| 5  | getTicket/{Event_Global_ID}/{Ticket_ID} | GET/POST? | Get Ticket info by his ID and the Event. **IF IS A POST WE HAVE TO SEND A JSON** |
 
 ### 5: Reseller
 | ID | URL                                            | METHOD    | DESCRIPTION                                                                      |
 |----|------------------------------------------------|-----------|----------------------------------------------------------------------------------|
-| 5  | getEventTickets/{Event_Global_ID}       | GET       | Get all aviable tickets by the Event ID                                          |
-| 6  | getTicket/{Event_Global_ID}/{Ticket_ID} | GET/POST? | Get Ticket info by his ID and the Event. **IF IS A POST WE HAVE TO SEND A JSON** |
+| 1  | getEventTickets/{Event_Global_ID}       | GET       | Get all aviable tickets by the Event ID                                          |
+| 2  | getTicket/{Event_Global_ID}/{Ticket_ID} | GET/POST? | Get Ticket info by his ID and the Event. **IF IS A POST WE HAVE TO SEND A JSON** |
 
-### 6: Music stats
+### 6: Music stats (/)
 | ID | URL                           | METHOD | DESCRIPTION                          |
 |----|-------------------------------|--------|--------------------------------------|                                         
 | 1  | songs                         | GET    | Get all songs                        |
@@ -392,7 +226,14 @@
 | 3  | get-all-streaming-services             | GET    | Gets all streaming services aviable in the system                 |
 
 ## ASYNCHRONOUS COMMUNICATION
-The asyncronus communication is implemented inside the **Ticket Provider** that has to call two different services (4,5) to get the price of the tickets and get the aviable events.
 
+**The asyncronus communication is implemented inside:**
+
+- **Ticket Provider** that has to call two different services (4,5) to get the price of the tickets and get the aviable events.
+- **Artist Analyzer** that has to call two different services (6,7) to get the artist's songs and their streaming availability.
 
 ## INTERACTING SCENARIOS
+
+![](./img/stats.png)
+
+![](./img/analyze.png)
