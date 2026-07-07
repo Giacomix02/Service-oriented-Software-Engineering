@@ -1,10 +1,9 @@
-FROM eclipse-temurin:17-jdk
+FROM tomcat:11.0-jdk17
+
+RUN rm -rf /usr/local/tomcat/webapps/*
 
 WORKDIR /LegacyBoxOfficeProviderSOAP
-COPY target/LegacyBoxOfficeProviderSOAP-0.0.1-SNAPSHOT.jar .
+COPY target/LegacyBoxOfficeProviderSOAP.war /usr/local/tomcat/webapps/LegacyBoxOfficeProviderSOAP.war
 
-# RUN apt-get update && apt-get install -y dos2unix
-# RUN dos2unix mvnw
-# RUN chmod +x mvnw
-# RUN ./mvnw clean install -DskipTests
-CMD ["java","-jar", "LegacyBoxOfficeProviderSOAP-0.0.1-SNAPSHOT.jar"]
+EXPOSE 8080
+CMD ["catalina.sh", "run"]

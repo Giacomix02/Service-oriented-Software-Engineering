@@ -1,4 +1,5 @@
 package it.univaq.sose.LegacyBoxOfficeProviderSOAP;
+import it.univaq.sose.LegacyBoxOfficeProviderSOAP.service.BoxOfficeServiceImpl;
 import jakarta.servlet.ServletConfig;
 import jakarta.xml.ws.Endpoint;
 
@@ -12,11 +13,11 @@ public class SimpleCXFNonSpringServlet extends CXFNonSpringServlet {
 
 	@Override
 	public void loadBus(ServletConfig servletConfig) {
-		
+
 		super.loadBus(servletConfig);
-		
+
 		Bus bus = getBus();
 		BusFactory.setDefaultBus(bus);
-		Endpoint.publish("/sum", new SumImpl());
+		Endpoint.publish("/boxoffice", new BoxOfficeServiceImpl());
 	}
 }

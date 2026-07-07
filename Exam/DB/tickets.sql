@@ -1,3 +1,6 @@
+CREATE DATABASE IF NOT EXISTS ticketing;
+USE ticketing;
+
 CREATE TABLE Event (
                        ID INT PRIMARY KEY,
                        Event_Global_ID INT,

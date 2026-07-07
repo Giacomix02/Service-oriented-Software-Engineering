@@ -9,7 +9,7 @@
     <cxf.version>4.0.7</cxf.version>
     <maven.compiler.version>3.14.0</maven.compiler.version>
     <maven.war.version>3.4.0</maven.war.version>
-    <java.version>17</java.version> 
+    <java.version>17</java.version>
 </properties>
 
 <dependencies>
@@ -28,7 +28,7 @@
         <artifactId>cxf-rt-frontend-simple</artifactId>
         <version>${cxf.version}</version>
     </dependency>
-    
+
     <dependency>
         <groupId>jakarta.servlet</groupId>
         <artifactId>jakarta.servlet-api</artifactId>
@@ -39,6 +39,11 @@
         <groupId>jakarta.ws.rs</groupId>
         <artifactId>jakarta.ws.rs-api</artifactId>
         <version>4.0.0</version>
+    </dependency>
+    <dependency>
+        <groupId>mysql</groupId>
+        <artifactId>mysql-connector-java</artifactId>
+        <version>8.0.33</version>
     </dependency>
 </dependencies>
 <build>
@@ -59,6 +64,6 @@
             </configuration>
         </plugin>
     </plugins>
-    <finalName>SumSOAPServiceMaven</finalName>
+    <finalName>LegacyBoxOfficeProviderSOAP</finalName>
 </build>
 </project>
