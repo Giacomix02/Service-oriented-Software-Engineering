@@ -1,6 +1,6 @@
 package it.univaq.sose.LegacyBoxOfficeProviderSOAP.service;
 
-import it.univaq.sose.LegacyBoxOfficeProviderSOAP.BoxOfficeException;
+import it.univaq.sose.LegacyBoxOfficeProviderSOAP.exception.BoxOfficeException;
 import it.univaq.sose.LegacyBoxOfficeProviderSOAP.model.Event;
 import it.univaq.sose.LegacyBoxOfficeProviderSOAP.model.Ticket;
 

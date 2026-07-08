@@ -1,4 +1,4 @@
-package it.univaq.sose.LegacyBoxOfficeProviderSOAP;
+package it.univaq.sose.LegacyBoxOfficeProviderSOAP.exception;
 
 import jakarta.xml.ws.WebFault;
 

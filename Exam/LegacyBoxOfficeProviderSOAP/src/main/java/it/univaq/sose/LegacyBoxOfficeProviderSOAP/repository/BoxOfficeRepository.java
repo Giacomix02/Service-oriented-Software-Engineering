@@ -17,9 +17,16 @@ public class BoxOfficeRepository {
 
     private static final String DB_URL =
             "jdbc:mysql://" + DB_HOST + ":" + DB_PORT + "/" + DB_NAME
-                    + "?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC";
+                    + "?useSSL=false&allowPublicKeyRetrieval=True&serverTimezone=UTC";
 
     private Connection getConnection() throws SQLException {
+        try {
+            // load the MySQL JDBC driver
+            Class.forName("com.mysql.cj.jdbc.Driver");
+        } catch (ClassNotFoundException e) {
+            throw new SQLException("MySQL JDBC Driver not found in classpath", e);
+        }
+
         return DriverManager.getConnection(DB_URL, DB_USER, DB_PASS);
     }
 
