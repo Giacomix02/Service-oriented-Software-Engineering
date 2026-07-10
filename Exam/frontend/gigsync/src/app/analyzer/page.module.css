@@ -1,0 +1,39 @@
+.container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    
+    /* Takes up the remaining viewport height minus an estimated navbar height */
+    min-height: calc(100vh - 70px); 
+    padding: 2rem;
+    background-color: #f5f8fa; /* Matching the clean light-mode subtle background */
+    box-sizing: border-box;
+}
+
+.title {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; /* Same font style */
+    color: #1a1a1a; /* Matching the main dark text color */
+    font-size: 1.8rem;
+    font-weight: 700;
+    text-align: center;
+    letter-spacing: 0.5px;
+    
+    /* Optional: Card style wrapper frame to match the theme */
+    background-color: #ffffff;
+    padding: 2rem 3rem;
+    border: 1px solid #e1e8ed;
+    border-radius: 12px;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+    max-width: 600px;
+}
+
+/* Responsive adjustments */
+@media (max-width: 1024px) {
+    .container {
+        min-height: calc(100vh - 120px); /* Adjusts space for stacked mobile navbar */
+    }
+    .title {
+        font-size: 1.4rem;
+        padding: 1.5rem 2rem;
+    }
+}
