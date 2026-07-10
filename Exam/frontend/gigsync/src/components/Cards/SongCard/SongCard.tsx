@@ -1,8 +1,7 @@
 // import type { AnchorHTMLAttributes, ComponentType, ReactNode } from "react";
-import styles from './SongCard.module.css';
+import styles from '../Card.module.css';
 import Link from "next/link";
 import {Song} from "@/types";
-import { list } from 'postcss';
 
 
 
