@@ -84,3 +84,12 @@
     padding: 4px 10px;
     border-radius: 20px;
 }
+
+.streamingService {
+    background-color: #f5f8fa13;
+    color: #adadad;
+    font-size: 0.8rem;
+    font-weight: 500;
+    padding: 4px 10px;
+    border-radius: 20px;
+}

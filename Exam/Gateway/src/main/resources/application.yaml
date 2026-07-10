@@ -5,9 +5,22 @@ server:
 # Gateway configuration
 spring:
   cloud:
+    loadbalancer:
+      enabled: true
     gateway:
       server:
         webmvc:
+          globalcors:
+          cors-configurations:
+            '[/**]':
+              allowedOrigins: "*"
+              allowedMethods:
+                - GET
+                - POST
+                - PUT
+                - DELETE
+                - OPTIONS
+              allowedHeaders: "*" 
           routes:
             - id: music_stats_route
               # uri: http://${MUSIC_STATS_HOST:localhost}:${MUSIC_STATS_PORT:9001}
