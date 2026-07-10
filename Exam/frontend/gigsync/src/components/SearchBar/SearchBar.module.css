@@ -1,0 +1,63 @@
+/* Contenitore principale della SearchBar */
+.searchBar {
+    background-color: #ffffff;
+    border: 1px solid #e1e8ed;
+    border-radius: 12px;
+    padding: 10px;
+    width: fit-content;
+    max-width: 100%;
+    display: flex;
+    align-items: center;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+}
+
+/* Effetto hover per dare dinamicità */
+.searchBar:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.08), 0 4px 6px -4px rgba(0, 0, 0, 0.08);
+}
+
+.searchBar:focus-within {
+    outline: 2px solid #1da1f2;
+}
+
+/* Campo di input */
+.textField {
+    /* flex: 0 1 auto; */
+    min-width: 0;
+    width: auto;
+    border: transparent;
+    background: transparent;
+    outline: none;
+}
+
+.textField:focus{
+    border: transparent;
+    outline: none;
+}
+/* Pulsante di ricerca */
+.button {
+    flex-shrink: 0;
+    color: #1da1f2;
+    font-size: 1.2rem;
+    font-weight: 500;
+    text-decoration: none;
+    transition: color 0.2s ease;
+    background-color: transparent;
+    border: transparent;
+    cursor: pointer;
+}
+
+.button:hover {
+    color: #1a91da;
+    text-decoration: underline;
+}
+
+.separator {
+    width: 1px;
+    background-color: #e1e8ed;
+    margin: 0 10px;
+    align-self: stretch;
+}

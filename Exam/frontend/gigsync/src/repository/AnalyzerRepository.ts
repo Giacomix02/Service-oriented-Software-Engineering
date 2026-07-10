@@ -12,8 +12,8 @@ export const getAllSongs = async (setSongs: Dispatch<SetStateAction<Song[]>>) =>
 }
 
 /// api/analyze/songs/{id}
-export const getSongById = async (setSongs: Dispatch<SetStateAction<Song>>) => {
-    const response = await axios.get(baseURL+"/api/analyze/songs/{id}", )
+export const getSongById = async (id:string, setSongs: Dispatch<SetStateAction<Song| undefined>>) => {
+    const response = await axios.get(baseURL+"/api/analyze/songs/"+ id, )
     const song: Song = await response.data
     setSongs(song)
 }
