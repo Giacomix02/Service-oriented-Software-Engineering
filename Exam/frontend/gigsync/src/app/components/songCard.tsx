@@ -1,10 +1,11 @@
 // import type { AnchorHTMLAttributes, ComponentType, ReactNode } from "react";
+
 import { Card, Link as HLink } from "@heroui/react";
-import styles from './songCard.module.css';
+// import styles from './songCard.module.css';
 
 // const HeroLink = HLink as ComponentType<AnchorHTMLAttributes<HTMLAnchorElement> & { children?: ReactNode; href?: string }>;
 
-interface Song {
+export interface Song {
     id: number;
     title: string;
     description: string;
@@ -18,9 +19,12 @@ interface Artist {
     description: string;
 }
 
-export default function songCard(song: Song) {
+export default function SongCard(props: {song: Song}) {
+    const song = props.song;
     return (
-        <Card className={styles.size}>
+        <Card className="w-[400px]"
+        // className={styles.size}
+        >
             <Card.Header>
                 <Card.Title>{song.title}</Card.Title>
 
@@ -28,7 +32,7 @@ export default function songCard(song: Song) {
             </Card.Header>
             <Card.Content>
                 <p>id: {song.id}</p>
-                <HLink href={`/artists/${song.artist.id}`}>{song.artist.name}</HLink>
+                {/* <HLink href={`/artists/${song.artist.id}`}>{song.artist.name}</HLink> */}
             </Card.Content>
             <Card.Footer>{song.plays} plays</Card.Footer>
         </Card>
