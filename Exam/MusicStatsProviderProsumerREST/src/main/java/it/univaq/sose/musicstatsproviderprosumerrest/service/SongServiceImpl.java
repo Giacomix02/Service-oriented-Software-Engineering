@@ -40,7 +40,7 @@ public class SongServiceImpl implements SongService {
     public Song findByName(String name) {
         Song song = new Song();
         song.setName(name);
-        return songRepository.findByName(name);
+        return songRepository.findByNameContaining(name);
     }
 
     @Override

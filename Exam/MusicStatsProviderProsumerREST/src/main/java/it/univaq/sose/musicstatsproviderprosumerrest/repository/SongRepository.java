@@ -12,7 +12,7 @@ import it.univaq.sose.musicstatsproviderprosumerrest.model.Song;
 @Repository
 public interface SongRepository extends JpaRepository<Song, Integer> {
 
-    Song findByName(String name);
+    Song findByNameContaining(String name);
     List<Song> findByArtistName(String name);
     Optional<Song> findById(Integer id);
     

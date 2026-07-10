@@ -8,6 +8,6 @@ import java.util.Optional;
 
 public interface StreamingServiceRepository extends JpaRepository<StreamingService, Integer> {
     Optional<StreamingService> findById(Integer id);
-    Optional<StreamingService> findByName(String name);
+    Optional<StreamingService> findByNameContaining(String name);
     List<StreamingService> findBy();
 }
