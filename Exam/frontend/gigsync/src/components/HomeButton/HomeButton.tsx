@@ -11,6 +11,5 @@ export default function HomeButton({ children, page }: { children: React.ReactNo
             <Link href={page} className={s.homeButton}>
             {children}
             </Link>
-
     )
 }

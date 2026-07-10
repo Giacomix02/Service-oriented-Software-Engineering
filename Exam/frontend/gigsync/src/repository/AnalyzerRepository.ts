@@ -1,6 +1,5 @@
 import { Artist, Song, StreamingService } from "@/types"
 import axios from "axios"
-import { config } from "process"
 import { Dispatch, SetStateAction } from "react"
 
 const baseURL= "/api-gateway"

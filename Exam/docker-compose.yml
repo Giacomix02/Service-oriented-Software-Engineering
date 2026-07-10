@@ -48,21 +48,21 @@ services:
       SERVER_PORT: 8761
 
 
-  legacy-box-office-microservice:
-    build: ./LegacyBoxOfficeProviderSOAP
-    ports:
-      - "9045:8080"
-    environment:
-      MYSQL_HOST: ticketing-mysql
-      MYSQL_PORT: 3306
-      MYSQL_DB: ticketing
-      MYSQL_USER: root
-      MYSQL_PASSWORD: root
-    depends_on:
-      ticketing-mysql:
-        condition: service_healthy
-    deploy:
-      replicas: 1
+#  legacy-box-office-microservice:
+#    build: ./LegacyBoxOfficeProviderSOAP
+#    ports:
+#      - "9045:8080"
+#    environment:
+#      MYSQL_HOST: ticketing-mysql
+#      MYSQL_PORT: 3306
+#      MYSQL_DB: ticketing
+#      MYSQL_USER: root
+#      MYSQL_PASSWORD: root
+#    depends_on:
+#      ticketing-mysql:
+#        condition: service_healthy
+#    deploy:
+#      replicas: 1
 
   music-stats-microservice:
     build: ./MusicStatsProviderProsumerREST

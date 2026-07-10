@@ -1,23 +1,12 @@
 "use client"
-import {Song} from "@/types";
-import SongCard from "@/components/SongCard/SongCard";
-import { useEffect, useState } from "react";
-import { getAllSongs } from "@/repository/AnalyzerRepository";
+import styles from "./page.module.css";
 
 export default function Page() {
-    const [songs, setSongs] = useState<Song[]>([]);
-    useEffect(() => {
-        getAllSongs(setSongs)
-    }, [])
-    
     return (
-        <div>
-            <h1>Analyzer</h1>
-            
-            {songs.map((song) => 
-        <SongCard key={song.id} song={song} />
-    )}
+        <div className={styles.container}>
+            <h1 className={styles.title}>
+                Use navigation bar to explore the analyzer
+            </h1>
         </div>
-       
     )
 }

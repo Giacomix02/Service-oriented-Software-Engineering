@@ -7,7 +7,6 @@ export default function Home() {
       <div className={styles.main}>
         <HomeButton  page={"/ticketing"}> Ticketing </HomeButton>
         <HomeButton  page={"/analyzer"}> Analyzer </HomeButton>
-
       </div>
 
   );
