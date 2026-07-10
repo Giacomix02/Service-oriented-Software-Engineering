@@ -26,7 +26,7 @@ export default function SongCard(props: {song: Song}) {
                     <span key={srtService.name} className={styles.streamingService}>{srtService.name}</span>
                 )
                     }
-                <span className={styles.plays}>{song.plays} plays</span>
+                <span className={styles.plays}>{song.views} plays</span>
             </div>
         </div>
     )

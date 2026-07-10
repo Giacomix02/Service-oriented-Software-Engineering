@@ -8,7 +8,7 @@ export interface Song {
     id: number;
     name: string;
     description: string;
-    plays: number;
+    views: number;
     artist: Artist;
     streamingServices: StreamingService[]
 }
