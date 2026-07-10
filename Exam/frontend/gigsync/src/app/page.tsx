@@ -5,8 +5,8 @@ export default function Home() {
 
   return (
       <div className={styles.main}>
-        <HomeButton  page={"/pages/ticketing"}> Ticketing </HomeButton>
-        <HomeButton  page={"/pages/analyzer"}> Analyzer </HomeButton>
+        <HomeButton  page={"/ticketing"}> Ticketing </HomeButton>
+        <HomeButton  page={"/analyzer"}> Analyzer </HomeButton>
 
       </div>
 
