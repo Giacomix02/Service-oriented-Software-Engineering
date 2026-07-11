@@ -1,23 +1,23 @@
 "use client"
-import {Song} from "@/types";
+import {Song, StreamingService} from "@/types";
 import { useEffect, useState } from "react";
-import { getAllSongs } from "@/repository/AnalyzerRepository";
-import SongCard from "@/components/Cards/SongCard/SongCard";
+import {getAllSongs, getAllStreamingServices} from "@/repository/AnalyzerRepository";
 import styles from "./page.module.css";
+import StreamingServiceCard from "@/components/Cards/StreamingServiceCard/StreamingServiceCard";
 
 export default function Page() {
-    const [songs, setSongs] = useState<Song[]>([]);
+    const [streamingServices, setStreamingServices] = useState<StreamingService[]>([]);
     
     useEffect(() => {
-        getAllSongs(setSongs)
+        getAllStreamingServices(setStreamingServices)
     }, [])
     
     return (
         <div className={styles.pageContainer}>
             <h1 className={styles.pageTitle}>Streaming Services</h1>
             <div className={styles.cardsGrid}>
-                {songs.map((song) => 
-                    <SongCard key={song.id} song={song} />
+                {streamingServices.map((service) =>
+                    <StreamingServiceCard key={service.id} streamingService={service} />
                 )}
             </div>
         </div>

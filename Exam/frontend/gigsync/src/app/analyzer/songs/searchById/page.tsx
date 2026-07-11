@@ -3,7 +3,7 @@ import SearchBar from "@/components/SearchBar/SearchBar";
 import styles from "../songs.module.css";
 import { useState } from "react";
 import { Song } from "@/types";
-import { getSongById } from "@/repository/AnalyzerRepository";
+import {getStatsSongById} from "@/repository/AnalyzerRepository";
 import SongCard from "@/components/Cards/SongCard/SongCard";
 
 
@@ -13,7 +13,7 @@ export default function Page() {
     return (
         <div className={styles.pageContainer}>
             <h1 className={styles.pageTitle}>Search Song by Id</h1>
-            <SearchBar<Song> searchFunction={getSongById} setter={setSong}/>
+            <SearchBar<Song> searchFunction={getStatsSongById} setter={setSong} type={"number"}/>
             <div className={styles.cardsGrid}>
                 <SongCard song={song}/>
             </div>

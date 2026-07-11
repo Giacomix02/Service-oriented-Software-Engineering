@@ -39,19 +39,19 @@ const Navbar = () => {
                     </ul>
                 </li>
 
-                {/* Dropdown Artisti */}
-                <li className={s.dropdown} onMouseLeave={() => setOpenDropdown(null)}>
-                    <button
-                        className={`${s['dropdown-trigger']} ${isActive('/analyze/artists')}`}
-                        onClick={() => toggleDropdown('artists')}
-                    >
-                        Artists ▾
-                    </button>
-                    <ul className={`${s['dropdown-menu']} ${openDropdown === 'artists' ? s.show : ''}`}>
-                        <li><Link href="/analyzer/artists/allArtists">All Artists</Link></li>
-                        <li><Link href="/analyzer/artists/searchById">Search by ID</Link></li>
-                    </ul>
-                </li>
+                {/*/!* Dropdown Artisti *!/*/}
+                {/*<li className={s.dropdown} onMouseLeave={() => setOpenDropdown(null)}>*/}
+                {/*    <button*/}
+                {/*        className={`${s['dropdown-trigger']} ${isActive('/analyze/artists')}`}*/}
+                {/*        onClick={() => toggleDropdown('artists')}*/}
+                {/*    >*/}
+                {/*        Artists ▾*/}
+                {/*    </button>*/}
+                {/*    <ul className={`${s['dropdown-menu']} ${openDropdown === 'artists' ? s.show : ''}`}>*/}
+                {/*        <li><Link href="/analyzer/artists/allArtists">All Artists</Link></li>*/}
+                {/*        <li><Link href="/analyzer/artists/searchById">Search by ID</Link></li>*/}
+                {/*    </ul>*/}
+                {/*</li>*/}
 
                 {/* Link Diretto Servizi Streaming */}
                 <li>
@@ -85,12 +85,12 @@ const Navbar = () => {
                         className={`${s['dropdown-trigger']} ${s['stats-trigger']} ${isActive('/stats/artists')}`}
                         onClick={() => toggleDropdown('statsArtists')}
                     >
-                        Stats Artists ▾
+                        Artists ▾
                     </button>
-                    <ul className={`${s['dropdown-menu']} ${openDropdown === 'statsArtists' ? s.show : ''}`}>
-                        <li><Link href="/analyzer/statsArtists/allStatsArtists">All Artist Stats</Link></li>
-                        <li><Link href="/analyzer/statsArtists/searchStatsById">Stats by ID</Link></li>
-                        <li><Link href="/analyzer/statsArtists/searchStatsByName">Stats by Name</Link></li>
+                    <ul className={`${s['dropdown-menu']} ${openDropdown === 'Artists' ? s.show : ''}`}>
+                        <li><Link href="/analyzer/statsArtists/allStatsArtists">All Artist</Link></li>
+                        <li><Link href="/analyzer/statsArtists/searchStatsById">Artist by ID</Link></li>
+                        <li><Link href="/analyzer/statsArtists/searchStatsByName">Artist by Name</Link></li>
                     </ul>
                 </li>
             </ul>

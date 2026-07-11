@@ -7,7 +7,7 @@ import {Song} from "@/types";
 
 export default function SongCard(props: {song: Song | undefined}) {
     const song = props.song
-    if (song == undefined || song.id == undefined) return (
+    if (song === undefined || song.id === undefined) return (
         <div className={styles.card}>No song found</div>
     )
     return (

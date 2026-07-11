@@ -19,15 +19,15 @@ export const getSongById = async (id:string, setSongs: Dispatch<SetStateAction<S
 }
 
 /// api/analyze/songs/by-name/{name}
-export const getSongsByName = async (setSongs: Dispatch<SetStateAction<Song[]>>, name: string) => {
-    const response = await axios.get(baseURL+"/api/analyze/songs/by-name/{name}", )
+export const getSongsByName = async (name: string, setSongs: Dispatch<SetStateAction<Song[] | undefined>>) => {
+    const response = await axios.get(baseURL+"/api/analyze/songs/by-name/"+name, )
     const songs: Song[] = await response.data
     setSongs(songs)
 }
 
 /// api/analyze/songs/by-artist/{name}
-export const getSongsByArtist = async (setSongs: Dispatch<SetStateAction<Song[]>>, name: string) => {
-    const response = await axios.get(baseURL+"/api/analyze/songs/by-artist/{name}", )
+export const getSongsByArtist = async (name: string, setSongs: Dispatch<SetStateAction<Song[] | undefined>>) => {
+    const response = await axios.get(baseURL+"/api/analyze/songs/by-artist/"+name, )
     const songs: Song[] = await response.data
     setSongs(songs)
 }
@@ -40,8 +40,8 @@ export const getAllArtists = async (setArtists: Dispatch<SetStateAction<Artist[]
 }
 
 /// api/analyze/artists/{id}
-export const getArtistById = async (setArtists: Dispatch<SetStateAction<Artist>>) => {
-    const response = await axios.get(baseURL+"/api/analyze/artists/{id}", )
+export const getArtistById = async (id:string, setArtists: Dispatch<SetStateAction<Artist | undefined>>) => {
+    const response = await axios.get(baseURL+"/api/analyze/artists/"+id, )
     const artist: Artist = await response.data
     setArtists(artist)
 }
@@ -82,8 +82,8 @@ export const getAllStatsArtists = async (setArtists: Dispatch<SetStateAction<Art
 }
 
 /// api/stats/artists/{id}
-export const getStatsArtistById = async (setArtists: Dispatch<SetStateAction<Artist>>, id: number) => {
-    const response = await axios.get(baseURL+"/api/stats/artists/{id}", )
+export const getStatsArtistById = async (id: number, setArtists: Dispatch<SetStateAction<Artist>>) => {
+    const response = await axios.get(baseURL+"/api/stats/artists/"+id, )
     const artist: Artist = await response.data
     setArtists(artist)
 }
@@ -96,29 +96,29 @@ export const getAllStatsSongs = async (setSongs: Dispatch<SetStateAction<Song[]>
 }
 
 /// api/stats/songs/{id}
-export const getStatsSongById = async (setSongs: Dispatch<SetStateAction<Song>>, id: number) => {
-    const response = await axios.get(baseURL+"/api/stats/songs/{id}", )
+export const getStatsSongById = async (id: string, setSongs: Dispatch<SetStateAction<Song | undefined>>) => {
+    const response = await axios.get(baseURL+"/api/stats/songs/"+id, )
     const song: Song = await response.data
     setSongs(song)
 }
 
 /// api/stats/songs/by-name/{name}
-export const getStatsSongsByName = async (setSongs: Dispatch<SetStateAction<Song[]>>, name: string) => {
-    const response = await axios.get(baseURL+"/api/stats/songs/by-name/{name}", )
+export const getStatsSongsByName = async (name: string, setSongs: Dispatch<SetStateAction<Song[] | undefined>>) => {
+    const response = await axios.get(baseURL+"/api/stats/songs/by-name/"+name, )
     const songs: Song[] = await response.data
     setSongs(songs)
 }
 
 /// api/stats/songs/by-artist/{name}
-export const getStatsSongsByArtist = async (setSongs: Dispatch<SetStateAction<Song[]>>, name: string) => {
-    const response = await axios.get(baseURL+"/api/stats/songs/by-artist/{name}", )
+export const getStatsSongsByArtist = async ( name: string, setSongs: Dispatch<SetStateAction<Song[] | undefined>>) => {
+    const response = await axios.get(baseURL+"/api/stats/songs/by-artist/"+name, )
     const songs: Song[] = await response.data
     setSongs(songs)
 }
 
 /// api/stats/artists/by-name/{name}
-export const getStatsArtistsByName = async (setArtists: Dispatch<SetStateAction<Artist[]>>, name: string) => {
-    const response = await axios.get(baseURL+"/api/stats/artists/by-name/{name}", )
+export const getStatsArtistsByName = async (name: string, setArtists: Dispatch<SetStateAction<Artist[] | undefined>> ) => {
+    const response = await axios.get(baseURL+"/api/stats/artists/by-name/"+name, )
     const artists: Artist[] = await response.data
     setArtists(artists)
 }

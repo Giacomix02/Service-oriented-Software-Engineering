@@ -9,6 +9,7 @@
     background-color: #f5f8fa; /* Matches card/navbar background variations */
     box-sizing: border-box;
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; /* Matches card font family */
+    gap: 1rem;
 }
 
 /* Page title centered with matching dark shade typography */

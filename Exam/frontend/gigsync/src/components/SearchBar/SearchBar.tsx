@@ -2,19 +2,24 @@
 import { Dispatch, SetStateAction, useEffect, useState } from "react"
 import styles from "./SearchBar.module.css"
 
-export default function SearchBar<T>(props: { searchFunction: (param:string, setter: Dispatch<SetStateAction<T | undefined>>) => Promise<void>, setter: Dispatch<SetStateAction<T | undefined>> }) {
+type inputProps = "text" | "number"
+
+export default function SearchBar<T>(props: { searchFunction: (param:string, setter: Dispatch<SetStateAction<T | undefined>>) => Promise<void>, setter: Dispatch<SetStateAction<T | undefined>>, type : inputProps }) {
+    const inputType = props.type
     const func = props.searchFunction
     const setter = props.setter
     const [input, setInput] = useState("")
 
     useEffect(() => {
-        func(input.valueOf(), setter)
+        if(input.valueOf() === "" || input.valueOf() === ";" || input.valueOf() === " " || input.valueOf() === ".") setter(undefined)
+        else if(input.length > 0) func(input.valueOf(), setter)
+        else setter(undefined)
     })
     
     return (
      
         <div className={styles.searchBar}>
-            <input className={styles.textField} onChange={event => setInput(event.target.value)}>
+            <input type={inputType} className={styles.textField} onChange={event => setInput(event.target.value)}>
 
             </input>
             <div className={styles.separator}></div>

@@ -10,6 +10,6 @@ public interface ArtistService {
 
     Artist findById(Integer id);
 
-    Artist findByName(String name);
+    List<Artist> findByName(String name);
     
 }

@@ -1,7 +1,7 @@
 "use client"
 import {Song} from "@/types";
 import { useEffect, useState } from "react";
-import { getAllSongs } from "@/repository/AnalyzerRepository";
+import {getAllSongs, getAllStatsSongs} from "@/repository/AnalyzerRepository";
 import SongCard from "@/components/Cards/SongCard/SongCard";
 import styles from "../songs.module.css";
 
@@ -9,7 +9,7 @@ export default function Page() {
     const [songs, setSongs] = useState<Song[]>([]);
     
     useEffect(() => {
-        getAllSongs(setSongs)
+        getAllStatsSongs(setSongs)
     }, [])
     
     return (

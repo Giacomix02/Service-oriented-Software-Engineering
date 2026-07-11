@@ -4,6 +4,8 @@ export interface Artist {
     description: string;
 }
 
+
+
 export interface Song {
     id: number;
     name: string;
@@ -14,6 +16,9 @@ export interface Song {
 }
 
 export interface StreamingService {
+    id: number;
     name: string;
     description: string
 }
+
+

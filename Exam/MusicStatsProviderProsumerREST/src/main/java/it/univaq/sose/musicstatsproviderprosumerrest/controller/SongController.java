@@ -58,9 +58,9 @@ public class SongController {
 	@Operation(summary = "Get song by name")
     @ApiResponse(responseCode = "200", description = "song is found and returned")
     @ApiResponse(responseCode = "404", description = "song not found")
-	public ResponseEntity<SongDTO> getSongByName(@PathVariable("name") String name) {
+	public ResponseEntity<List<SongDTO>> getSongByName(@PathVariable("name") String name) {
 		System.out.println("---- Search Song by name requested ----");
-		SongDTO songDTOList = songMapper.songToSongDTO(songService.findByName(name));
+		List<SongDTO> songDTOList = songMapper.songsToSongsDTO(songService.findByName(name));
 		return new ResponseEntity<>(songDTOList, HttpStatus.OK);
 	}
 

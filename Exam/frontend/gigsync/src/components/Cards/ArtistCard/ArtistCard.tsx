@@ -6,8 +6,11 @@ import styles from '../Card.module.css';
 
 
 
-export default function ArtistCard(props: {artist: Artist}) {
+export default function ArtistCard(props: {artist: Artist | undefined}) {
     const artist = props.artist
+    if (artist == undefined || artist.id == undefined) return (
+        <div className={styles.card}>No artist found</div>
+    )
     return (
         <div className={styles.card}>
             <div className={styles.header}>

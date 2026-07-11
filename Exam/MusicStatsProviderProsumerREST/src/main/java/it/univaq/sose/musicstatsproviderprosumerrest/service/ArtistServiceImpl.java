@@ -23,11 +23,11 @@ public class ArtistServiceImpl implements ArtistService {
 
     @Override
     public Artist findById(Integer id) {
-        return artistRepository.getReferenceById(id);
+        return artistRepository.findById(id).orElse(null);
     }
 
     @Override
-    public Artist findByName(String name) {
+    public List<Artist> findByName(String name) {
         return artistRepository.findByNameContaining(name);
     }
     

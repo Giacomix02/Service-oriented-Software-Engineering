@@ -59,8 +59,8 @@ public class ArtistController {
     @Operation(summary = "Get artist by name")
     @ApiResponse(responseCode = "200", description = "artist is found and returned")
     @ApiResponse(responseCode = "404", description = "artist not found")
-    public ResponseEntity<ArtistDTO> getById(@PathVariable("name") String name){
-        ArtistDTO artistDTO = artistMapper.artistToArtistDTO(artistService.findByName(name));
+    public ResponseEntity<List<ArtistDTO>> getById(@PathVariable("name") String name){
+        List<ArtistDTO> artistDTO = artistMapper.artistsToArtistsDTO(artistService.findByName(name));
         return new ResponseEntity<>(artistDTO, HttpStatus.OK);
     }
 

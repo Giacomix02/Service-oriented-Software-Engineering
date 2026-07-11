@@ -2,6 +2,8 @@ package it.univaq.sose.artistanalyzerprosumerrest.dto;
 
 public class StreamingServiceDTO extends AuditDTO{
 
+    private int id;
+
     private String name;
 
     private String description;
@@ -20,5 +22,13 @@ public class StreamingServiceDTO extends AuditDTO{
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 }

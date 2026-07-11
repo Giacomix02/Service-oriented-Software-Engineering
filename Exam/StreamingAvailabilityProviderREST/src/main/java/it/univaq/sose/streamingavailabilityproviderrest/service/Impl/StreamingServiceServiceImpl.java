@@ -21,7 +21,7 @@ public class StreamingServiceServiceImpl implements StreamingServiceService {
 
     @Override
     public StreamingService findByName(String name) {
-        return repository.findByName(name).orElse(null);
+        return repository.findByNameContaining(name).orElse(null);
     }
 
     @Override

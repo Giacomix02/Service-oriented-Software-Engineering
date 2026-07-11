@@ -5,11 +5,11 @@ import org.springframework.stereotype.Repository;
 
 import it.univaq.sose.musicstatsproviderprosumerrest.model.Artist;
 
+import java.util.List;
+
 
 @Repository
 public interface ArtistRepository extends JpaRepository<Artist, Integer> {
 
-    Artist findByNameContaining(String name);
-
-    
+    List<Artist> findByNameContaining(String name);
 } 
