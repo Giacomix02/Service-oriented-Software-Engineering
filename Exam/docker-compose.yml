@@ -161,5 +161,13 @@ services:
         condition: service_healthy
     deploy:
       replicas: 1
+
+  frontend:
+    build: ./frontend
+    ports:
+      - "3000:3000"
+    depends_on:
+      - gateway
+
 volumes:
   mysql-data:
