@@ -18,9 +18,9 @@ export default function SongCard(props: {song: Song | undefined}) {
             </div>
             <div className={styles.meta}>
                 <p className={styles.id}>id: {song.id}</p>
-                <Link href={`/artists/${song.artist.id}`} className={styles.artist}>
+                <a className={styles.artist}>
                     {song.artist.name}
-                </Link>
+                </a>
             </div>
             <div className={styles.footer}>
                 {song.streamingServices && 
