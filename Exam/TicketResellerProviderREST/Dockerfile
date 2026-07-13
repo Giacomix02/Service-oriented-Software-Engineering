@@ -1,10 +1,9 @@
-FROM eclipse-temurin:17-jdk
+FROM tomcat:11.0-jdk17
 
-WORKDIR /TicketResellerProviderREST
-COPY target/TicketResellerProviderREST-0.0.1-SNAPSHOT.jar .
+RUN rm -rf /usr/local/tomcat/webapps/*
 
-# RUN apt-get update && apt-get install -y dos2unix
-# RUN dos2unix mvnw
-# RUN chmod +x mvnw
-# RUN ./mvnw clean install -DskipTests
-CMD ["java","-jar", "TicketResellerProviderREST-0.0.1-SNAPSHOT.jar"]
+COPY target/TicketResellerProviderREST.war /usr/local/tomcat/webapps/ROOT.war
+
+EXPOSE 9061
+
+CMD ["catalina.sh", "run"]

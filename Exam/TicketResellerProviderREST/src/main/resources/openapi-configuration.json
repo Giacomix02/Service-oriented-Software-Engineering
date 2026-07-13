@@ -1,0 +1,8 @@
+{
+  "title": "Ticket Reseller Provider API",
+  "version": "1.0.0",
+  "description": "Secondary market ticket provider for the GigSync ecosystem",
+  "contact": {
+    "name": "GigSync Development Team"
+  }
+}

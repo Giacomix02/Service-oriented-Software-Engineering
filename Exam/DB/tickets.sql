@@ -1,5 +1,5 @@
-CREATE DATABASE IF NOT EXISTS ticketing;
-USE ticketing;
+CREATE DATABASE IF NOT EXISTS tickets;
+USE tickets;
 
 CREATE TABLE Event (
                        ID INT PRIMARY KEY,
