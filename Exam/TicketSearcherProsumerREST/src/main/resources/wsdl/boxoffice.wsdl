@@ -1,0 +1,233 @@
+<?xml version='1.0' encoding='UTF-8'?><wsdl:definitions xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:tns="http://service.LegacyBoxOfficeProviderSOAP.sose.univaq.it/" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:ns1="http://schemas.xmlsoap.org/soap/http" name="BoxOfficeServiceImplService" targetNamespace="http://service.LegacyBoxOfficeProviderSOAP.sose.univaq.it/">
+  <wsdl:types>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://service.LegacyBoxOfficeProviderSOAP.sose.univaq.it/" attributeFormDefault="unqualified" elementFormDefault="unqualified" targetNamespace="http://service.LegacyBoxOfficeProviderSOAP.sose.univaq.it/" version="1.0">
+  <xs:element name="getAllEvents" type="tns:getAllEvents"/>
+  <xs:element name="getAllEventsResponse" type="tns:getAllEventsResponse"/>
+  <xs:element name="getEventByID" type="tns:getEventByID"/>
+  <xs:element name="getEventByIDResponse" type="tns:getEventByIDResponse"/>
+  <xs:element name="getEventTickets" type="tns:getEventTickets"/>
+  <xs:element name="getEventTicketsResponse" type="tns:getEventTicketsResponse"/>
+  <xs:element name="getTicket" type="tns:getTicket"/>
+  <xs:element name="getTicketResponse" type="tns:getTicketResponse"/>
+  <xs:element name="searchByName" type="tns:searchByName"/>
+  <xs:element name="searchByNameResponse" type="tns:searchByNameResponse"/>
+  <xs:complexType name="getEventTickets">
+    <xs:sequence>
+      <xs:element name="arg0" type="xs:int"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="getEventTicketsResponse">
+    <xs:sequence>
+      <xs:element maxOccurs="unbounded" minOccurs="0" name="return" type="tns:ticket"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="ticket">
+    <xs:sequence>
+      <xs:element name="eventId" type="xs:int"/>
+      <xs:element name="id" type="xs:int"/>
+      <xs:element name="price" type="xs:float"/>
+      <xs:element minOccurs="0" name="seat" type="xs:string"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="getEventByID">
+    <xs:sequence>
+      <xs:element name="arg0" type="xs:int"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="getEventByIDResponse">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="return" type="tns:event"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="event">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="artistName" type="xs:string"/>
+      <xs:element minOccurs="0" name="description" type="xs:string"/>
+      <xs:element name="eventGlobalId" type="xs:int"/>
+      <xs:element name="id" type="xs:int"/>
+      <xs:element minOccurs="0" name="location" type="xs:string"/>
+      <xs:element minOccurs="0" name="name" type="xs:string"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="getTicket">
+    <xs:sequence>
+      <xs:element name="arg0" type="xs:int"/>
+      <xs:element name="arg1" type="xs:int"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="getTicketResponse">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="return" type="tns:ticket"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="searchByName">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="arg0" type="xs:string"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="searchByNameResponse">
+    <xs:sequence>
+      <xs:element maxOccurs="unbounded" minOccurs="0" name="return" type="tns:event"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="getAllEvents">
+    <xs:sequence/>
+  </xs:complexType>
+  <xs:complexType name="getAllEventsResponse">
+    <xs:sequence>
+      <xs:element maxOccurs="unbounded" minOccurs="0" name="return" type="tns:event"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="BoxOfficeFault" type="tns:BoxOfficeFault"/>
+  <xs:complexType name="BoxOfficeFault">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="message" type="xs:string"/>
+    </xs:sequence>
+  </xs:complexType>
+</xs:schema>
+  </wsdl:types>
+  <wsdl:message name="getEventTicketsResponse">
+    <wsdl:part element="tns:getEventTicketsResponse" name="parameters">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="getEventByIDResponse">
+    <wsdl:part element="tns:getEventByIDResponse" name="parameters">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="getEventByID">
+    <wsdl:part element="tns:getEventByID" name="parameters">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="searchByName">
+    <wsdl:part element="tns:searchByName" name="parameters">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="searchByNameResponse">
+    <wsdl:part element="tns:searchByNameResponse" name="parameters">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="getEventTickets">
+    <wsdl:part element="tns:getEventTickets" name="parameters">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="getTicketResponse">
+    <wsdl:part element="tns:getTicketResponse" name="parameters">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="BoxOfficeException">
+    <wsdl:part element="tns:BoxOfficeFault" name="BoxOfficeException">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="getTicket">
+    <wsdl:part element="tns:getTicket" name="parameters">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="getAllEvents">
+    <wsdl:part element="tns:getAllEvents" name="parameters">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="getAllEventsResponse">
+    <wsdl:part element="tns:getAllEventsResponse" name="parameters">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:portType name="BoxOfficeService">
+    <wsdl:operation name="getEventTickets">
+      <wsdl:input message="tns:getEventTickets" name="getEventTickets">
+    </wsdl:input>
+      <wsdl:output message="tns:getEventTicketsResponse" name="getEventTicketsResponse">
+    </wsdl:output>
+      <wsdl:fault message="tns:BoxOfficeException" name="BoxOfficeException">
+    </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="getEventByID">
+      <wsdl:input message="tns:getEventByID" name="getEventByID">
+    </wsdl:input>
+      <wsdl:output message="tns:getEventByIDResponse" name="getEventByIDResponse">
+    </wsdl:output>
+      <wsdl:fault message="tns:BoxOfficeException" name="BoxOfficeException">
+    </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="getTicket">
+      <wsdl:input message="tns:getTicket" name="getTicket">
+    </wsdl:input>
+      <wsdl:output message="tns:getTicketResponse" name="getTicketResponse">
+    </wsdl:output>
+      <wsdl:fault message="tns:BoxOfficeException" name="BoxOfficeException">
+    </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="searchByName">
+      <wsdl:input message="tns:searchByName" name="searchByName">
+    </wsdl:input>
+      <wsdl:output message="tns:searchByNameResponse" name="searchByNameResponse">
+    </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getAllEvents">
+      <wsdl:input message="tns:getAllEvents" name="getAllEvents">
+    </wsdl:input>
+      <wsdl:output message="tns:getAllEventsResponse" name="getAllEventsResponse">
+    </wsdl:output>
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="BoxOfficeServiceImplServiceSoapBinding" type="tns:BoxOfficeService">
+    <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+    <wsdl:operation name="getEventTickets">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input name="getEventTickets">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="getEventTicketsResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="BoxOfficeException">
+        <soap:fault name="BoxOfficeException" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="getEventByID">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input name="getEventByID">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="getEventByIDResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="BoxOfficeException">
+        <soap:fault name="BoxOfficeException" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="getTicket">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input name="getTicket">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="getTicketResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="BoxOfficeException">
+        <soap:fault name="BoxOfficeException" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="searchByName">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input name="searchByName">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="searchByNameResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getAllEvents">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input name="getAllEvents">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="getAllEventsResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="BoxOfficeServiceImplService">
+    <wsdl:port binding="tns:BoxOfficeServiceImplServiceSoapBinding" name="BoxOfficeServiceImplPort">
+      <soap:address location="http://localhost:9045/LegacyBoxOfficeProviderSOAP/boxoffice"/>
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

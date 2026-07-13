@@ -48,7 +48,6 @@ services:
       EUREKA_HOST: discovery-service
       SERVER_PORT: 8761
 
-
   legacy-box-office-microservice:
     build: ./LegacyBoxOfficeProviderSOAP
     ports:
@@ -56,7 +55,7 @@ services:
     environment:
       MYSQL_HOST: ticketing-mysql
       MYSQL_PORT: 3306
-      MYSQL_DB: ticketing
+      MYSQL_DB: tickets
       MYSQL_USER: root
       MYSQL_PASSWORD: root
     depends_on:
@@ -65,44 +64,24 @@ services:
     deploy:
       replicas: 1
 
-  music-stats-microservice:
-    build: ./MusicStatsProviderProsumerREST
-    ports:
-      - "9050-9052:9050"
-    environment:
-      SERVER_PORT: 9050
-      CONFIG_SERVER_HOST: config-server
-      CONFIG_SERVER_PORT: 8888
-      EUREKA_SERVER: http://discovery-service:8761/eureka/
-      MYSQL_HOST: ticketing-mysql:3306
-      MYSQL_DB: MusicStats
-      MYSQL_USER: root
-      MYSQL_PASSWORD: root
-    depends_on:
-      ticketing-mysql:
-        condition: service_healthy
-    deploy:
-      replicas: 2
-
-
-  streaming-availability-microservice:
-    build: ./StreamingAvailabilityProviderREST
-    ports:
-      - "9056-9058:9056"
-    environment:
-      SERVER_PORT: 9056
-      CONFIG_SERVER_HOST: config-server
-      CONFIG_SERVER_PORT: 8888
-      EUREKA_SERVER: http://discovery-service:8761/eureka/
-      MYSQL_HOST: ticketing-mysql:3306
-      MYSQL_DB: StreamingAvailability
-      MYSQL_USER: root
-      MYSQL_PASSWORD: root
-    depends_on:
-      ticketing-mysql:
-        condition: service_healthy
-    deploy:
-      replicas: 2
+  #  music-stats-microservice:
+  #    build: ./MusicStatsProviderProsumerREST
+  #    ports:
+  #      - "9050:9050"
+  #    environment:
+  #      SERVER_PORT: 9050
+  #      CONFIG_SERVER_HOST: config-server
+  #      CONFIG_SERVER_PORT: 8888
+  #      EUREKA_SERVER: http://discovery-service:8761/eureka/
+  #      MYSQL_HOST: ticketing-mysql:3306
+  #      MYSQL_DB: MusicStats
+  #      MYSQL_USER: root
+  #      MYSQL_PASSWORD: root
+  #    depends_on:
+  #      ticketing-mysql:
+  #        condition: service_healthy
+  #    deploy:
+  #      replicas: 1
 
   ticket-reseller-microservice:
     build: ./TicketResellerProviderREST
@@ -123,60 +102,45 @@ services:
     deploy:
       replicas: 1
 
-  #  ticket-searcher-microservice:
-  #    build: ./TicketSearcherProsumerREST
-  #    ports:
-  #      - "9066-9070:9066"
-  #    environment:
-  #      SERVER_PORT: 9066
-  #      CONFIG_SERVER_HOST: config-server
-  #      CONFIG_SERVER_PORT: 8888
-  #      EUREKA_SERVER: http://discovery-server:8761/eureka/
-  #      LEGACY_BOX_OFFICE_URL: http://legacy-box-office-microservice:8080
-  #      RESELLER_URL: http://ticket-reseller-microservice:8080
-  #    depends_on:
-  #      - discovery-service
-  #      - legacy-box-office-microservice
-  #      - ticket-reseller-microservice
-  #    deploy:
-  #      replicas: 1
-
-  artist-analyzer-microservice:
-    build: ./ArtistAnalyzerProsumerREST
+  ticket-searcher-microservice:
+    build: ./TicketSearcherProsumerREST
     ports:
-      - "9071-9073:9071"
+      - "9066:9066"
     environment:
-      MUSIC_STATS_HOST: music-stats-microservice
-      MUSIC_STATS_PORT: 9050
-      STREAMING_AVAILABILITY_HOST: streaming-availability-microservice
-      STREAMING_AVAILABILITY_PORT: 9056
-      SERVER_PORT: 9071
+      SERVER_PORT: 9066
       CONFIG_SERVER_HOST: config-server
       CONFIG_SERVER_PORT: 8888
       EUREKA_SERVER: http://discovery-service:8761/eureka/
-#      MYSQL_HOST: ticketing-mysql:3306
-#      MYSQL_DB: ticketing
-#      MYSQL_USER: root
-#      MYSQL_PASSWORD: root
+      LEGACY_BOX_OFFICE_URL: http://legacy-box-office-microservice:8080
+      RESELLER_URL: http://ticket-reseller-microservice:8080
     depends_on:
-      ticketing-mysql:
-        condition: service_healthy
+      - discovery-service
+      - legacy-box-office-microservice
+      - ticket-reseller-microservice
     deploy:
-      replicas: 2
+      replicas: 1
 
-  frontend:
-    build:
-      context: ./frontend
-      args:
-        API_GATEWAY_URL: gateway
-        API_GATEWAY_PORT: 9000
-    environment:
-      API_GATEWAY_URL: gateway
-      API_GATEWAY_PORT: 9000
-    ports:
-      - "3000:3000"
-    depends_on:
-      - gateway
-
+#  artist-analyzer-microservice:
+#    build: ./ArtistAnalyzerProsumerREST
+#    ports:
+#      - "9071:9071"
+#    environment:
+#      MUSIC_STATS_HOST: music-stats-microservice
+#      MUSIC_STATS_PORT: 9050
+#      STREAMING_AVAILABILITY_HOST: streaming-availability-microservice
+#      STREAMING_AVAILABILITY_PORT: 9056
+#      SERVER_PORT: 9071
+#      CONFIG_SERVER_HOST: config-server
+#      CONFIG_SERVER_PORT: 8888
+#      EUREKA_SERVER: http://discovery-service:8761/eureka/
+##      MYSQL_HOST: ticketing-mysql:3306
+##      MYSQL_DB: tickets
+##      MYSQL_USER: root
+##      MYSQL_PASSWORD: root
+#    depends_on:
+#      ticketing-mysql:
+#        condition: service_healthy
+#    deploy:
+#      replicas: 1
 volumes:
   mysql-data:

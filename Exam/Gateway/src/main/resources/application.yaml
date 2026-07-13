@@ -1,7 +1,7 @@
 # Port of the gateway
 server:
   port: ${SERVER_PORT:9000}
-  
+
 # Gateway configuration
 spring:
   cloud:
@@ -20,7 +20,7 @@ spring:
                 - PUT
                 - DELETE
                 - OPTIONS
-              allowedHeaders: "*" 
+              allowedHeaders: "*"
           routes:
             - id: music_stats_route
               # uri: http://${MUSIC_STATS_HOST:localhost}:${MUSIC_STATS_PORT:9001}
@@ -38,6 +38,10 @@ spring:
               filters:
                 - RewritePath=/api/analyze/(?<segment>.*), /artist-analyzer/$\{segment}
                 - logPath
+            - id: ticket_searcher_route
+              uri: lb://TicketSearcherProsumerREST
+              predicates:
+                - Path=/ticket-searcher/**
             # ROUTES FOR SWAGGER UI
             - id: music_stats_docs_route
               uri: lb://MusicStatsProviderProsumerREST
