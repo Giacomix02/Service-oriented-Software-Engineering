@@ -1,4 +1,4 @@
-package it.univaq.sose.ticketresellerproviderrest.api;
+package it.univaq.sose.ticketresellerproviderrest.resource;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;

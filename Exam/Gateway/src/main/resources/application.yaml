@@ -61,6 +61,13 @@ spring:
                 - Path=/docs/streaming
               filters:
                 - RewritePath=/docs/streaming, /v3/api-docs
+            - id: ticket_searcher_docs_route
+              uri: lb://TicketSearcherProsumerREST
+              predicates:
+                - Path=/docs/ticket-searcher
+              filters:
+                - RewritePath=/docs/ticket-searcher, /v3/api-docs
+
 springdoc:
   swagger-ui:
     path: /swagger-ui.html
@@ -71,6 +78,8 @@ springdoc:
         url: /docs/analyze
       - name: Streaming Availability
         url: /docs/streaming
+      - name: Ticket Searcher
+        url: /docs/ticket-searcher
 
 # Eureka client configuration+
 eureka:

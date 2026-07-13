@@ -1,5 +1,7 @@
 package it.univaq.sose.ticketresellerproviderrest.discovery;
 
+import org.apache.commons.codec.digest.DigestUtils;
+
 import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
@@ -16,7 +18,7 @@ public class EurekaClient {
     private static final String HOSTNAME = System.getenv().getOrDefault("EUREKA_HOSTNAME",
             System.getenv().getOrDefault("HOSTNAME", "localhost"));
 
-    private static final String INSTANCE_ID = HOSTNAME + ":" + APP_NAME.toLowerCase() + ":" + PORT;
+    private static final String INSTANCE_ID = HOSTNAME + ":" + APP_NAME.toLowerCase() + DigestUtils.sha256Hex(String.valueOf(Math.random())) + ":" + PORT;
 
     private final HttpClient httpClient;
     private ScheduledExecutorService scheduler;

@@ -1,6 +1,5 @@
 package it.univaq.sose.ticketresellerproviderrest.resource;
 
-import it.univaq.sose.ticketresellerproviderrest.api.TicketResource;
 import it.univaq.sose.ticketresellerproviderrest.model.Ticket;
 import it.univaq.sose.ticketresellerproviderrest.service.TicketService;
 

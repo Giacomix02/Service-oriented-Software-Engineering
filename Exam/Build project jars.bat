@@ -19,5 +19,5 @@ call .\mvnw.cmd package -DskipTests
 cd ..\TicketResellerProviderREST
 call .\mvnw.cmd package -DskipTests
 
-@REM cd ..\TicketSearcherProsumerREST
-@REM call .\mvnw.cmd package -DskipTests
+cd ..\TicketSearcherProsumerREST
+call .\mvnw.cmd package -DskipTests

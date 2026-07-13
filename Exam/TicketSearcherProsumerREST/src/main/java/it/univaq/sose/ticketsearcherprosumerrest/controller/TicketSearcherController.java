@@ -33,7 +33,7 @@ public class TicketSearcherController {
 
     @GetMapping("events/{eventGlobalId}/tickets")
     @Operation(summary = "Compares official tickets (SOAP) and reselled tickest (REST) for an event.")
-    @ApiResponse(responseCode = "200", description = "Comparación devuelta correctamente")
+    @ApiResponse(responseCode = "200", description = "Returns a comparison of tickets for the specified event.")
     public ResponseEntity<TicketComparisonDTO> getTicketComparison(@PathVariable int eventGlobalId) {
         return new ResponseEntity<>(ticketSearchService.compareTickets(eventGlobalId), HttpStatus.OK);
     }
@@ -55,10 +55,11 @@ public class TicketSearcherController {
     }
 
     @PostMapping("/search")
-    public Mono<TicketComparisonDTO> searchTickets(@RequestBody TicketSearchRequestDTO request) {
-        return ticketSearchService.searchTicketsByCriteria(
+    public ResponseEntity<TicketComparisonDTO> searchTickets(@RequestBody TicketSearchRequestDTO request) {
+
+        return new ResponseEntity<>(ticketSearchService.searchTicketsByCriteria(
                 request.getEventName(),
                 request.getResellerType()
-        );
+        ).block(), HttpStatus.OK);
     }
 }
