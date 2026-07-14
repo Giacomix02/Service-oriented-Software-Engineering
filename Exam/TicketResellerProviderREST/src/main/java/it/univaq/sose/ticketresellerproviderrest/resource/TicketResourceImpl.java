@@ -5,13 +5,12 @@ import it.univaq.sose.ticketresellerproviderrest.service.TicketService;
 
 import jakarta.ws.rs.core.Response;
 import java.util.List;
-import java.util.Map;
 
 public class TicketResourceImpl implements TicketResource {
 
     private final TicketService ticketService = new TicketService();
 
-    @Override
+
     public Response getEventTickets(int eventGlobalId) {
         List<Ticket> tickets = ticketService.getEventTickets(eventGlobalId);
 
@@ -24,7 +23,7 @@ public class TicketResourceImpl implements TicketResource {
         return Response.ok(tickets).build();
     }
 
-    @Override
+
     public Response getTicketGet(int eventGlobalId, int ticketId) {
         Ticket ticket = ticketService.getTicket(eventGlobalId, ticketId);
 
