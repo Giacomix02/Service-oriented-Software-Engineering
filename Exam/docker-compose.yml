@@ -65,44 +65,44 @@ services:
       replicas: 1
 
 
-#  music-stats-microservice:
-#    build: ./MusicStatsProviderProsumerREST
-#    ports:
-#      - "9050-9052:9050"
-#    environment:
-#      SERVER_PORT: 9050
-#      CONFIG_SERVER_HOST: config-server
-#      CONFIG_SERVER_PORT: 8888
-#      EUREKA_SERVER: http://discovery-service:8761/eureka/
-#      MYSQL_HOST: ticketing-mysql:3306
-#      MYSQL_DB: MusicStats
-#      MYSQL_USER: root
-#      MYSQL_PASSWORD: root
-#    depends_on:
-#      ticketing-mysql:
-#        condition: service_healthy
-#    deploy:
-#      replicas: 2
+  music-stats-microservice:
+    build: ./MusicStatsProviderProsumerREST
+    ports:
+      - "9050-9052:9050"
+    environment:
+      SERVER_PORT: 9050
+      CONFIG_SERVER_HOST: config-server
+      CONFIG_SERVER_PORT: 8888
+      EUREKA_SERVER: http://discovery-service:8761/eureka/
+      MYSQL_HOST: ticketing-mysql:3306
+      MYSQL_DB: MusicStats
+      MYSQL_USER: root
+      MYSQL_PASSWORD: root
+    depends_on:
+      ticketing-mysql:
+        condition: service_healthy
+    deploy:
+      replicas: 2
 
 
-#  streaming-availability-microservice:
-#    build: ./StreamingAvailabilityProviderREST
-#    ports:
-#      - "9056-9058:9056"
-#    environment:
-#      SERVER_PORT: 9056
-#      CONFIG_SERVER_HOST: config-server
-#      CONFIG_SERVER_PORT: 8888
-#      EUREKA_SERVER: http://discovery-service:8761/eureka/
-#      MYSQL_HOST: ticketing-mysql:3306
-#      MYSQL_DB: StreamingAvailability
-#      MYSQL_USER: root
-#      MYSQL_PASSWORD: root
-#    depends_on:
-#      ticketing-mysql:
-#        condition: service_healthy
-#    deploy:
-#      replicas: 2
+  streaming-availability-microservice:
+    build: ./StreamingAvailabilityProviderREST
+    ports:
+      - "9056-9058:9056"
+    environment:
+      SERVER_PORT: 9056
+      CONFIG_SERVER_HOST: config-server
+      CONFIG_SERVER_PORT: 8888
+      EUREKA_SERVER: http://discovery-service:8761/eureka/
+      MYSQL_HOST: ticketing-mysql:3306
+      MYSQL_DB: StreamingAvailability
+      MYSQL_USER: root
+      MYSQL_PASSWORD: root
+    depends_on:
+      ticketing-mysql:
+        condition: service_healthy
+    deploy:
+      replicas: 2
 
   ticket-reseller-microservice:
     build: ./TicketResellerProviderREST
@@ -121,12 +121,12 @@ services:
     depends_on:
       - ticketing-mysql
     deploy:
-      replicas: 1
+      replicas: 2
 
   ticket-searcher-microservice:
     build: ./TicketSearcherProsumerREST
     ports:
-      - "9066:9066"
+      - "9066-9070:9066"
     environment:
       SERVER_PORT: 9066
       CONFIG_SERVER_HOST: config-server
@@ -139,31 +139,31 @@ services:
       - legacy-box-office-microservice
       - ticket-reseller-microservice
     deploy:
-      replicas: 1
+      replicas: 2
 
 
-#  artist-analyzer-microservice:
-#    build: ./ArtistAnalyzerProsumerREST
-#    ports:
-#      - "9071-9073:9071"
-#    environment:
-#      MUSIC_STATS_HOST: music-stats-microservice
-#      MUSIC_STATS_PORT: 9050
-#      STREAMING_AVAILABILITY_HOST: streaming-availability-microservice
-#      STREAMING_AVAILABILITY_PORT: 9056
-#      SERVER_PORT: 9071
-#      CONFIG_SERVER_HOST: config-server
-#      CONFIG_SERVER_PORT: 8888
-#      EUREKA_SERVER: http://discovery-service:8761/eureka/
-##      MYSQL_HOST: ticketing-mysql:3306
-##      MYSQL_DB: ticketing
-##      MYSQL_USER: root
-##      MYSQL_PASSWORD: root
-#    depends_on:
-#      ticketing-mysql:
-#        condition: service_healthy
-#    deploy:
-#      replicas: 2
+  artist-analyzer-microservice:
+    build: ./ArtistAnalyzerProsumerREST
+    ports:
+      - "9071-9073:9071"
+    environment:
+      MUSIC_STATS_HOST: music-stats-microservice
+      MUSIC_STATS_PORT: 9050
+      STREAMING_AVAILABILITY_HOST: streaming-availability-microservice
+      STREAMING_AVAILABILITY_PORT: 9056
+      SERVER_PORT: 9071
+      CONFIG_SERVER_HOST: config-server
+      CONFIG_SERVER_PORT: 8888
+      EUREKA_SERVER: http://discovery-service:8761/eureka/
+#      MYSQL_HOST: ticketing-mysql:3306
+#      MYSQL_DB: ticketing
+#      MYSQL_USER: root
+#      MYSQL_PASSWORD: root
+    depends_on:
+      ticketing-mysql:
+        condition: service_healthy
+    deploy:
+      replicas: 2
 
   frontend:
     build:
