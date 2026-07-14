@@ -93,3 +93,44 @@
     padding: 4px 10px;
     border-radius: 20px;
 }
+
+.badgeOfficial {
+    background-color: rgba(29, 161, 242, 0.1);
+    color: #1da1f2;
+    font-size: 0.8rem;
+    font-weight: 600;
+    padding: 4px 10px;
+    border-radius: 20px;
+}
+
+.badgeReseller {
+    background-color: rgba(29, 185, 84, 0.1);
+    color: #1aa34a;
+    font-size: 0.8rem;
+    font-weight: 600;
+    padding: 4px 10px;
+    border-radius: 20px;
+}
+
+.location {
+    color: #657786;
+    font-size: 0.85rem;
+}
+
+.ticketsLink {
+    color: #1da1f2;
+    font-size: 0.9rem;
+    font-weight: 600;
+    text-decoration: none;
+    transition: color 0.2s ease;
+}
+
+.ticketsLink:hover {
+    color: #1a91da;
+    text-decoration: underline;
+}
+
+.cheapestCard {
+    border-color: #f5a623;
+    box-shadow: 0 0 0 2px rgba(245, 166, 35, 0.25), 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+}

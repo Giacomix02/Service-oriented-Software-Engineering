@@ -1,0 +1,50 @@
+.wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1.5rem;
+    width: 100%;
+}
+
+.columns {
+    display: flex;
+    gap: 2rem;
+    width: 100%;
+    max-width: 1200px;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.column {
+    flex: 1 1 400px;
+    min-width: 320px;
+}
+
+.columnTitle {
+    color: #1a1a1a;
+    font-size: 1.2rem;
+    font-weight: 700;
+    margin-bottom: 1rem;
+    text-align: center;
+}
+
+.columnGrid {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 20px;
+}
+
+.empty {
+    color: #aab8c2;
+    font-size: 0.9rem;
+    text-align: center;
+    width: 100%;
+}
+
+@media (max-width: 900px) {
+    .columns {
+        flex-direction: column;
+        align-items: center;
+    }
+}
